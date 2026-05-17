@@ -1,0 +1,511 @@
+{
+  "nodes": [
+    {
+      "id": "1-1",
+      "phase": "p1",
+      "phaseName": "博弈论基础",
+      "title": "博弈论基础",
+      "color": "#4f8de2",
+      "difficulty": "入门"
+    },
+    {
+      "id": "1-2",
+      "phase": "p1",
+      "phaseName": "博弈论基础",
+      "title": "纳什均衡",
+      "color": "#4f8de2",
+      "difficulty": "入门"
+    },
+    {
+      "id": "1-3",
+      "phase": "p1",
+      "phaseName": "博弈论基础",
+      "title": "囚徒困境",
+      "color": "#4f8de2",
+      "difficulty": "入门"
+    },
+    {
+      "id": "1-4",
+      "phase": "p1",
+      "phaseName": "博弈论基础",
+      "title": "协调博弈",
+      "color": "#4f8de2",
+      "difficulty": "入门"
+    },
+    {
+      "id": "1-5",
+      "phase": "p1",
+      "phaseName": "博弈论基础",
+      "title": "零和博弈",
+      "color": "#4f8de2",
+      "difficulty": "入门"
+    },
+    {
+      "id": "1-6",
+      "phase": "p1",
+      "phaseName": "博弈论基础",
+      "title": "重复博弈",
+      "color": "#4f8de2",
+      "difficulty": "入门"
+    },
+    {
+      "id": "2-1",
+      "phase": "p2",
+      "phaseName": "经典理论与模型",
+      "title": "谢林点与焦点均衡",
+      "color": "#5b9cf5",
+      "difficulty": "深度"
+    },
+    {
+      "id": "2-2",
+      "phase": "p2",
+      "phaseName": "经典理论与模型",
+      "title": "子博弈精炼均衡",
+      "color": "#5b9cf5",
+      "difficulty": "深度"
+    },
+    {
+      "id": "2-3",
+      "phase": "p2",
+      "phaseName": "经典理论与模型",
+      "title": "贝叶斯博弈",
+      "color": "#5b9cf5",
+      "difficulty": "深度"
+    },
+    {
+      "id": "2-4",
+      "phase": "p2",
+      "phaseName": "经典理论与模型",
+      "title": "完美贝叶斯均衡",
+      "color": "#5b9cf5",
+      "difficulty": "深度"
+    },
+    {
+      "id": "2-5",
+      "phase": "p2",
+      "phaseName": "经典理论与模型",
+      "title": "序贯均衡",
+      "color": "#5b9cf5",
+      "difficulty": "深度"
+    },
+    {
+      "id": "2-6",
+      "phase": "p2",
+      "phaseName": "经典理论与模型",
+      "title": "颤抖手均衡",
+      "color": "#5b9cf5",
+      "difficulty": "深度"
+    },
+    {
+      "id": "3-1",
+      "phase": "p3",
+      "phaseName": "进化博弈论",
+      "title": "进化稳定策略ESS",
+      "color": "#38b2ac",
+      "difficulty": "深度"
+    },
+    {
+      "id": "3-2",
+      "phase": "p3",
+      "phaseName": "进化博弈论",
+      "title": "复制动态方程",
+      "color": "#38b2ac",
+      "difficulty": "深度"
+    },
+    {
+      "id": "3-3",
+      "phase": "p3",
+      "phaseName": "进化博弈论",
+      "title": "鹰鸽博弈",
+      "color": "#38b2ac",
+      "difficulty": "深度"
+    },
+    {
+      "id": "3-4",
+      "phase": "p3",
+      "phaseName": "进化博弈论",
+      "title": "信号进化博弈",
+      "color": "#38b2ac",
+      "difficulty": "深度"
+    },
+    {
+      "id": "3-5",
+      "phase": "p3",
+      "phaseName": "进化博弈论",
+      "title": "空间演化博弈",
+      "color": "#38b2ac",
+      "difficulty": "深度"
+    },
+    {
+      "id": "3-6",
+      "phase": "p3",
+      "phaseName": "进化博弈论",
+      "title": "文化演化与博弈",
+      "color": "#38b2ac",
+      "difficulty": "深度"
+    },
+    {
+      "id": "4-1",
+      "phase": "p4",
+      "phaseName": "行为博弈论",
+      "title": "有限理性",
+      "color": "#e8a838",
+      "difficulty": "核心"
+    },
+    {
+      "id": "4-2",
+      "phase": "p4",
+      "phaseName": "行为博弈论",
+      "title": "前景理论",
+      "color": "#e8a838",
+      "difficulty": "核心"
+    },
+    {
+      "id": "4-3",
+      "phase": "p4",
+      "phaseName": "行为博弈论",
+      "title": "最后通牒博弈",
+      "color": "#e8a838",
+      "difficulty": "核心"
+    },
+    {
+      "id": "4-4",
+      "phase": "p4",
+      "phaseName": "行为博弈论",
+      "title": "信任博弈",
+      "color": "#e8a838",
+      "difficulty": "核心"
+    },
+    {
+      "id": "4-5",
+      "phase": "p4",
+      "phaseName": "行为博弈论",
+      "title": "认知偏差与博弈",
+      "color": "#e8a838",
+      "difficulty": "核心"
+    },
+    {
+      "id": "4-6",
+      "phase": "p4",
+      "phaseName": "行为博弈论",
+      "title": "神经博弈论",
+      "color": "#e8a838",
+      "difficulty": "核心"
+    },
+    {
+      "id": "5-1",
+      "phase": "p5",
+      "phaseName": "机制设计",
+      "title": "机制设计导论",
+      "color": "#9b59b6",
+      "difficulty": "核心"
+    },
+    {
+      "id": "5-2",
+      "phase": "p5",
+      "phaseName": "机制设计",
+      "title": "拍卖理论",
+      "color": "#9b59b6",
+      "difficulty": "核心"
+    },
+    {
+      "id": "5-3",
+      "phase": "p5",
+      "phaseName": "机制设计",
+      "title": "VCG机制",
+      "color": "#9b59b6",
+      "difficulty": "核心"
+    },
+    {
+      "id": "5-4",
+      "phase": "p5",
+      "phaseName": "机制设计",
+      "title": "匹配市场",
+      "color": "#9b59b6",
+      "difficulty": "核心"
+    },
+    {
+      "id": "5-5",
+      "phase": "p5",
+      "phaseName": "机制设计",
+      "title": "投票机制",
+      "color": "#9b59b6",
+      "difficulty": "核心"
+    },
+    {
+      "id": "5-6",
+      "phase": "p5",
+      "phaseName": "机制设计",
+      "title": "合同理论",
+      "color": "#9b59b6",
+      "difficulty": "核心"
+    },
+    {
+      "id": "6-1",
+      "phase": "p6",
+      "phaseName": "博弈论与经济学",
+      "title": "寡头竞争",
+      "color": "#e74c3c",
+      "difficulty": "深度"
+    },
+    {
+      "id": "6-2",
+      "phase": "p6",
+      "phaseName": "博弈论与经济学",
+      "title": "博弈论与产业组织",
+      "color": "#e74c3c",
+      "difficulty": "深度"
+    },
+    {
+      "id": "6-3",
+      "phase": "p6",
+      "phaseName": "博弈论与经济学",
+      "title": "信息经济学",
+      "color": "#e74c3c",
+      "difficulty": "深度"
+    },
+    {
+      "id": "6-4",
+      "phase": "p6",
+      "phaseName": "博弈论与经济学",
+      "title": "博弈论与金融",
+      "color": "#e74c3c",
+      "difficulty": "深度"
+    },
+    {
+      "id": "6-5",
+      "phase": "p6",
+      "phaseName": "博弈论与经济学",
+      "title": "博弈论与国际贸易",
+      "color": "#e74c3c",
+      "difficulty": "深度"
+    },
+    {
+      "id": "6-6",
+      "phase": "p6",
+      "phaseName": "博弈论与经济学",
+      "title": "公共经济学",
+      "color": "#e74c3c",
+      "difficulty": "深度"
+    },
+    {
+      "id": "7-1",
+      "phase": "p7",
+      "phaseName": "博弈论与政治",
+      "title": "选举博弈",
+      "color": "#f39c12",
+      "difficulty": "深度"
+    },
+    {
+      "id": "7-2",
+      "phase": "p7",
+      "phaseName": "博弈论与政治",
+      "title": "立法博弈",
+      "color": "#f39c12",
+      "difficulty": "深度"
+    },
+    {
+      "id": "7-3",
+      "phase": "p7",
+      "phaseName": "博弈论与政治",
+      "title": "国际关系",
+      "color": "#f39c12",
+      "difficulty": "深度"
+    },
+    {
+      "id": "7-4",
+      "phase": "p7",
+      "phaseName": "博弈论与政治",
+      "title": "恐怖主义与反恐",
+      "color": "#f39c12",
+      "difficulty": "深度"
+    },
+    {
+      "id": "7-5",
+      "phase": "p7",
+      "phaseName": "博弈论与政治",
+      "title": "谈判与冲突",
+      "color": "#f39c12",
+      "difficulty": "深度"
+    },
+    {
+      "id": "7-6",
+      "phase": "p7",
+      "phaseName": "博弈论与政治",
+      "title": "政治制度设计",
+      "color": "#f39c12",
+      "difficulty": "深度"
+    },
+    {
+      "id": "8-1",
+      "phase": "p8",
+      "phaseName": "博弈论与生活",
+      "title": "谈判策略",
+      "color": "#2ecc71",
+      "difficulty": "核心"
+    },
+    {
+      "id": "8-2",
+      "phase": "p8",
+      "phaseName": "博弈论与生活",
+      "title": "博弈论与婚姻",
+      "color": "#2ecc71",
+      "difficulty": "核心"
+    },
+    {
+      "id": "8-3",
+      "phase": "p8",
+      "phaseName": "博弈论与生活",
+      "title": "博弈论与育儿",
+      "color": "#2ecc71",
+      "difficulty": "核心"
+    },
+    {
+      "id": "8-4",
+      "phase": "p8",
+      "phaseName": "博弈论与生活",
+      "title": "职场博弈",
+      "color": "#2ecc71",
+      "difficulty": "核心"
+    },
+    {
+      "id": "8-5",
+      "phase": "p8",
+      "phaseName": "博弈论与生活",
+      "title": "社交网络博弈",
+      "color": "#2ecc71",
+      "difficulty": "核心"
+    },
+    {
+      "id": "8-6",
+      "phase": "p8",
+      "phaseName": "博弈论与生活",
+      "title": "日常决策博弈",
+      "color": "#2ecc71",
+      "difficulty": "核心"
+    },
+    {
+      "id": "9-1",
+      "phase": "p9",
+      "phaseName": "前沿与未来",
+      "title": "AI与博弈论",
+      "color": "#1abc9c",
+      "difficulty": "入门"
+    },
+    {
+      "id": "9-2",
+      "phase": "p9",
+      "phaseName": "前沿与未来",
+      "title": "终极整合",
+      "color": "#1abc9c",
+      "difficulty": "入门"
+    }
+  ],
+  "edges": [
+    {
+      "source": "1-2",
+      "target": "2-1",
+      "type": "related"
+    },
+    {
+      "source": "1-2",
+      "target": "3-1",
+      "type": "related"
+    },
+    {
+      "source": "1-3",
+      "target": "6-5",
+      "type": "related"
+    },
+    {
+      "source": "1-1",
+      "target": "2-4",
+      "type": "related"
+    },
+    {
+      "source": "2-1",
+      "target": "2-2",
+      "type": "related"
+    },
+    {
+      "source": "2-3",
+      "target": "3-1",
+      "type": "related"
+    },
+    {
+      "source": "3-1",
+      "target": "4-1",
+      "type": "related"
+    },
+    {
+      "source": "3-3",
+      "target": "4-5",
+      "type": "related"
+    },
+    {
+      "source": "4-1",
+      "target": "4-2",
+      "type": "related"
+    },
+    {
+      "source": "4-3",
+      "target": "5-5",
+      "type": "related"
+    },
+    {
+      "source": "5-1",
+      "target": "6-6",
+      "type": "related"
+    },
+    {
+      "source": "5-2",
+      "target": "6-1",
+      "type": "related"
+    },
+    {
+      "source": "1-6",
+      "target": "6-5",
+      "type": "related"
+    },
+    {
+      "source": "2-3",
+      "target": "4-1",
+      "type": "related"
+    },
+    {
+      "source": "5-1",
+      "target": "5-4",
+      "type": "related"
+    },
+    {
+      "source": "6-4",
+      "target": "7-3",
+      "type": "related"
+    },
+    {
+      "source": "7-3",
+      "target": "7-5",
+      "type": "related"
+    },
+    {
+      "source": "7-5",
+      "target": "8-1",
+      "type": "related"
+    },
+    {
+      "source": "8-5",
+      "target": "9-1",
+      "type": "related"
+    },
+    {
+      "source": "3-4",
+      "target": "3-6",
+      "type": "related"
+    },
+    {
+      "source": "4-2",
+      "target": "4-3",
+      "type": "related"
+    }
+  ]
+}

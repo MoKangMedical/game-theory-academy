@@ -1,0 +1,9 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Temporary TTS chunks; keep the final MP3 files under audio/.
+audio/_chunks/

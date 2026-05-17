@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全部课程 — 博弈研究院</title>
+<meta name="description" content="博弈研究院完整课程体系：50节精编课程，9大阶段，从博弈基础到前沿应用，掌握策略思维。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/*
+ * ═══════════════════════════════════════════
+ *  博弈研究院 — 课程中心 v1.0
+ *  设计语言: 深空蓝 · 极简 · 沉浸
+ * ═══════════════════════════════════════════
+ */
+:root{
+  --bg:#07070a; --bg2:#0a0a10; --bg3:#0f0f16;
+  --card:#121218; --card2:#18181f; --card3:#1e1e27;
+  --border:#22222d; --border2:#2e2e3a;
+  --text:#f5f5f7; --text2:#a0a0ab; --text3:#656570;
+  --blue:#4f8de2; --blue-light:#7ab3f5; --blue-dark:#2d6bc2;
+  --accent1:#4f8de2; --accent2:#22c55e; --accent3:#3b82f6; --accent4:#8b5cf6; --accent5:#f59e0b; --accent6:#ec4899;
+  --serif:'Noto Serif SC',serif; --sans:'Inter',-apple-system,sans-serif;
+  --radius:14px; --radius-lg:20px; --radius-xl:24px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;letter-spacing:.01em;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+
+/* ═══ NAV ═══ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(7,7,10,0.82);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid rgba(255,255,255,0.06)}
+.nav-inner{max-width:1260px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.05rem;font-weight:700;color:var(--blue);letter-spacing:.02em}
+.nav-brand svg{width:26px;height:26px;flex-shrink:0}
+.nav-links{display:flex;gap:6px;align-items:center}
+.nav-links a{font-size:0.8rem;color:var(--text3);font-weight:500;padding:8px 16px;border-radius:8px;transition:all .25s;letter-spacing:.02em}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:rgba(255,255,255,0.04)}
+.nav-links a.active{color:var(--blue)}
+
+/* ═══ HERO ═══ */
+.hero{position:relative;padding:140px 0 80px;text-align:center;overflow:hidden;background:radial-gradient(ellipse 70% 50% at 50% 25%,rgba(79,141,226,0.07) 0%,transparent 70%),radial-gradient(ellipse 60% 40% at 80% 60%,rgba(139,92,246,0.04) 0%,transparent 60%)}
+.hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:80px;background:linear-gradient(to top,var(--bg) 20%,transparent)}
+.hero-content{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 24px}
+.hero-badge{display:inline-block;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--blue);background:rgba(79,141,226,0.08);border:1px solid rgba(79,141,226,0.15);padding:6px 20px;border-radius:40px;margin-bottom:24px}
+.hero h1{font-family:var(--serif);font-size:clamp(2.2rem,5vw,3.2rem);font-weight:900;line-height:1.25;margin-bottom:18px;letter-spacing:-.01em}
+.hero h1 .hl{background:linear-gradient(135deg,var(--blue) 20%,var(--blue-light) 60%,var(--blue-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--text2);font-size:1.05rem;line-height:1.8;max-width:560px;margin:0 auto 36px}
+.hero-stats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.hero-stat{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px 22px;text-align:center;min-width:90px;backdrop-filter:blur(8px)}
+.hero-stat-num{font-size:1.6rem;font-weight:800;color:var(--blue);font-family:var(--serif);line-height:1}
+.hero-stat-label{font-size:0.7rem;color:var(--text3);margin-top:4px;letter-spacing:.04em}
+
+/* ═══ SEARCH ═══ */
+.search-wrap{max-width:660px;margin:-20px auto 50px;padding:0 24px;position:relative;z-index:10}
+.search-box{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 20px;transition:all .3s}
+.search-box:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,141,226,0.08)}
+.search-icon{font-size:1.1rem;color:var(--text3);flex-shrink:0}
+.search-input{flex:1;background:none;border:none;color:var(--text);font-size:0.95rem;outline:none;font-family:var(--sans)}
+.search-input::placeholder{color:var(--text3)}
+.search-clear{display:none;background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.1rem;padding:4px}
+.search-clear:hover{color:var(--text)}
+.search-hint{font-size:0.7rem;color:var(--text3);margin-top:8px;padding-left:4px}
+
+/* ═══ PHASE HEADER ═══ */
+.phase-section{margin-bottom:48px;position:relative}
+.phase-header{display:flex;align-items:center;gap:14px;padding:18px 24px;margin:0 0 16px;border-bottom:1px solid var(--border);position:sticky;top:64px;background:rgba(7,7,10,0.95);backdrop-filter:blur(20px);z-index:50}
+.phase-icon{font-size:1.6rem;flex-shrink:0;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(79,141,226,0.06);border-radius:10px}
+.phase-info{flex:1}
+.phase-title{font-family:var(--serif);font-size:1.15rem;font-weight:700;color:var(--blue);letter-spacing:.01em}
+.phase-sub{font-size:0.75rem;color:var(--text3);margin-top:2px}
+.phase-count{font-size:0.72rem;color:var(--text3);background:var(--card2);padding:4px 12px;border-radius:20px;flex-shrink:0}
+
+/* ═══ COURSE CARD ═══ */
+.course-grid{display:grid;grid-template-columns:1fr;gap:10px;padding:0 24px;max-width:900px;margin:0 auto}
+
+.course-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);position:relative}
+.course-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;border-radius:var(--radius);background:radial-gradient(600px circle at var(--mouse-x,50%) var(--mouse-y,50%),rgba(79,141,226,0.03),transparent 50%)}
+.course-card:hover::before{opacity:1}
+.course-card:hover{border-color:#333;transform:translateY(-1px);box-shadow:0 8px 30px rgba(0,0,0,0.3)}
+.course-card.open{border-color:var(--blue);box-shadow:0 4px 24px rgba(79,141,226,0.06)}
+
+.course-row{display:flex;align-items:stretch;padding:18px 22px;gap:16px}
+.course-num-wrap{flex-shrink:0;display:flex;align-items:center}
+.course-num{width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;font-weight:800;color:#0a0a1a;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));font-family:var(--serif);position:relative;z-index:1}
+.course-num::after{content:'';position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,var(--blue-light),transparent);opacity:0.3;z-index:-1}
+.course-info{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.course-title{font-size:1.02rem;font-weight:600;color:var(--text);letter-spacing:-.01em;line-height:1.3}
+.course-desc{font-size:0.82rem;color:var(--text3);margin-top:4px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.course-tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.course-tag{font-size:0.68rem;font-weight:500;padding:3px 10px;border-radius:6px;letter-spacing:.02em}
+.tag-diff{background:rgba(79,141,226,0.1);color:var(--blue-dark)}
+.tag-diff.beginner{background:rgba(34,197,94,0.1);color:#22c55e}
+.tag-diff.core{background:rgba(59,130,246,0.1);color:#60a5fa}
+.tag-diff.advanced{background:rgba(139,92,246,0.1);color:#a78bfa}
+.tag-diff.master{background:rgba(236,72,153,0.1);color:#f9a8d4}
+.tag-time{background:var(--card3);color:var(--text3)}
+.tag-exercise{background:rgba(34,197,94,0.08);color:#22c55e;font-size:0.65rem}
+.course-arrow-wrap{flex-shrink:0;display:flex;align-items:center}
+.course-arrow{font-size:1.3rem;color:var(--text3);transition:all .3s;line-height:1}
+.course-card.open .course-arrow{transform:rotate(90deg);color:var(--blue)}
+
+/* ═══ EXPANDED CONTENT ═══ */
+.course-body{display:none;border-top:1px solid var(--border);background:var(--bg2)}
+.course-card.open .course-body{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.course-body-inner{max-height:65vh;overflow-y:auto;padding:28px 28px 20px}
+.course-body-inner::-webkit-scrollbar{width:5px}
+.course-body-inner::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
+.course-body-inner::-webkit-scrollbar-track{background:transparent}
+
+/* Markdown rendered content */
+.md-content{font-size:0.92rem;line-height:1.85;color:var(--text2)}
+.md-content h1{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:var(--text);margin:28px 0 14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.md-content h1:first-child{margin-top:0}
+.md-content h2{font-size:1.2rem;font-weight:700;color:var(--text);margin:24px 0 10px;display:flex;align-items:center;gap:8px;padding-left:0}
+.md-content h2::before{content:'';width:3px;height:18px;background:var(--blue);border-radius:2px;flex-shrink:0}
+.md-content h3{font-size:1.02rem;font-weight:600;color:var(--blue-light);margin:18px 0 8px}
+.md-content h4{font-size:0.95rem;font-weight:600;color:var(--text);margin:14px 0 6px}
+.md-content p{margin:8px 0}
+.md-content strong{color:var(--text);font-weight:600}
+.md-content em{color:var(--blue);font-style:italic}
+.md-content blockquote{background:linear-gradient(135deg,rgba(79,141,226,0.06),rgba(79,141,226,0.02));border-left:3px solid var(--blue);padding:14px 18px;margin:14px 0;border-radius:0 8px 8px 0;color:var(--text);font-size:0.93rem}
+.md-content blockquote p{margin:4px 0}
+.md-content ul,.md-content ol{padding-left:22px;margin:10px 0}
+.md-content li{margin:5px 0;color:var(--text2)}
+.md-content li::marker{color:var(--blue-dark)}
+.md-content code{background:var(--card3);color:var(--blue-light);padding:2px 7px;border-radius:5px;font-size:0.85rem}
+.md-content pre{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin:14px 0;overflow-x:auto}
+.md-content pre code{background:none;padding:0;color:var(--text2);font-size:0.85rem}
+.md-content hr{border:none;border-top:1px solid var(--border);margin:20px 0}
+.md-content table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.85rem;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.md-content th{background:rgba(79,141,226,0.08);color:var(--blue);font-weight:600;text-align:left;padding:10px 14px;border-bottom:2px solid rgba(79,141,226,0.2);font-size:0.8rem}
+.md-content td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text2)}
+.md-content tr:last-child td{border-bottom:none}
+.md-content tr:nth-child(even){background:rgba(255,255,255,0.015)}
+.md-content details{margin:10px 0;background:var(--card2);border-radius:8px;padding:12px 16px;border:1px solid var(--border)}
+.md-content details summary{cursor:pointer;color:var(--blue);font-weight:500;font-size:0.9rem;padding:4px 0}
+.md-content details[open] summary{margin-bottom:8px}
+.md-content details p,.md-content details li{font-size:0.85rem;color:var(--text3)}
+
+.course-body-actions{display:flex;gap:10px;padding:12px 28px 22px;border-top:1px solid rgba(255,255,255,0.03)}
+.btn-start{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--blue);color:#0a0a1a;font-weight:600;border-radius:10px;font-size:0.85rem;transition:all .25s;letter-spacing:.01em}
+.btn-start:hover{background:var(--blue-light);transform:translateY(-1px)}
+.btn-audio{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:var(--card3);color:var(--text2);border:1px solid var(--border);border-radius:10px;font-size:0.8rem;cursor:pointer;transition:all .25s}
+.btn-audio:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ═══ BACK TO TOP ═══ */
+.back-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;background:var(--blue);color:#0a0a1a;border:none;border-radius:50%;font-size:1.2rem;cursor:pointer;z-index:99;opacity:0;transform:translateY(12px);transition:all .3s;box-shadow:0 4px 16px rgba(79,141,226,0.2);display:flex;align-items:center;justify-content:center}
+.back-top.visible{opacity:1;transform:translateY(0)}
+.back-top:hover{background:var(--blue-light);transform:translateY(-3px);box-shadow:0 6px 24px rgba(79,141,226,0.3)}
+
+/* ═══ SECTION DIVIDER ═══ */
+.divider{display:flex;align-items:center;gap:16px;margin:12px 24px 32px;max-width:900px;margin-left:auto;margin-right:auto;opacity:0.3}
+.divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.divider-icon{font-size:0.8rem;color:var(--text3)}
+.divider:last-child{display:none}
+
+/* ═══ FOOTER ═══ */
+.footer{padding:40px 24px 32px;text-align:center;border-top:1px solid var(--border);margin-top:32px}
+.footer p{font-size:0.75rem;color:var(--text3);line-height:1.7}
+.footer .blue{color:var(--blue-dark)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:768px){
+  .hero{padding:120px 0 60px}
+  .hero h1{font-size:1.8rem}
+  .hero-stats{gap:6px}
+  .hero-stat{padding:10px 14px;min-width:70px}
+  .hero-stat-num{font-size:1.3rem}
+  .course-row{padding:14px 16px;gap:12px}
+  .course-num{width:40px;height:40px;font-size:1.1rem;border-radius:10px}
+  .course-title{font-size:0.95rem}
+  .course-body-inner{padding:20px 16px}
+  .course-body-actions{padding:10px 16px 18px}
+  .md-content table{font-size:0.7rem}
+  .md-content th,.md-content td{padding:6px 8px}
+  .phase-header{padding:12px 16px}
+  .phase-title{font-size:1rem}
+}
+@media(min-width:1200px){
+  .course-grid{padding:0}
+  .phase-header{padding:18px 0}
+  .divider{margin-left:auto;margin-right:auto;padding:0}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="#4f8de2" stroke-width="1.5"/><path d="M6 18c2-6 4-8 8-10s6 2 8 6" stroke="#4f8de2" stroke-width="1.5" fill="none"/><circle cx="14" cy="12" r="2.5" fill="#4f8de2"/></svg>
+      博弈研究院
+    </a>
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="index.html#theory">理论体系</a>
+      <a href="courses.html" class="active">课程</a>
+      <a href="knowledge-graph.html">知识图谱</a>
+      <a href="roundtable.html">博弈圆桌会</a>
+      <a href="index.html#tools">工具</a>
+      <a href="index.html#pricing">定价</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">📚 完整课程体系</div>
+    <h1>从基础到前沿<br><span class="hl">五十节课</span>掌握策略思维</h1>
+    <p>9大阶段系统学习博弈论基础、经典模型、进化博弈、行为博弈、机制设计及其在经济、政治、生活中的应用</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">50</div><div class="hero-stat-label">精编课程</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">9</div><div class="hero-stat-label">学习阶段</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">100+</div><div class="hero-stat-label">经典案例</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">5x</div><div class="hero-stat-label">练习/课</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="search-wrap">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" class="search-input" id="searchInput" placeholder="搜索课程名称、关键词...">
+    <button class="search-clear" id="searchClear">✕</button>
+  </div>
+  <div class="search-hint" id="searchHint">共 <strong>50</strong> 门课程 · 点击课程卡片查看详情</div>
+</div>
+
+<main id="coursesContainer"></main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<footer class="footer">
+  <p><span class="blue">博弈研究院</span> © 2026 · Game Theory Academy<br>本平台内容仅供学习参考，培养策略思维能力</p>
+</footer>
+
+<script>
+// ═════════════════════════════════════
+//  Course Data & Rendering System
+// ═════════════════════════════════════
+
+const PHASES = [
+  {icon:'🎯', title:'博弈论基础', sub:'理解博弈的核心概念与经典模型', courses:[
+    {n:1, title:'博弈论基础 — 什么是博弈？', desc:'策略式与扩展式，博弈的要素(玩家/策略/收益)，博弈的分类与表示方法', diff:'beginner', diffLabel:'入门', time:'30分钟', file:'courses/01-博弈论基础.md', lesson:'lesson1.html'},
+    {n:2, title:'纳什均衡 — 纯策略与混合策略', desc:'纯策略与混合策略均衡，最优反应函数，纳什存在性定理', diff:'core', diffLabel:'核心', time:'35分钟', file:'courses/02-纳什均衡.md', lesson:'lesson2.html'},
+    {n:3, title:'囚徒困境 — 个体理性vs集体理性', desc:'占优策略、个体最优导致集体非最优、现实中的囚徒困境应用', diff:'beginner', diffLabel:'经典', time:'30分钟', file:'courses/03-囚徒困境.md', lesson:'lesson3.html'},
+    {n:4, title:'协调博弈 — 猎鹿博弈、性别战', desc:'多重均衡问题、焦点均衡、谢林的协调理论', diff:'beginner', diffLabel:'入门', time:'30分钟', file:'courses/04-协调博弈.md', lesson:'lesson4.html'},
+    {n:5, title:'零和博弈 — 最小最大定理', desc:'冯·诺依曼定理、鞍点、二人零和博弈的最优策略', diff:'core', diffLabel:'核心', time:'35分钟', file:'courses/05-零和博弈.md', lesson:'lesson5.html'},
+    {n:6, title:'重复博弈 — 触发策略与民间定理', desc:'无限次重复博弈、针锋相对策略、民间定理(Folk Theorem)', diff:'core', diffLabel:'核心', time:'40分钟', file:'courses/06-重复博弈.md', lesson:'lesson6.html'}
+  ]},
+  {icon:'📐', title:'经典理论与模型', sub:'深入博弈论经典精炼概念与方法', courses:[
+    {n:7, title:'谢林点与焦点均衡', desc:'托马斯·谢林，冲突与协调的策略，无沟通条件下的自然选择', diff:'core', diffLabel:'经典', time:'30分钟', file:'courses/07-谢林点与焦点均衡.md', lesson:'lesson7.html'},
+    {n:8, title:'子博弈精炼均衡', desc:'序贯理性、逆向归纳法、剔除不可信威胁', diff:'advanced', diffLabel:'深度', time:'40分钟', file:'courses/08-子博弈精炼均衡.md', lesson:'lesson8.html'},
+    {n:9, title:'贝叶斯博弈 — 不完全信息', desc:'海萨尼转换、类型空间、不完全信息下的策略选择', diff:'advanced', diffLabel:'深度', time:'45分钟', file:'courses/09-贝叶斯博弈.md', lesson:'lesson9.html'},
+    {n:10, title:'完美贝叶斯均衡', desc:'信号博弈、信念更新规则、精炼贝叶斯均衡', diff:'advanced', diffLabel:'深度', time:'45分钟', file:'courses/10-完美贝叶斯均衡.md', lesson:'lesson10.html'},
+    {n:11, title:'序贯均衡 — 克雷普斯-威尔逊', desc:'一致性条件、序贯理性、均衡精炼的进一步推进', diff:'advanced', diffLabel:'深度', time:'45分钟', file:'courses/11-序贯均衡.md', lesson:'lesson11.html'},
+    {n:12, title:'颤抖手均衡 — 泽尔腾精炼', desc:'完美均衡、颤抖手精炼、代理人标准式均衡', diff:'advanced', diffLabel:'深度', time:'40分钟', file:'courses/12-颤抖手均衡.md', lesson:'lesson12.html'}
+  ]},
+  {icon:'🧬', title:'进化博弈论', sub:'从生物学视角理解策略的动态演化', courses:[
+    {n:13, title:'进化稳定策略(ESS)', desc:'梅纳德·史密斯，群体博弈，进化稳定的数学条件', diff:'core', diffLabel:'核心', time:'35分钟', file:'courses/13-进化稳定策略.md', lesson:'lesson13.html'},
+    {n:14, title:'复制动态方程', desc:'种群动力学、演化均衡、复制动态的稳定性分析', diff:'advanced', diffLabel:'深度', time:'40分钟', file:'courses/14-复制动态方程.md', lesson:'lesson14.html'},
+    {n:15, title:'鹰鸽博弈 — 经典进化博弈', desc:'鹰鸽博弈、混合ESS、动物冲突行为的博弈解释', diff:'core', diffLabel:'案例', time:'30分钟', file:'courses/15-鹰鸽博弈.md', lesson:'lesson15.html'},
+    {n:16, title:'信号进化博弈', desc:'成本信号理论、诚实信号、扎哈维的不利条件原理', diff:'advanced', diffLabel:'深度', time:'40分钟', file:'courses/16-信号进化博弈.md', lesson:'lesson16.html'},
+    {n:17, title:'空间演化博弈', desc:'网络演化、格子上的博弈、空间结构对合作演化的影响', diff:'advanced', diffLabel:'深度', time:'45分钟', file:'courses/17-空间演化博弈.md', lesson:'lesson17.html'},
+    {n:18, title:'文化演化与博弈', desc:'社会规范、语言演化、文化传播的博弈模型', diff:'advanced', diffLabel:'深度', time:'40分钟', file:'courses/18-文化演化与博弈.md', lesson:'lesson18.html'}
+  ]},
+  {icon:'🧠', title:'行为博弈论', sub:'将心理学引入博弈分析', courses:[
+    {n:19, title:'有限理性 — 西蒙的洞见', desc:'赫伯特·西蒙的有界理性理论、满意原则、程序理性', diff:'core', diffLabel:'核心', time:'35分钟', file:'courses/19-有限理性.md', lesson:'lesson19.html'},
+    {n:20, title:'前景理论 — 卡尼曼&特沃斯基', desc:'损失厌恶、参考依赖、框架效应、价值函数与权重函数', diff:'core', diffLabel:'核心', time:'40分钟', file:'courses/20-前景理论.md', lesson:'lesson20.html'},
+    {n:21, title:'最后通牒博弈 — 公平偏好', desc:'公平偏好、惩罚行为、跨文化实验证据', diff:'beginner', diffLabel:'实验', time:'30分钟', file:'courses/21-最后通牒博弈.md', lesson:'lesson21.html'},
+    {n:22, title:'信任博弈 — 互惠与社会偏好', desc:'互惠行为、社会偏好模型、信任的神经基础', diff:'beginner', diffLabel:'实验', time:'30分钟', file:'courses/22-信任博弈.md', lesson:'lesson22.html'},
+    {n:23, title:'认知偏差与博弈', desc:'框架效应、锚定效应、沉没成本、过度自信在博弈中的影响', diff:'core', diffLabel:'核心', time:'35分钟', file:'courses/23-认知偏差与博弈.md', lesson:'lesson23.html'},
+    {n:24, title:'神经博弈论', desc:'大脑中的策略，fMRI研究，前额叶皮层与社会决策', diff:'advanced', diffLabel:'前沿', time:'40分钟', file:'courses/24-神经博弈论.md', lesson:'lesson24.html'}
+  ]},
+  {icon:'⚙️', title:'机制设计', sub:'设计规则以实现最优结果', courses:[
+    {n:25, title:'机制设计导论 — 赫维茨定理', desc:'激励相容、显示原理、赫维茨不可能定理', diff:'core', diffLabel:'核心', time:'40分钟', file:'courses/25-机制设计导论.md', lesson:'lesson25.html'},
+    {n:26, title:'拍卖理论 — 四种基本拍卖', desc:'英式/荷式/第一价格/第二价格拍卖，收益等价定理', diff:'core', diffLabel:'核心', time:'40分钟', file:'courses/26-拍卖理论.md', lesson:'lesson26.html'},
+    {n:27, title:'VCG机制 — 克拉克-格罗夫斯', desc:'克拉克税、格罗夫斯机制、VCG拍卖与公共品供给', diff:'advanced', diffLabel:'深度', time:'45分钟', file:'courses/27-VCG机制.md', lesson:'lesson27.html'},
+    {n:28, title:'匹配市场 — 盖尔-沙普利算法', desc:'稳定婚姻问题、延迟接受算法、学校选择与住院医师匹配', diff:'core', diffLabel:'核心', time:'35分钟', file:'courses/28-匹配市场.md', lesson:'lesson28.html'},
+    {n:29, title:'投票机制 — 阿罗不可能定理', desc:'阿罗公理、多数规则、孔多塞悖论、吉巴德-萨特斯维特定理', diff:'core', diffLabel:'核心', time:'40分钟', file:'courses/29-投票机制.md', lesson:'lesson29.html'},
+    {n:30, title:'合同理论 — 委托代理问题', desc:'道德风险、逆向选择、最优合同设计、激励理论', diff:'advanced', diffLabel:'深度', time:'45分钟', file:'courses/30-合同理论.md', lesson:'lesson30.html'}
+  ]},
+  {icon:'📈', title:'博弈论与经济学', sub:'博弈论在经济领域的深度应用', courses:[
+    {n:31, title:'寡头竞争 — 古诺、伯川德、斯塔克尔伯格', desc:'产量竞争、价格竞争、先动优势、市场结构分析', diff:'core', diffLabel:'核心', time:'40分钟', file:'courses/31-寡头竞争.md', lesson:'lesson31.html'},
+    {n:32, title:'博弈论与产业组织', desc:'进入阻挠、掠夺性定价、产品差异化、合谋与卡特尔', diff:'advanced', diffLabel:'深度', time:'45分钟', file:'courses/32-博弈论与产业组织.md', lesson:'lesson32.html'},
+    {n:33, title:'信息经济学 — 逆向选择与信号', desc:'柠檬市场、信号传递、信息筛选、斯彭思教育信号模型', diff:'advanced', diffLabel:'深度', time:'45分钟', file:'courses/33-信息经济学.md', lesson:'lesson33.html'},
+    {n:34, title:'博弈论与金融 — 银行挤兑', desc:'戴蒙德-迪布维格模型、金融危机传导、系统风险', diff:'core', diffLabel:'案例', time:'40分钟', file:'courses/34-博弈论与金融.md', lesson:'lesson34.html'},
+    {n:35, title:'博弈论与国际贸易 — 关税博弈', desc:'关税博弈、贸易战、WTO机制、最优关税理论', diff:'core', diffLabel:'核心', time:'40分钟', file:'courses/35-博弈论与国际贸易.md', lesson:'lesson35.html'},
+    {n:36, title:'公共经济学 — 公共品博弈', desc:'搭便车问题、林达尔机制、公共品供给的博弈分析', diff:'core', diffLabel:'核心', time:'35分钟', file:'courses/36-公共经济学.md', lesson:'lesson36.html'}
+  ]},
+  {icon:'🏛️', title:'博弈论与政治', sub:'策略思维在政治领域的应用', courses:[
+    {n:37, title:'选举博弈 — 中间选民定理', desc:'唐斯模型、策略性投票、竞选承诺的可信性', diff:'core', diffLabel:'核心', time:'35分钟', file:'courses/37-选举博弈.md', lesson:'lesson37.html'},
+    {n:38, title:'立法博弈 — 联盟与议程', desc:'联盟形成、议程控制、立法谈判的策略分析', diff:'advanced', diffLabel:'深度', time:'40分钟', file:'courses/38-立法博弈.md', lesson:'lesson38.html'},
+    {n:39, title:'国际关系 — 核威慑博弈', desc:'相互确保摧毁、军备竞赛、谢林冲突策略', diff:'core', diffLabel:'经典', time:'40分钟', file:'courses/39-国际关系.md', lesson:'lesson39.html'},
+    {n:40, title:'恐怖主义与反恐 — 博弈视角', desc:'不对称冲突、恐怖主义的策略逻辑、反恐博弈', diff:'advanced', diffLabel:'深度', time:'40分钟', file:'courses/40-恐怖主义与反恐.md', lesson:'lesson40.html'},
+    {n:41, title:'谈判与冲突 — 谢林冲突理论', desc:'承诺策略、边缘政策、可置信威胁', diff:'core', diffLabel:'核心', time:'35分钟', file:'courses/41-谈判与冲突.md', lesson:'lesson41.html'},
+    {n:42, title:'政治制度设计 — 宪法博弈', desc:'分权制衡、宪法设计、联邦制博弈分析', diff:'advanced', diffLabel:'深度', time:'40分钟', file:'courses/42-政治制度设计.md', lesson:'lesson42.html'}
+  ]},
+  {icon:'🏠', title:'博弈论与生活', sub:'日常决策中的策略思维', courses:[
+    {n:43, title:'谈判策略 — BATNA与泽莫尔模型', desc:'最佳替代方案、谈判区间、创造价值vs索取价值', diff:'beginner', diffLabel:'实战', time:'35分钟', file:'courses/43-谈判策略.md', lesson:'lesson43.html'},
+    {n:44, title:'博弈论与婚姻 — 配偶选择', desc:'婚姻市场匹配、家庭分工博弈、承诺与信任', diff:'beginner', diffLabel:'应用', time:'30分钟', file:'courses/44-博弈论与婚姻.md', lesson:'lesson44.html'},
+    {n:45, title:'博弈论与育儿 — 亲子互动', desc:'教育激励设计、亲子博弈、权威vs协商', diff:'beginner', diffLabel:'应用', time:'30分钟', file:'courses/45-博弈论与育儿.md', lesson:'lesson45.html'},
+    {n:46, title:'职场博弈 — 晋升与团队', desc:'晋升竞争模型、团队合作困境、信号传递与职业生涯', diff:'beginner', diffLabel:'实战', time:'35分钟', file:'courses/46-职场博弈.md', lesson:'lesson46.html'},
+    {n:47, title:'社交网络博弈 — 影响力', desc:'朋友选择策略、社交信号、网络外部性', diff:'core', diffLabel:'核心', time:'35分钟', file:'courses/47-社交网络博弈.md', lesson:'lesson47.html'},
+    {n:48, title:'日常决策博弈 — 排队与交通', desc:'排队中的博弈、交通出行策略、购物议价博弈', diff:'beginner', diffLabel:'应用', time:'30分钟', file:'courses/48-日常决策博弈.md', lesson:'lesson48.html'}
+  ]},
+  {icon:'🚀', title:'前沿与未来', sub:'博弈论的最新发展与综合应用', courses:[
+    {n:49, title:'AI与博弈论 — 多智能体系统', desc:'多智能体强化学习、AI谈判、对抗博弈中的AI', diff:'advanced', diffLabel:'前沿', time:'45分钟', file:'courses/49-AI与博弈论.md', lesson:'lesson49.html'},
+    {n:50, title:'终极整合 — 构建策略思维体系', desc:'50门课程知识整合、个人策略框架、纳什/谢林/泽尔腾思想汇通', diff:'core', diffLabel:'终极', time:'60分钟', file:'courses/50-终极整合.md', lesson:'lesson50.html'}
+  ]}
+];
+
+// Render phases from data
+const container = document.getElementById('coursesContainer');
+let allCards = [];
+
+PHASES.forEach((phase, phaseIdx) => {
+  const section = document.createElement('div');
+  section.className = 'phase-section';
+  section.setAttribute('data-phase', phase.title);
+  
+  let cardsHTML = '';
+  phase.courses.forEach(c => {
+    const diffClass = c.diff;
+    cardsHTML += `
+      <div class="course-card" data-course="${c.n}" data-title="${c.title}" data-diff="${c.diff}" data-time="${c.time}" data-file="${c.file}" data-lesson="${c.lesson}" data-phase="${phase.title}">
+        <div class="course-row" onclick="toggleCard(this.parentElement)">
+          <div class="course-num-wrap"><div class="course-num">${c.n}</div></div>
+          <div class="course-info">
+            <div class="course-title">${c.title}</div>
+            <div class="course-desc">${c.desc}</div>
+            <div class="course-tags">
+              <span class="course-tag tag-diff ${diffClass}">${c.diffLabel}</span>
+              <span class="course-tag tag-time">⏱ ${c.time}</span>
+              <span class="course-tag tag-exercise">含5道练习</span>
+            </div>
+          </div>
+          <div class="course-arrow-wrap"><span class="course-arrow">›</span></div>
+        </div>
+        <div class="course-body">
+          <div class="course-body-inner">
+            <div class="md-content" id="md-${c.n}"><p style="color:var(--text3)">加载中...</p></div>
+          </div>
+          <div class="course-body-actions">
+            <a href="${c.lesson}" class="btn-start">📖 开始学习</a>
+            <span class="btn-audio">🎧 听课</span>
+          </div>
+        </div>
+      </div>`;
+  });
+  
+  section.innerHTML = `
+    <div class="phase-header">
+      <div class="phase-icon">${phase.icon}</div>
+      <div class="phase-info">
+        <div class="phase-title">${phase.title}</div>
+        <div class="phase-sub">第 ${phase.courses[0].n}–${phase.courses[phase.courses.length-1].n} 课 · ${phase.sub}</div>
+      </div>
+      <div class="phase-count">${phase.courses.length} 课</div>
+    </div>
+    <div class="course-grid">${cardsHTML}</div>
+    ${phaseIdx < PHASES.length - 1 ? '<div class="divider"><div class="divider-line"></div><div class="divider-icon">◆</div><div class="divider-line"></div></div>' : ''}
+  `;
+  container.appendChild(section);
+});
+
+// Collect all cards for search
+allCards = document.querySelectorAll('.course-card');
+
+// ═══ Simple Markdown Parser ═══
+function parseMd(md) {
+  if (!md) return '';
+  let html = md
+    .replace(/^# .+\n?/m, '')
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
+    .replace(/^> (.+)$/gm, '<blockquote><p>$1</p></blockquote>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/^---$/gm, '<hr>')
+    .replace(/^\|(.+)\|$/gm, function(m) {
+      const cells = m.replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+      if (cells.every(c => /^[-:]+$/.test(c))) return '<!--sep-->';
+      return '<tr>' + cells.map(c => `<td>${c}</td>`).join('') + '</tr>';
+    })
+    .replace(/- (.+)$/gm, '<li>$1</li>')
+    .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+    .replace(/```[\s\S]*?```/g, function(m) {
+      const code = m.replace(/```\w*\n?/, '').replace(/```$/, '');
+      return '<pre><code>' + code.trim() + '</code></pre>';
+    })
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/<!--sep-->/g, '');
+  
+  html = '<p>' + html + '</p>';
+  html = html.replace(/<p><\/p>/g, '')
+    .replace(/<p>(<h[234]|<blockquote|<pre|<hr|<table|<tr|<ul|<ol|<li|<details)/g, '$1')
+    .replace(/(<\/h[234]>|<\/blockquote>|<\/pre>|<\/table>|<\/ul>|<\/ol>)<\/p>/g, '$1')
+    .replace(/<p><li>/g, '<ul><li>')
+    .replace(/<\/li><\/p>/g, '</li></ul>')
+    .replace(/<\/ul><ul>/g, '')
+    .replace(/<p><tr>/g, '<table><tr>')
+    .replace(/<\/tr><\/p>/g, '</tr></table>')
+    .replace(/<td><\/td>/g, '<td></td>');
+  
+  return html;
+}
+
+// ═══ Load Course Content ═══
+function loadCourseContent(card) {
+  const file = card.getAttribute('data-file');
+  const num = card.getAttribute('data-course');
+  const mdEl = document.getElementById('md-' + num);
+  if (!mdEl || mdEl.getAttribute('data-loaded')) return;
+  
+  mdEl.setAttribute('data-loaded', '1');
+  fetch(file)
+    .then(r => r.ok ? r.text() : Promise.reject())
+    .then(md => { mdEl.innerHTML = parseMd(md); })
+    .catch(() => { mdEl.innerHTML = '<p style="color:var(--text3)">内容加载中，请稍后...</p>'; });
+}
+
+// ═══ Toggle Card ═══
+function toggleCard(card) {
+  const wasOpen = card.classList.contains('open');
+  document.querySelectorAll('.course-card.open').forEach(c => c.classList.remove('open'));
+  if (!wasOpen) {
+    card.classList.add('open');
+    loadCourseContent(card);
+    setTimeout(() => {
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+  }
+}
+
+// ═══ Search ═══
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
+const searchHint = document.getElementById('searchHint');
+
+searchInput.addEventListener('input', function() {
+  const term = this.value.toLowerCase().trim();
+  searchClear.style.display = term ? 'block' : 'none';
+  
+  let visibleCount = 0;
+  allCards.forEach(card => {
+    const title = (card.getAttribute('data-title') || '').toLowerCase();
+    const phase = (card.getAttribute('data-phase') || '').toLowerCase();
+    const desc = card.querySelector('.course-desc')?.textContent?.toLowerCase() || '';
+    const match = !term || title.includes(term) || phase.includes(term) || desc.includes(term);
+    
+    card.style.display = match ? '' : 'none';
+    if (match) visibleCount++;
+    
+    const section = card.closest('.phase-section');
+    if (section) {
+      const visibleCards = section.querySelectorAll('.course-card:not([style*="display: none"])');
+      section.style.display = visibleCards.length ? '' : 'none';
+    }
+  });
+  
+  document.querySelectorAll('.phase-section').forEach(sec => {
+    const divider = sec.querySelector('.divider');
+    if (divider && sec.style.display === 'none') divider.style.display = 'none';
+    else if (divider) divider.style.display = '';
+  });
+  
+  searchHint.innerHTML = term 
+    ? `找到 <strong>${visibleCount}</strong> 门匹配课程`
+    : `共 <strong>50</strong> 门课程 · 点击课程卡片查看详情`;
+});
+
+searchClear.addEventListener('click', function() {
+  searchInput.value = '';
+  searchInput.dispatchEvent(new Event('input'));
+  searchInput.focus();
+});
+
+// ═══ Back to Top ═══
+const backTop = document.getElementById('backTop');
+window.addEventListener('scroll', () => {
+  backTop.classList.toggle('visible', window.scrollY > 500);
+});
+
+// ═══ URL Hash Navigation ═══
+if (location.hash) {
+  const num = parseInt(location.hash.replace('#course-', ''));
+  if (num >= 1 && num <= 50) {
+    setTimeout(() => {
+      const card = document.querySelector(`[data-course="${num}"]`);
+      if (card) {
+        card.classList.add('open');
+        loadCourseContent(card);
+        card.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 300);
+  }
+}
+
+// ═══ Keyboard Navigation ═══
+document.addEventListener('keydown', function(e) {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.course-card.open').forEach(c => c.classList.remove('open'));
+    searchInput.blur();
+  }
+});
+
+// ═══ Mouse tracking for card glow ═══
+allCards.forEach(card => {
+  card.addEventListener('mousemove', function(e) {
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    card.style.setProperty('--mouse-x', x + '%');
+    card.style.setProperty('--mouse-y', y + '%');
+  });
+});
+</script>
+</body>
+</html>

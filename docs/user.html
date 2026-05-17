@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用户中心 — 博弈研究院</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#09090b;--bg2:#0f0f13;--card:#1c1c21;--card2:#222228;--card3:#2a2a32;
+  --border:#27272a;--border2:#3f3f46;--text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
+  --blue:#4f8de2;--blue2:#7ab3f5;--green:#22c55e;--purple:#a78bfa;--orange:#f59e0b;--red:#ef4444;
+  --serif:'Noto Serif SC',serif;--sans:'Inter',sans-serif;--radius:16px
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.7}
+a{color:var(--blue);text-decoration:none}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(9,9,11,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--blue)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{font-size:0.85rem;color:var(--text2);transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--blue)}
+
+.container{max-width:900px;margin:0 auto;padding:80px 24px 60px}
+
+/* Auth Forms */
+.auth-section{max-width:400px;margin:60px auto}
+.auth-section h1{font-family:var(--serif);font-size:1.8rem;text-align:center;margin-bottom:8px}
+.auth-section .subtitle{text-align:center;color:var(--text2);margin-bottom:32px;font-size:0.9rem}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:0.85rem;color:var(--text2);margin-bottom:6px;font-weight:500}
+.form-group input{width:100%;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:0.95rem;font-family:var(--sans);transition:border-color .2s}
+.form-group input:focus{outline:none;border-color:var(--blue)}
+.form-group .error{font-size:0.8rem;color:var(--red);margin-top:4px;display:none}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--sans)}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue2)}
+.btn-secondary{background:var(--card);color:var(--text);border:1px solid var(--border)}.btn-secondary:hover{border-color:var(--blue)}
+.form-footer{text-align:center;margin-top:20px;font-size:0.85rem;color:var(--text3)}
+.form-footer a{color:var(--blue)}
+
+/* Dashboard */
+.dashboard{display:grid;grid-template-columns:1fr 2fr;gap:24px}
+.profile-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center}
+.avatar{width:80px;height:80px;border-radius:50%;background:var(--card2);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:2rem}
+.username{font-size:1.2rem;font-weight:700;margin-bottom:4px}
+.username-edit{cursor:pointer;font-size:0.7rem;color:var(--blue);margin-left:4px;vertical-align:middle}
+.user-plan{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:600;margin-bottom:16px}
+.plan-free{background:rgba(161,161,170,0.15);color:var(--text2)}
+.plan-starter{background:rgba(34,197,94,0.15);color:var(--green)}
+.plan-pro{background:rgba(79,141,226,0.15);color:var(--blue)}
+.plan-premium{background:rgba(167,139,250,0.15);color:var(--purple)}
+
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.stat-item{background:var(--card2);border-radius:10px;padding:12px}
+.stat-num{font-size:1.4rem;font-weight:900;color:var(--blue)}
+.stat-label{font-size:0.7rem;color:var(--text3)}
+
+.main-content{display:flex;flex-direction:column;gap:24px}
+.section-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.section-title{font-family:var(--serif);font-size:1.1rem;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* Progress Bars */
+.progress-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.progress-item:last-child{border:none}
+.progress-num{font-size:0.8rem;color:var(--text3);min-width:24px}
+.progress-title{flex:1;font-size:0.85rem}
+.progress-phase{font-size:0.7rem;color:var(--text3);background:var(--card2);padding:2px 8px;border-radius:4px;margin-right:8px}
+.progress-bar{width:100px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--blue);border-radius:2px;transition:width .8s ease}
+.progress-pct{font-size:0.75rem;color:var(--text3);min-width:36px;text-align:right}
+
+/* Activity */
+.activity-item{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.activity-item:last-child{border:none}
+.activity-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0}
+.activity-time{font-size:0.7rem;color:var(--text3);min-width:80px}
+.activity-text{font-size:0.85rem;color:var(--text2)}
+
+/* Recommended */
+.recommend-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:background .2s;border-radius:8px}
+.recommend-item:hover{background:var(--card2)}
+.recommend-item:last-child{border:none}
+.recommend-icon{font-size:1.2rem;min-width:28px;text-align:center}
+.recommend-info{flex:1}
+.recommend-name{font-size:0.85rem;font-weight:500}
+.recommend-desc{font-size:0.75rem;color:var(--text3)}
+.recommend-badge{font-size:0.7rem;padding:2px 8px;border-radius:10px;background:rgba(245,158,11,0.15);color:var(--orange)}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:4px}
+.tab{padding:8px 16px;font-size:0.85rem;color:var(--text3);cursor:pointer;border-radius:8px 8px 0 0;transition:all .2s}
+.tab.active{color:var(--blue);background:rgba(79,141,226,0.1)}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* Toast */
+.toast{position:fixed;top:80px;right:24px;padding:12px 20px;border-radius:10px;font-size:0.85rem;z-index:200;transform:translateX(120%);transition:transform .3s}
+.toast.show{transform:translateX(0)}
+.toast.success{background:var(--green);color:#000}
+.toast.error{background:var(--red);color:#fff}
+
+/* Edit modal */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:150;display:none;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;width:90%;max-width:360px}
+.modal-box h3{font-family:var(--serif);margin-bottom:16px;color:var(--blue)}
+.modal-box input{width:100%;padding:10px 14px;background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.95rem;margin-bottom:12px}
+.modal-box .btn{margin-top:4px}
+
+.footer{text-align:center;padding:40px 24px;border-top:1px solid var(--border);margin-top:60px;font-size:0.8rem;color:var(--text3)}
+
+@media(max-width:768px){
+  .dashboard{grid-template-columns:1fr}
+  .plan-cards{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">♟️ 博弈研究院</a>
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="knowledge-graph.html">知识图谱</a>
+      <a href="courses.html">课程</a>
+      <a href="roundtable.html">博弈圆桌会</a>
+      <a href="tools.html">工具</a>
+      <a href="user.html" class="active">用户中心</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <!-- AUTH SECTION -->
+  <div id="authSection" class="auth-section">
+    <!-- Login Form -->
+    <div id="loginForm">
+      <h1>欢迎回来</h1>
+      <p class="subtitle">登录博弈研究院，继续你的策略学习之旅</p>
+      <div class="form-group">
+        <label>邮箱</label>
+        <input type="email" id="loginEmail" placeholder="your@email.com">
+        <div class="error" id="loginEmailError">请输入有效的邮箱地址</div>
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="password" id="loginPassword" placeholder="输入密码">
+        <div class="error" id="loginPwdError">密码至少6位</div>
+      </div>
+      <button class="btn btn-primary" onclick="doLogin()">登 录</button>
+      <p class="form-footer">没有账号？<a href="#" onclick="showRegister()">立即注册</a></p>
+    </div>
+
+    <!-- Register Form -->
+    <div id="registerForm" style="display:none">
+      <h1>创建账号</h1>
+      <p class="subtitle">开始你的博弈策略学习之旅</p>
+      <div class="form-group">
+        <label>用户名</label>
+        <input type="text" id="regUsername" placeholder="你的名字">
+        <div class="error" id="regUserError">请输入用户名</div>
+      </div>
+      <div class="form-group">
+        <label>邮箱</label>
+        <input type="email" id="regEmail" placeholder="your@email.com">
+        <div class="error" id="regEmailError">请输入有效的邮箱地址</div>
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="password" id="regPassword" placeholder="至少6位密码">
+        <div class="error" id="regPwdError">密码至少6位</div>
+      </div>
+      <div class="form-group">
+        <label>确认密码</label>
+        <input type="password" id="regConfirmPwd" placeholder="再次输入密码">
+        <div class="error" id="regConfirmError">两次密码输入不一致</div>
+      </div>
+      <button class="btn btn-primary" onclick="doRegister()">注 册</button>
+      <p class="form-footer">已有账号？<a href="#" onclick="showLogin()">立即登录</a></p>
+    </div>
+  </div>
+
+  <!-- DASHBOARD SECTION -->
+  <div id="dashboardSection" style="display:none">
+    <div class="dashboard">
+      <!-- Profile Card -->
+      <div>
+        <div class="profile-card">
+          <div class="avatar" id="userAvatar">♟️</div>
+          <div class="username">
+            <span id="userName">-</span>
+            <span class="username-edit" onclick="editUsername()">✏️</span>
+          </div>
+          <div class="user-plan plan-free" id="userPlan">Free</div>
+          <div class="stats-grid">
+            <div class="stat-item"><div class="stat-num" id="statCourses">0</div><div class="stat-label">已学课程 /50</div></div>
+            <div class="stat-item"><div class="stat-num" id="statHours">0h</div><div class="stat-label">学习时长</div></div>
+            <div class="stat-item"><div class="stat-num" id="statScore">0</div><div class="stat-label">策略评分 /100</div></div>
+            <div class="stat-item"><div class="stat-num" id="statExercises">0</div><div class="stat-label">完成练习</div></div>
+          </div>
+          <button class="btn btn-secondary" style="margin-top:16px" onclick="doLogout()">退出登录</button>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Tabs -->
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab('progress')">📊 学习进度</div>
+          <div class="tab" onclick="switchTab('activity')">📅 最近活动</div>
+          <div class="tab" onclick="switchTab('recommend')">🔥 推荐课程</div>
+        </div>
+
+        <!-- Progress Tab -->
+        <div class="tab-content active" id="tab-progress">
+          <div class="section-card">
+            <div class="section-title">📊 Phase 学习进度</div>
+            <div id="progressList"></div>
+          </div>
+        </div>
+
+        <!-- Activity Tab -->
+        <div class="tab-content" id="tab-activity">
+          <div class="section-card">
+            <div class="section-title">📅 最近活动</div>
+            <div id="activityList"></div>
+          </div>
+        </div>
+
+        <!-- Recommend Tab -->
+        <div class="tab-content" id="tab-recommend">
+          <div class="section-card">
+            <div class="section-title">🔥 热门推荐课程</div>
+            <div id="recommendList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Username Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal-box">
+    <h3>修改用户名</h3>
+    <input type="text" id="editUsernameInput" placeholder="输入新用户名" maxlength="20">
+    <button class="btn btn-primary" onclick="saveUsername()">保存</button>
+    <button class="btn btn-secondary" style="margin-top:8px" onclick="closeEditModal()">取消</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer class="footer">
+  <p>博弈研究院 © 2026 · Game Theory Academy · 本平台内容仅供参考，不构成任何决策建议</p>
+</footer>
+
+<script>
+// ── State ──
+let currentUser = null;
+let isLoggedIn = !!localStorage.getItem('gta_user');
+
+// ── Demo data ──
+const DEMO_PROGRESS = [
+  { id: 1, name: '纳什均衡基础', phase: 'Phase 1 · 策略定位', pct: 100 },
+  { id: 2, name: '囚徒困境深度解析', phase: 'Phase 1 · 策略定位', pct: 80 },
+  { id: 3, name: '混合策略与随机化', phase: 'Phase 1 · 策略定位', pct: 45 },
+  { id: 4, name: '进化稳定策略', phase: 'Phase 2 · 均衡求解', pct: 30 },
+  { id: 5, name: '复制动态方程', phase: 'Phase 2 · 均衡求解', pct: 0 },
+  { id: 6, name: '贝叶斯博弈入门', phase: 'Phase 2 · 均衡求解', pct: 0 },
+  { id: 7, name: '前景理论与行为博弈', phase: 'Phase 3 · 博弈矩阵', pct: 0 },
+  { id: 8, name: '拍卖理论与机制设计', phase: 'Phase 3 · 博弈矩阵', pct: 0 },
+  { id: 9, name: '信号博弈与分离均衡', phase: 'Phase 4 · 策略建议', pct: 0 },
+  { id: 10, name: '重复博弈与合作演化', phase: 'Phase 4 · 策略建议', pct: 0 },
+];
+
+const DEMO_ACTIVITIES = [
+  { time: '2小时前', text: '完成了"纳什均衡基础"课程学习', dot: 'green' },
+  { time: '昨天', text: '通过"囚徒困境"练习题 · 得分 85/100', dot: 'blue' },
+  { time: '3天前', text: '开始学习"混合策略与随机化"', dot: 'blue' },
+  { time: '1周前', text: '注册博弈研究院账号', dot: 'text3' },
+];
+
+const DEMO_RECOMMEND = [
+  { icon: '🎯', name: '博弈论入门：从囚徒困境到纳什均衡', desc: '零基础快速入门 · 7节课', badge: '热门' },
+  { icon: '🧬', name: '进化博弈论：自然界中的策略演化', desc: '中级 · 5节课', badge: '新上' },
+  { icon: '🧠', name: '行为博弈论：真实世界中的非理性选择', desc: '高级 · 8节课', badge: '精选' },
+  { icon: '🔧', name: '机制设计实战：拍卖、投票与匹配', desc: '高级 · 6节课 · 含项目', badge: '' },
+  { icon: '♟️', name: '商业竞争中的博弈策略', desc: '中级 · 10节课 · 案例驱动', badge: '推荐' },
+];
+
+// ── Toast ──
+function showToast(msg, type) {
+  type = type || 'success';
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+// ── Form visibility ──
+function showLogin() {
+  document.getElementById('loginForm').style.display = 'block';
+  document.getElementById('registerForm').style.display = 'none';
+  hideAllErrors();
+}
+function showRegister() {
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('registerForm').style.display = 'block';
+  hideAllErrors();
+}
+function hideAllErrors() {
+  var errs = document.querySelectorAll('.error');
+  for (var i = 0; i < errs.length; i++) errs[i].style.display = 'none';
+}
+
+// ── Validation helpers ──
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// ── Login ──
+function doLogin() {
+  hideAllErrors();
+  var email = document.getElementById('loginEmail').value.trim();
+  var password = document.getElementById('loginPassword').value;
+  var valid = true;
+
+  if (!email || !isValidEmail(email)) {
+    document.getElementById('loginEmailError').style.display = 'block';
+    valid = false;
+  }
+  if (password.length < 6) {
+    document.getElementById('loginPwdError').style.display = 'block';
+    valid = false;
+  }
+  if (!valid) return;
+
+  // Simulate login — in production, call API
+  currentUser = {
+    username: email.split('@')[0],
+    email: email,
+    plan: 'free',
+    stats: { courses: 3, hours: 8, score: 72, exercises: 14 }
+  };
+  localStorage.setItem('gta_user', JSON.stringify(currentUser));
+  isLoggedIn = true;
+  showToast('登录成功！');
+  showDashboard();
+}
+
+// ── Register ──
+function doRegister() {
+  hideAllErrors();
+  var username = document.getElementById('regUsername').value.trim();
+  var email = document.getElementById('regEmail').value.trim();
+  var password = document.getElementById('regPassword').value;
+  var confirmPwd = document.getElementById('regConfirmPwd').value;
+  var valid = true;
+
+  if (!username) {
+    document.getElementById('regUserError').style.display = 'block';
+    valid = false;
+  }
+  if (!email || !isValidEmail(email)) {
+    document.getElementById('regEmailError').style.display = 'block';
+    valid = false;
+  }
+  if (password.length < 6) {
+    document.getElementById('regPwdError').style.display = 'block';
+    valid = false;
+  }
+  if (password !== confirmPwd) {
+    document.getElementById('regConfirmError').style.display = 'block';
+    valid = false;
+  }
+  if (!valid) return;
+
+  // Simulate register
+  currentUser = {
+    username: username,
+    email: email,
+    plan: 'free',
+    stats: { courses: 0, hours: 0, score: 0, exercises: 0 }
+  };
+  localStorage.setItem('gta_user', JSON.stringify(currentUser));
+  isLoggedIn = true;
+  showToast('注册成功！欢迎加入博弈研究院！');
+  showDashboard();
+}
+
+// ── Logout ──
+function doLogout() {
+  isLoggedIn = false;
+  currentUser = null;
+  localStorage.removeItem('gta_user');
+  document.getElementById('authSection').style.display = 'block';
+  document.getElementById('dashboardSection').style.display = 'none';
+  showToast('已退出登录', 'error');
+}
+
+// ── Dashboard ──
+function showDashboard() {
+  document.getElementById('authSection').style.display = 'none';
+  document.getElementById('dashboardSection').style.display = 'block';
+
+  // Load from storage or use current
+  if (!currentUser) {
+    var stored = localStorage.getItem('gta_user');
+    if (stored) { currentUser = JSON.parse(stored); }
+    else {
+      currentUser = { username: 'User', plan: 'free', stats: { courses: 0, hours: 0, score: 0, exercises: 0 } };
+    }
+  }
+
+  document.getElementById('userName').textContent = currentUser.username;
+  document.getElementById('userAvatar').textContent = '♟️';
+
+  var planEl = document.getElementById('userPlan');
+  var plan = currentUser.plan || 'free';
+  var planNames = { free: 'Free', starter: 'Starter', pro: 'Pro', premium: 'Premium' };
+  planEl.textContent = planNames[plan] || 'Free';
+  planEl.className = 'user-plan plan-' + plan;
+
+  var s = currentUser.stats || {};
+  document.getElementById('statCourses').textContent = (s.courses || 0);
+  document.getElementById('statHours').textContent = (s.hours || 0) + 'h';
+  document.getElementById('statScore').textContent = (s.score || 0);
+  document.getElementById('statExercises').textContent = (s.exercises || 0);
+
+  loadProgress();
+  loadActivity();
+  loadRecommend();
+}
+
+// ── Load progress ──
+function loadProgress() {
+  var el = document.getElementById('progressList');
+  var html = '';
+  for (var i = 0; i < DEMO_PROGRESS.length; i++) {
+    var p = DEMO_PROGRESS[i];
+    html += '<div class="progress-item">' +
+      '<div class="progress-num">#' + p.id + '</div>' +
+      '<div class="progress-title">' +
+        '<span class="progress-phase">' + p.phase + '</span> ' + p.name +
+      '</div>' +
+      '<div class="progress-bar"><div class="progress-fill" style="width:' + p.pct + '%"></div></div>' +
+      '<div class="progress-pct">' + p.pct + '%</div>' +
+    '</div>';
+  }
+  el.innerHTML = html;
+
+  // Animate progress bars
+  setTimeout(function() {
+    var fills = document.querySelectorAll('.progress-fill');
+    for (var j = 0; j < fills.length; j++) {
+      fills[j].style.width = fills[j].style.width; // force reflow
+    }
+  }, 100);
+}
+
+// ── Load activity ──
+function loadActivity() {
+  var el = document.getElementById('activityList');
+  if (currentUser && currentUser.username === 'User') {
+    // Fresh account — empty state
+    el.innerHTML = '<p style="color:var(--text3);font-size:0.85rem;text-align:center;padding:16px">🎓 开始学习你的第一门课吧！</p>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < DEMO_ACTIVITIES.length; i++) {
+    var a = DEMO_ACTIVITIES[i];
+    var dotColor = 'var(--blue)';
+    if (a.dot === 'green') dotColor = 'var(--green)';
+    else if (a.dot === 'text3') dotColor = 'var(--text3)';
+    html += '<div class="activity-item">' +
+      '<div class="activity-dot" style="background:' + dotColor + '"></div>' +
+      '<div class="activity-time">' + a.time + '</div>' +
+      '<div class="activity-text">' + a.text + '</div>' +
+    '</div>';
+  }
+  el.innerHTML = html;
+}
+
+// ── Load recommend ──
+function loadRecommend() {
+  var el = document.getElementById('recommendList');
+  var html = '';
+  for (var i = 0; i < DEMO_RECOMMEND.length; i++) {
+    var r = DEMO_RECOMMEND[i];
+    html += '<div class="recommend-item" onclick="showToast(\'即将跳转到课程页面\')">' +
+      '<div class="recommend-icon">' + r.icon + '</div>' +
+      '<div class="recommend-info">' +
+        '<div class="recommend-name">' + r.name + '</div>' +
+        '<div class="recommend-desc">' + r.desc + '</div>' +
+      '</div>' +
+      (r.badge ? '<span class="recommend-badge">' + r.badge + '</span>' : '') +
+    '</div>';
+  }
+  el.innerHTML = html;
+}
+
+// ── Edit username ──
+function editUsername() {
+  document.getElementById('editUsernameInput').value = currentUser.username;
+  document.getElementById('editModal').classList.add('show');
+}
+function saveUsername() {
+  var name = document.getElementById('editUsernameInput').value.trim();
+  if (!name) return showToast('用户名不能为空', 'error');
+  currentUser.username = name;
+  localStorage.setItem('gta_user', JSON.stringify(currentUser));
+  document.getElementById('userName').textContent = name;
+  document.getElementById('editModal').classList.remove('show');
+  showToast('用户名已更新');
+}
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('show');
+}
+
+// ── Tabs ──
+function switchTab(name) {
+  var tabs = document.querySelectorAll('.tab');
+  var contents = document.querySelectorAll('.tab-content');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  for (var j = 0; j < contents.length; j++) contents[j].classList.remove('active');
+  event.target.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// ── Init ──
+(function() {
+  if (isLoggedIn) {
+    var stored = localStorage.getItem('gta_user');
+    if (stored) currentUser = JSON.parse(stored);
+    showDashboard();
+  } else {
+    document.getElementById('authSection').style.display = 'block';
+  }
+})();
+</script>
+</body>
+</html>

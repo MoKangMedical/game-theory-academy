@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>博弈论知识图谱 — 博弈研究院</title>
+<meta name="description" content="可视化博弈论知识体系的内在联系：9大阶段、50门课程，从博弈基础到前沿应用。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════ RESET & VARIABLES ═══════════════ */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07070a; --bg2:#0a0a10;
+  --card:#121218; --card2:#18181f;
+  --border:#22222d; --border2:#2e2e3a;
+  --text:#f5f5f7; --text2:#a0a0ab; --text3:#656570;
+  --blue:#4f8de2; --blue-light:#7ab3f5;
+
+  --ph1:#4f8de2; --ph2:#7ab3f5; --ph3:#22c55e;
+  --ph4:#f59e0b; --ph5:#8b5cf6; --ph6:#3b82f6;
+  --ph7:#ec4899; --ph8:#06b6d4; --ph9:#f97316;
+
+  --serif:'Noto Serif SC',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --radius:14px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ═══════════════ NAV ═══════════════ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(7,7,10,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .3s}
+.nav-inner{max-width:1260px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.05rem;font-weight:700;color:var(--blue);letter-spacing:.02em}
+.nav-brand svg{width:26px;height:26px;flex-shrink:0}
+.nav-links{display:flex;gap:6px;align-items:center}
+.nav-links a{font-size:0.8rem;color:var(--text3);font-weight:500;padding:8px 16px;border-radius:8px;transition:all .25s;letter-spacing:.02em}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:rgba(255,255,255,0.04)}
+.nav-links a.active{color:var(--blue)}
+
+/* ═══════════════ HERO ═══════════════ */
+.hero{position:relative;padding:140px 0 60px;text-align:center;overflow:hidden;background:radial-gradient(ellipse 70% 50% at 50% 25%,rgba(79,141,226,0.07) 0%,transparent 70%),radial-gradient(ellipse 60% 40% at 80% 60%,rgba(139,92,246,0.04) 0%,transparent 60%)}
+.hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:80px;background:linear-gradient(to top,var(--bg) 20%,transparent)}
+.hero-content{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:0 24px}
+.hero-badge{display:inline-block;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--blue);background:rgba(79,141,226,0.08);border:1px solid rgba(79,141,226,0.15);padding:6px 20px;border-radius:40px;margin-bottom:24px}
+.hero h1{font-family:var(--serif);font-size:clamp(2rem,5vw,3rem);font-weight:900;line-height:1.25;margin-bottom:14px;letter-spacing:-.01em}
+.hero h1 .hl{background:linear-gradient(135deg,var(--blue) 20%,var(--blue-light) 60%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--text2);font-size:1.05rem;line-height:1.7;max-width:560px;margin:0 auto 32px}
+
+/* ═══════════════ LEGEND ═══════════════ */
+.legend{display:flex;flex-wrap:wrap;justify-content:center;gap:16px 28px;max-width:900px;margin:0 auto;padding:0 24px}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--text3);font-weight:500}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.legend-diff{display:flex;align-items:center;gap:4px;font-size:0.78rem;color:var(--text3)}
+.legend-diff .star{color:#f59e0b;font-size:0.7rem}
+.legend-divider{width:1px;height:14px;background:var(--border);align-self:center}
+
+/* ═══════════════ GRAPH CONTAINER ═══════════════ */
+.graph-container{max-width:1400px;margin:0 auto;padding:20px 32px 80px;position:relative}
+.graph-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+
+/* ═══════════════ PHASE ROW ═══════════════ */
+.phase-row{position:relative;margin-bottom:56px;z-index:1}
+.phase-row:last-child{margin-bottom:20px}
+.phase-label{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-left:4px}
+.phase-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:1.1rem;flex-shrink:0}
+.phase-name{font-family:var(--serif);font-size:1.05rem;font-weight:700;letter-spacing:.01em}
+.phase-range{font-size:0.7rem;color:var(--text3);margin-left:6px;font-weight:400}
+.phase-desc{font-size:0.73rem;color:var(--text3);margin-top:1px;font-weight:400;letter-spacing:.02em}
+
+/* ═══════════════ NODES GRID ═══════════════ */
+.phase-nodes{display:flex;flex-wrap:wrap;gap:12px;position:relative;padding:12px 0 12px 4px}
+/* Connecting lines between nodes in same phase */
+.phase-nodes::before{content:'';position:absolute;top:50%;left:4px;right:4px;height:1px;opacity:0.2;z-index:0;transform:translateY(-50%)}
+
+/* ═══════════════ NODE ═══════════════ */
+.node-wrap{position:relative;z-index:2}
+.node{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;cursor:pointer;transition:all .35s cubic-bezier(.4,0,.2,1);position:relative;border:2px solid transparent;background:var(--card);color:var(--text2);font-family:var(--serif)}
+.node:hover{transform:scale(1.35);z-index:20;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
+.node:active{transform:scale(1.2)}
+
+/* Phase-specific node colors */
+.phase-nodes.ph1 .node{border-color:rgba(79,141,226,0.25);color:var(--ph1)}
+.phase-nodes.ph1 .node:hover{background:var(--ph1);color:#fff;border-color:var(--ph1);box-shadow:0 8px 32px rgba(79,141,226,0.35)}
+.phase-nodes.ph1::before{background:var(--ph1)}
+
+.phase-nodes.ph2 .node{border-color:rgba(122,179,245,0.25);color:#7ab3f5}
+.phase-nodes.ph2 .node:hover{background:var(--ph2);color:#0a0a1a;border-color:var(--ph2);box-shadow:0 8px 32px rgba(122,179,245,0.3)}
+.phase-nodes.ph2::before{background:var(--ph2)}
+
+.phase-nodes.ph3 .node{border-color:rgba(34,197,94,0.25);color:var(--ph3)}
+.phase-nodes.ph3 .node:hover{background:var(--ph3);color:#0a0a1a;border-color:var(--ph3);box-shadow:0 8px 32px rgba(34,197,94,0.3)}
+.phase-nodes.ph3::before{background:var(--ph3)}
+
+.phase-nodes.ph4 .node{border-color:rgba(245,158,11,0.25);color:var(--ph4)}
+.phase-nodes.ph4 .node:hover{background:var(--ph4);color:#0a0a1a;border-color:var(--ph4);box-shadow:0 8px 32px rgba(245,158,11,0.3)}
+.phase-nodes.ph4::before{background:var(--ph4)}
+
+.phase-nodes.ph5 .node{border-color:rgba(139,92,246,0.25);color:var(--ph5)}
+.phase-nodes.ph5 .node:hover{background:var(--ph5);color:#fff;border-color:var(--ph5);box-shadow:0 8px 32px rgba(139,92,246,0.35)}
+.phase-nodes.ph5::before{background:var(--ph5)}
+
+.phase-nodes.ph6 .node{border-color:rgba(59,130,246,0.25);color:var(--ph6)}
+.phase-nodes.ph6 .node:hover{background:var(--ph6);color:#fff;border-color:var(--ph6);box-shadow:0 8px 32px rgba(59,130,246,0.35)}
+.phase-nodes.ph6::before{background:var(--ph6)}
+
+.phase-nodes.ph7 .node{border-color:rgba(236,72,153,0.25);color:var(--ph7)}
+.phase-nodes.ph7 .node:hover{background:var(--ph7);color:#fff;border-color:var(--ph7);box-shadow:0 8px 32px rgba(236,72,153,0.35)}
+.phase-nodes.ph7::before{background:var(--ph7)}
+
+.phase-nodes.ph8 .node{border-color:rgba(6,182,212,0.25);color:var(--ph8)}
+.phase-nodes.ph8 .node:hover{background:var(--ph8);color:#0a0a1a;border-color:var(--ph8);box-shadow:0 8px 32px rgba(6,182,212,0.3)}
+.phase-nodes.ph8::before{background:var(--ph8)}
+
+.phase-nodes.ph9 .node{border-color:rgba(249,115,22,0.25);color:var(--ph9)}
+.phase-nodes.ph9 .node:hover{background:var(--ph9);color:#fff;border-color:var(--ph9);box-shadow:0 8px 32px rgba(249,115,22,0.35)}
+.phase-nodes.ph9::before{background:var(--ph9)}
+
+/* ═══════════════ NODE TOOLTIP ═══════════════ */
+.node-tooltip{position:absolute;bottom:calc(100% + 14px);left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--border2);border-radius:10px;padding:10px 14px;white-space:nowrap;opacity:0;pointer-events:none;transition:all .25s;z-index:30;box-shadow:0 12px 40px rgba(0,0,0,0.6)}
+.node-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:var(--border2)}
+.node-tooltip .tt-num{font-size:0.65rem;font-weight:700;color:var(--text3);letter-spacing:.04em;margin-bottom:3px}
+.node-tooltip .tt-title{font-size:0.82rem;font-weight:600;color:var(--text);line-height:1.3;max-width:220px;white-space:normal}
+.node-tooltip .tt-diff{display:inline-block;font-size:0.65rem;padding:2px 8px;border-radius:4px;margin-top:5px;font-weight:500}
+.node-wrap:hover .node-tooltip{opacity:1}
+.node-wrap .node-tooltip{bottom:calc(100% + 10px)}
+
+/* Difficulty tooltip colors */
+.tt-beginner{background:rgba(34,197,94,0.1);color:#22c55e}
+.tt-core{background:rgba(79,141,226,0.1);color:var(--blue)}
+.tt-advanced{background:rgba(139,92,246,0.1);color:#a78bfa}
+.tt-master{background:rgba(236,72,153,0.1);color:#f9a8d4}
+
+/* ═══════════════ HIGHLIGHT ALL ═══════════════ */
+.phase-row.highlight-phase .node{opacity:0.4;transform:scale(0.92)}
+.phase-row.highlight-phase .node:hover{opacity:1;transform:scale(1.35)}
+
+/* ═══════════════ CROSS-PHASE CONNECTORS ═══════════════ */
+.cross-connector{position:relative}
+#connectorSvg{position:absolute;top:0;left:0;width:100%;pointer-events:none;z-index:0}
+#connectorSvg path{fill:none;stroke-width:1.2;opacity:0.25;stroke-dasharray:5 4;transition:all .4s}
+#connectorSvg path:hover{opacity:0.6;stroke-width:2}
+
+/* ═══════════════ FOOTER ═══════════════ */
+.footer{border-top:1px solid var(--border);padding:48px 0;text-align:center}
+.footer-links{display:flex;justify-content:center;gap:32px;margin-bottom:24px;flex-wrap:wrap}
+.footer-links a{font-size:0.85rem;color:var(--text3);transition:color .2s}
+.footer-links a:hover{color:var(--blue)}
+.footer-copy{font-size:0.8rem;color:var(--text3)}
+.footer-disclaimer{font-size:0.75rem;color:var(--text3);max-width:600px;margin:12px auto 0;line-height:1.6}
+.blue{color:var(--blue)}
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-inner{padding:0 16px}
+  .hero{padding:120px 0 40px}
+  .hero h1{font-size:1.6rem}
+  .legend{gap:10px 16px;font-size:0.7rem}
+  .legend-item{font-size:0.7rem}
+  .graph-container{padding:10px 12px 60px}
+  .phase-row{margin-bottom:40px}
+  .phase-label{flex-wrap:wrap;gap:8px}
+  .phase-nodes{gap:8px}
+  .node{width:38px;height:38px;font-size:0.75rem}
+  .phase-nodes::before{display:none}
+  #connectorSvg{display:none}
+  .node-tooltip{display:none}
+  .node:hover{transform:scale(1.2)}
+}
+@media(max-width:480px){
+  .node{width:34px;height:34px;font-size:0.7rem}
+  .phase-nodes{gap:6px}
+  .phase-name{font-size:0.9rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="#4f8de2" stroke-width="1.5"/><path d="M6 14l5-5 4 4 7-7" stroke="#4f8de2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="14" cy="14" r="2.5" fill="#4f8de2"/></svg>
+      博弈研究院
+    </a>
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="courses.html">课程</a>
+      <a href="knowledge-graph.html" class="active">知识图谱</a>
+      <a href="roundtable.html">博弈圆桌会</a>
+      <a href="index.html#tools">工具</a>
+      <a href="index.html#pricing">定价</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🧭 知识体系可视化</div>
+    <h1>博弈论<span class="hl">知识图谱</span></h1>
+    <p>50门课程 · 9大阶段 · 从博弈基础到前沿应用，可视化博弈论知识体系的内在联系</p>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ph1)"></div>基础</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ph2)"></div>经典理论</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ph3)"></div>进化博弈</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ph4)"></div>行为博弈</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ph5)"></div>机制设计</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ph6)"></div>经济应用</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ph7)"></div>政治应用</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ph8)"></div>生活应用</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ph9)"></div>前沿</div>
+      <div class="legend-divider"></div>
+      <div class="legend-diff" title="难度等级"><span class="star">★</span>入门</div>
+      <div class="legend-diff" title="难度等级"><span class="star">★★</span>核心</div>
+      <div class="legend-diff" title="难度等级"><span class="star">★★★</span>深度</div>
+      <div class="legend-diff" title="难度等级"><span class="star">★★★★</span>前沿</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ GRAPH ═══════════════ -->
+<div class="graph-container" id="graphContainer">
+  <svg id="connectorSvg"></svg>
+
+  <!-- Phase 1: 博弈论基础 (1-6) -->
+  <div class="phase-row" data-phase="1">
+    <div class="phase-label">
+      <div class="phase-icon" style="background:rgba(79,141,226,0.1);color:var(--ph1)">🎯</div>
+      <div>
+        <span class="phase-name" style="color:var(--ph1)">Phase 1 · 博弈论基础</span>
+        <span class="phase-range">第 1–6 课</span>
+        <div class="phase-desc">理解博弈的核心概念与经典模型</div>
+      </div>
+    </div>
+    <div class="phase-nodes ph1" id="ph1-nodes">
+      <div class="node-wrap"><div class="node" data-id="1">1</div><div class="node-tooltip"><div class="tt-num">第1课</div><div class="tt-title">博弈论基础 — 什么是博弈？</div><div class="tt-diff tt-beginner">★ 入门 · 30分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="2">2</div><div class="node-tooltip"><div class="tt-num">第2课</div><div class="tt-title">纳什均衡 — 纯策略与混合策略</div><div class="tt-diff tt-core">★★ 核心 · 35分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="3">3</div><div class="node-tooltip"><div class="tt-num">第3课</div><div class="tt-title">囚徒困境 — 个体理性vs集体理性</div><div class="tt-diff tt-beginner">★ 经典 · 30分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="4">4</div><div class="node-tooltip"><div class="tt-num">第4课</div><div class="tt-title">协调博弈 — 猎鹿博弈、性别战</div><div class="tt-diff tt-beginner">★ 入门 · 30分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="5">5</div><div class="node-tooltip"><div class="tt-num">第5课</div><div class="tt-title">零和博弈 — 最小最大定理</div><div class="tt-diff tt-core">★★ 核心 · 35分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="6">6</div><div class="node-tooltip"><div class="tt-num">第6课</div><div class="tt-title">重复博弈 — 触发策略与民间定理</div><div class="tt-diff tt-core">★★ 核心 · 40分钟</div></div></div>
+    </div>
+  </div>
+
+  <!-- Phase 2: 经典理论与模型 (7-12) -->
+  <div class="phase-row" data-phase="2">
+    <div class="phase-label">
+      <div class="phase-icon" style="background:rgba(122,179,245,0.1);color:var(--ph2)">📐</div>
+      <div>
+        <span class="phase-name" style="color:var(--ph2)">Phase 2 · 经典理论与模型</span>
+        <span class="phase-range">第 7–12 课</span>
+        <div class="phase-desc">深入博弈论经典精炼概念与方法</div>
+      </div>
+    </div>
+    <div class="phase-nodes ph2" id="ph2-nodes">
+      <div class="node-wrap"><div class="node" data-id="7">7</div><div class="node-tooltip"><div class="tt-num">第7课</div><div class="tt-title">谢林点与焦点均衡</div><div class="tt-diff tt-core">★★ 经典 · 30分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="8">8</div><div class="node-tooltip"><div class="tt-num">第8课</div><div class="tt-title">子博弈精炼均衡</div><div class="tt-diff tt-advanced">★★★ 深度 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="9">9</div><div class="node-tooltip"><div class="tt-num">第9课</div><div class="tt-title">贝叶斯博弈 — 不完全信息</div><div class="tt-diff tt-advanced">★★★ 深度 · 45分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="10">10</div><div class="node-tooltip"><div class="tt-num">第10课</div><div class="tt-title">完美贝叶斯均衡</div><div class="tt-diff tt-advanced">★★★ 深度 · 45分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="11">11</div><div class="node-tooltip"><div class="tt-num">第11课</div><div class="tt-title">序贯均衡 — 克雷普斯-威尔逊</div><div class="tt-diff tt-advanced">★★★ 深度 · 45分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="12">12</div><div class="node-tooltip"><div class="tt-num">第12课</div><div class="tt-title">颤抖手均衡 — 泽尔腾精炼</div><div class="tt-diff tt-advanced">★★★ 深度 · 40分钟</div></div></div>
+    </div>
+  </div>
+
+  <!-- Phase 3: 进化博弈论 (13-18) -->
+  <div class="phase-row" data-phase="3">
+    <div class="phase-label">
+      <div class="phase-icon" style="background:rgba(34,197,94,0.1);color:var(--ph3)">🧬</div>
+      <div>
+        <span class="phase-name" style="color:var(--ph3)">Phase 3 · 进化博弈论</span>
+        <span class="phase-range">第 13–18 课</span>
+        <div class="phase-desc">从生物学视角理解策略的动态演化</div>
+      </div>
+    </div>
+    <div class="phase-nodes ph3" id="ph3-nodes">
+      <div class="node-wrap"><div class="node" data-id="13">13</div><div class="node-tooltip"><div class="tt-num">第13课</div><div class="tt-title">进化稳定策略(ESS)</div><div class="tt-diff tt-core">★★ 核心 · 35分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="14">14</div><div class="node-tooltip"><div class="tt-num">第14课</div><div class="tt-title">复制动态方程</div><div class="tt-diff tt-advanced">★★★ 深度 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="15">15</div><div class="node-tooltip"><div class="tt-num">第15课</div><div class="tt-title">鹰鸽博弈 — 经典进化博弈</div><div class="tt-diff tt-core">★★ 案例 · 30分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="16">16</div><div class="node-tooltip"><div class="tt-num">第16课</div><div class="tt-title">信号进化博弈</div><div class="tt-diff tt-advanced">★★★ 深度 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="17">17</div><div class="node-tooltip"><div class="tt-num">第17课</div><div class="tt-title">空间演化博弈</div><div class="tt-diff tt-advanced">★★★ 深度 · 45分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="18">18</div><div class="node-tooltip"><div class="tt-num">第18课</div><div class="tt-title">文化演化与博弈</div><div class="tt-diff tt-advanced">★★★ 深度 · 40分钟</div></div></div>
+    </div>
+  </div>
+
+  <!-- Phase 4: 行为博弈论 (19-24) -->
+  <div class="phase-row" data-phase="4">
+    <div class="phase-label">
+      <div class="phase-icon" style="background:rgba(245,158,11,0.1);color:var(--ph4)">🧠</div>
+      <div>
+        <span class="phase-name" style="color:var(--ph4)">Phase 4 · 行为博弈论</span>
+        <span class="phase-range">第 19–24 课</span>
+        <div class="phase-desc">将心理学引入博弈分析</div>
+      </div>
+    </div>
+    <div class="phase-nodes ph4" id="ph4-nodes">
+      <div class="node-wrap"><div class="node" data-id="19">19</div><div class="node-tooltip"><div class="tt-num">第19课</div><div class="tt-title">有限理性 — 西蒙的洞见</div><div class="tt-diff tt-core">★★ 核心 · 35分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="20">20</div><div class="node-tooltip"><div class="tt-num">第20课</div><div class="tt-title">前景理论 — 卡尼曼&特沃斯基</div><div class="tt-diff tt-core">★★ 核心 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="21">21</div><div class="node-tooltip"><div class="tt-num">第21课</div><div class="tt-title">最后通牒博弈 — 公平偏好</div><div class="tt-diff tt-beginner">★ 实验 · 30分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="22">22</div><div class="node-tooltip"><div class="tt-num">第22课</div><div class="tt-title">信任博弈 — 互惠与社会偏好</div><div class="tt-diff tt-beginner">★ 实验 · 30分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="23">23</div><div class="node-tooltip"><div class="tt-num">第23课</div><div class="tt-title">认知偏差与博弈</div><div class="tt-diff tt-core">★★ 核心 · 35分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="24">24</div><div class="node-tooltip"><div class="tt-num">第24课</div><div class="tt-title">神经博弈论</div><div class="tt-diff tt-advanced">★★★ 前沿 · 40分钟</div></div></div>
+    </div>
+  </div>
+
+  <!-- Phase 5: 机制设计 (25-30) -->
+  <div class="phase-row" data-phase="5">
+    <div class="phase-label">
+      <div class="phase-icon" style="background:rgba(139,92,246,0.1);color:var(--ph5)">⚙️</div>
+      <div>
+        <span class="phase-name" style="color:var(--ph5)">Phase 5 · 机制设计</span>
+        <span class="phase-range">第 25–30 课</span>
+        <div class="phase-desc">设计规则以实现最优结果</div>
+      </div>
+    </div>
+    <div class="phase-nodes ph5" id="ph5-nodes">
+      <div class="node-wrap"><div class="node" data-id="25">25</div><div class="node-tooltip"><div class="tt-num">第25课</div><div class="tt-title">机制设计导论 — 赫维茨定理</div><div class="tt-diff tt-core">★★ 核心 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="26">26</div><div class="node-tooltip"><div class="tt-num">第26课</div><div class="tt-title">拍卖理论 — 四种基本拍卖</div><div class="tt-diff tt-core">★★ 核心 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="27">27</div><div class="node-tooltip"><div class="tt-num">第27课</div><div class="tt-title">VCG机制 — 克拉克-格罗夫斯</div><div class="tt-diff tt-advanced">★★★ 深度 · 45分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="28">28</div><div class="node-tooltip"><div class="tt-num">第28课</div><div class="tt-title">匹配市场 — 盖尔-沙普利算法</div><div class="tt-diff tt-core">★★ 核心 · 35分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="29">29</div><div class="node-tooltip"><div class="tt-num">第29课</div><div class="tt-title">投票机制 — 阿罗不可能定理</div><div class="tt-diff tt-core">★★ 核心 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="30">30</div><div class="node-tooltip"><div class="tt-num">第30课</div><div class="tt-title">合同理论 — 委托代理问题</div><div class="tt-diff tt-advanced">★★★ 深度 · 45分钟</div></div></div>
+    </div>
+  </div>
+
+  <!-- Phase 6: 博弈论与经济学 (31-36) -->
+  <div class="phase-row" data-phase="6">
+    <div class="phase-label">
+      <div class="phase-icon" style="background:rgba(59,130,246,0.1);color:var(--ph6)">📈</div>
+      <div>
+        <span class="phase-name" style="color:var(--ph6)">Phase 6 · 博弈论与经济学</span>
+        <span class="phase-range">第 31–36 课</span>
+        <div class="phase-desc">博弈论在经济领域的深度应用</div>
+      </div>
+    </div>
+    <div class="phase-nodes ph6" id="ph6-nodes">
+      <div class="node-wrap"><div class="node" data-id="31">31</div><div class="node-tooltip"><div class="tt-num">第31课</div><div class="tt-title">寡头竞争 — 古诺、伯川德、斯塔克尔伯格</div><div class="tt-diff tt-core">★★ 核心 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="32">32</div><div class="node-tooltip"><div class="tt-num">第32课</div><div class="tt-title">博弈论与产业组织</div><div class="tt-diff tt-advanced">★★★ 深度 · 45分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="33">33</div><div class="node-tooltip"><div class="tt-num">第33课</div><div class="tt-title">信息经济学 — 逆向选择与信号</div><div class="tt-diff tt-advanced">★★★ 深度 · 45分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="34">34</div><div class="node-tooltip"><div class="tt-num">第34课</div><div class="tt-title">博弈论与金融 — 银行挤兑</div><div class="tt-diff tt-core">★★ 案例 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="35">35</div><div class="node-tooltip"><div class="tt-num">第35课</div><div class="tt-title">博弈论与国际贸易 — 关税博弈</div><div class="tt-diff tt-core">★★ 核心 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="36">36</div><div class="node-tooltip"><div class="tt-num">第36课</div><div class="tt-title">公共经济学 — 公共品博弈</div><div class="tt-diff tt-core">★★ 核心 · 35分钟</div></div></div>
+    </div>
+  </div>
+
+  <!-- Phase 7: 博弈论与政治 (37-42) -->
+  <div class="phase-row" data-phase="7">
+    <div class="phase-label">
+      <div class="phase-icon" style="background:rgba(236,72,153,0.1);color:var(--ph7)">🏛️</div>
+      <div>
+        <span class="phase-name" style="color:var(--ph7)">Phase 7 · 博弈论与政治</span>
+        <span class="phase-range">第 37–42 课</span>
+        <div class="phase-desc">策略思维在政治领域的应用</div>
+      </div>
+    </div>
+    <div class="phase-nodes ph7" id="ph7-nodes">
+      <div class="node-wrap"><div class="node" data-id="37">37</div><div class="node-tooltip"><div class="tt-num">第37课</div><div class="tt-title">选举博弈 — 中间选民定理</div><div class="tt-diff tt-core">★★ 核心 · 35分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="38">38</div><div class="node-tooltip"><div class="tt-num">第38课</div><div class="tt-title">立法博弈 — 联盟与议程</div><div class="tt-diff tt-advanced">★★★ 深度 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="39">39</div><div class="node-tooltip"><div class="tt-num">第39课</div><div class="tt-title">国际关系 — 核威慑博弈</div><div class="tt-diff tt-core">★★ 经典 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="40">40</div><div class="node-tooltip"><div class="tt-num">第40课</div><div class="tt-title">恐怖主义与反恐 — 博弈视角</div><div class="tt-diff tt-advanced">★★★ 深度 · 40分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="41">41</div><div class="node-tooltip"><div class="tt-num">第41课</div><div class="tt-title">谈判与冲突 — 谢林冲突理论</div><div class="tt-diff tt-core">★★ 核心 · 35分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="42">42</div><div class="node-tooltip"><div class="tt-num">第42课</div><div class="tt-title">政治制度设计 — 宪法博弈</div><div class="tt-diff tt-advanced">★★★ 深度 · 40分钟</div></div></div>
+    </div>
+  </div>
+
+  <!-- Phase 8: 博弈论与生活 (43-48) -->
+  <div class="phase-row" data-phase="8">
+    <div class="phase-label">
+      <div class="phase-icon" style="background:rgba(6,182,212,0.1);color:var(--ph8)">🏠</div>
+      <div>
+        <span class="phase-name" style="color:var(--ph8)">Phase 8 · 博弈论与生活</span>
+        <span class="phase-range">第 43–48 课</span>
+        <div class="phase-desc">日常决策中的策略思维</div>
+      </div>
+    </div>
+    <div class="phase-nodes ph8" id="ph8-nodes">
+      <div class="node-wrap"><div class="node" data-id="43">43</div><div class="node-tooltip"><div class="tt-num">第43课</div><div class="tt-title">谈判策略 — BATNA与泽莫尔模型</div><div class="tt-diff tt-beginner">★ 实战 · 35分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="44">44</div><div class="node-tooltip"><div class="tt-num">第44课</div><div class="tt-title">博弈论与婚姻 — 配偶选择</div><div class="tt-diff tt-beginner">★ 应用 · 30分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="45">45</div><div class="node-tooltip"><div class="tt-num">第45课</div><div class="tt-title">博弈论与育儿 — 亲子互动</div><div class="tt-diff tt-beginner">★ 应用 · 30分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="46">46</div><div class="node-tooltip"><div class="tt-num">第46课</div><div class="tt-title">职场博弈 — 晋升与团队</div><div class="tt-diff tt-beginner">★ 实战 · 35分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="47">47</div><div class="node-tooltip"><div class="tt-num">第47课</div><div class="tt-title">社交网络博弈 — 影响力</div><div class="tt-diff tt-core">★★ 核心 · 35分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="48">48</div><div class="node-tooltip"><div class="tt-num">第48课</div><div class="tt-title">日常决策博弈 — 排队与交通</div><div class="tt-diff tt-beginner">★ 应用 · 30分钟</div></div></div>
+    </div>
+  </div>
+
+  <!-- Phase 9: 前沿与未来 (49-50) -->
+  <div class="phase-row" data-phase="9">
+    <div class="phase-label">
+      <div class="phase-icon" style="background:rgba(249,115,22,0.1);color:var(--ph9)">🚀</div>
+      <div>
+        <span class="phase-name" style="color:var(--ph9)">Phase 9 · 前沿与未来</span>
+        <span class="phase-range">第 49–50 课</span>
+        <div class="phase-desc">博弈论的最新发展与综合应用</div>
+      </div>
+    </div>
+    <div class="phase-nodes ph9" id="ph9-nodes">
+      <div class="node-wrap"><div class="node" data-id="49">49</div><div class="node-tooltip"><div class="tt-num">第49课</div><div class="tt-title">AI与博弈论 — 多智能体系统</div><div class="tt-diff tt-advanced">★★★ 前沿 · 45分钟</div></div></div>
+      <div class="node-wrap"><div class="node" data-id="50">50</div><div class="node-tooltip"><div class="tt-num">第50课</div><div class="tt-title">终极整合 — 构建策略思维体系</div><div class="tt-diff tt-core">★★ 终极 · 60分钟</div></div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="index.html">首页</a>
+    <a href="courses.html">课程</a>
+    <a href="knowledge-graph.html">知识图谱</a>
+    <a href="index.html#tools">工具</a>
+    <a href="index.html#pricing">定价</a>
+  </div>
+  <div class="footer-copy"><span class="blue">博弈研究院</span> © 2026 · Game Theory Academy</div>
+  <div class="footer-disclaimer">本平台内容基于博弈论理论和公开研究整理，仅供学习参考，培养策略思维能力。</div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════
+//  Cross-Phase Connection Lines (SVG)
+// ═══════════════════════════════════════════
+
+const crossConnections = [
+  // Phase 1 → Phase 2 (foundation → refinement)
+  {from:2, to:8},   // Nash Equilibrium → Subgame Perfect
+  {from:6, to:12},  // Repeated Games → Trembling Hand
+  {from:5, to:7},   // Zero-sum → Schelling Point
+  {from:3, to:9},   // Prisoner's Dilemma → Bayesian Games
+
+  // Phase 2 → Phase 3 (classical → evolutionary)
+  {from:9, to:16},  // Bayesian → Signaling Evolution
+  {from:8, to:14},  // Subgame Perfect → Replicator Dynamics
+  {from:12, to:13}, // Trembling Hand → ESS
+
+  // Phase 3 → Phase 4 (evolutionary → behavioral)
+  {from:13, to:19}, // ESS → Bounded Rationality
+  {from:16, to:20}, // Signaling Evolution → Prospect Theory
+  {from:15, to:21}, // Hawk-Dove → Ultimatum Game
+
+  // Phase 4 → Phase 5 (behavioral → mechanism design)
+  {from:19, to:25}, // Bounded Rationality → Mechanism Design Intro
+  {from:21, to:26}, // Ultimatum Game → Auction Theory
+  {from:23, to:30}, // Cognitive Biases → Contract Theory
+
+  // Phase 5 → Phase 6 (mechanism → economics)
+  {from:27, to:36}, // VCG → Public Goods
+  {from:30, to:31}, // Contract Theory → Oligopoly
+  {from:26, to:33}, // Auction → Information Economics
+  {from:28, to:34}, // Matching → Finance
+
+  // Phase 6 → Phase 7 (economics → politics)
+  {from:31, to:37}, // Oligopoly → Voting (strategic competition)
+  {from:33, to:38}, // Info Economics → Legislative Bargaining
+  {from:35, to:39}, // Trade → International Relations
+  {from:36, to:42}, // Public Goods → Constitutional Design
+
+  // Phase 7 → Phase 8 (politics → daily life)
+  {from:41, to:43}, // Conflict & Negotiation → Negotiation Strategy
+  {from:37, to:46}, // Voting → Workplace Game
+  {from:38, to:47}, // Legislative → Social Networks
+
+  // Phase 8 → Phase 9 (life → frontier)
+  {from:47, to:49}, // Social Networks → Multi-Agent AI
+  {from:43, to:50}, // Negotiation → Ultimate Integration
+
+  // Cross-domain insights
+  {from:2, to:50},  // Nash → Ultimate Integration
+  {from:25, to:42}, // Mechanism Design → Constitutional Design
+];
+
+// SVG color map for phases
+const phaseColors = {
+  1:'#4f8de2', 2:'#7ab3f5', 3:'#22c55e',
+  4:'#f59e0b', 5:'#8b5cf6', 6:'#3b82f6',
+  7:'#ec4899', 8:'#06b6d4', 9:'#f97316'
+};
+
+function getPhaseForNode(nodeId) {
+  if (nodeId <= 6) return 1;
+  if (nodeId <= 12) return 2;
+  if (nodeId <= 18) return 3;
+  if (nodeId <= 24) return 4;
+  if (nodeId <= 30) return 5;
+  if (nodeId <= 36) return 6;
+  if (nodeId <= 42) return 7;
+  if (nodeId <= 48) return 8;
+  return 9;
+}
+
+function getNodeCenter(nodeId) {
+  const el = document.querySelector(`.node[data-id="${nodeId}"]`);
+  if (!el) return null;
+  const rect = el.getBoundingClientRect();
+  const container = document.getElementById('graphContainer');
+  const containerRect = container.getBoundingClientRect();
+  return {
+    x: rect.left + rect.width/2 - containerRect.left + container.scrollLeft,
+    y: rect.top + rect.height/2 - containerRect.top + container.scrollTop
+  };
+}
+
+function drawConnections() {
+  const svg = document.getElementById('connectorSvg');
+  const container = document.getElementById('graphContainer');
+  const w = container.scrollWidth;
+  const h = container.scrollHeight;
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  svg.style.width = w + 'px';
+  svg.style.height = h + 'px';
+
+  let paths = '';
+  crossConnections.forEach(conn => {
+    const from = getNodeCenter(conn.from);
+    const to = getNodeCenter(conn.to);
+    if (!from || !to) return;
+
+    const fromPhase = getPhaseForNode(conn.from);
+    const toPhase = getPhaseForNode(conn.to);
+    const color = phaseColors[fromPhase] || '#4f8de2';
+
+    // Use curved path (cubic bezier)
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const cp1x = from.x + dx * 0.25;
+    const cp1y = from.y + dy * 0.1;
+    const cp2x = from.x + dx * 0.75;
+    const cp2y = to.y - Math.abs(dy) * 0.1;
+
+    const d = `M${from.x},${from.y} C${cp1x},${cp1y} ${cp2x},${cp2y} ${to.x},${to.y}`;
+    paths += `<path d="${d}" stroke="${color}" data-from="${conn.from}" data-to="${conn.to}">
+      <title>课${conn.from} → 课${conn.to}</title>
+    </path>`;
+  });
+
+  svg.innerHTML = paths;
+}
+
+// Draw on load and resize
+function debounce(fn, ms) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), ms);
+  };
+}
+
+window.addEventListener('load', () => {
+  setTimeout(drawConnections, 200);
+});
+window.addEventListener('resize', debounce(drawConnections, 250));
+
+// ═══════════════════════════════════════════
+//  Node Click / Hover Interactions
+// ═══════════════════════════════════════════
+
+document.querySelectorAll('.node').forEach(node => {
+  node.addEventListener('mouseenter', function() {
+    const nodeId = this.getAttribute('data-id');
+    // Highlight connected paths in SVG
+    const svg = document.getElementById('connectorSvg');
+    svg.querySelectorAll('path').forEach(path => {
+      const from = path.getAttribute('data-from');
+      const to = path.getAttribute('data-to');
+      if (from === nodeId || to === nodeId) {
+        path.style.opacity = '0.8';
+        path.style.strokeWidth = '2.5';
+        path.style.strokeDasharray = 'none';
+      } else {
+        path.style.opacity = '0.08';
+      }
+    });
+  });
+
+  node.addEventListener('mouseleave', function() {
+    const svg = document.getElementById('connectorSvg');
+    svg.querySelectorAll('path').forEach(path => {
+      path.style.opacity = '0.25';
+      path.style.strokeWidth = '1.2';
+      path.style.strokeDasharray = '5 4';
+    });
+  });
+
+  node.addEventListener('click', function() {
+    const nodeId = this.getAttribute('data-id');
+    window.location.href = `courses.html#course-${nodeId}`;
+  });
+});
+
+// ═══════════════════════════════════════════
+//  Redraw connectors on scroll
+// ═══════════════════════════════════════════
+let scrollTicking = false;
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) {
+    requestAnimationFrame(() => {
+      drawConnections();
+      scrollTicking = false;
+    });
+    scrollTicking = true;
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>博弈圆桌会 — 辩论详情</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{-webkit-tap-highlight-color:transparent;box-sizing:border-box}
+body{font-family:'Inter','Noto Serif SC',-apple-system,sans-serif;background:#09090b;color:#fafafa;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+/* ═══════════ CHAT ═══════════ */
+.chat-bubble{max-width:82%;animation:fadeIn .35s ease-out;word-wrap:break-word;font-size:15px;line-height:1.75}
+.chat-bubble.user{background:linear-gradient(135deg,#4f8de2,#3b82f6);color:#fff;border-radius:20px 20px 4px 20px}
+.chat-bubble.expert{background:#1c1c21;color:#fafafa;border:1px solid #27272a;border-radius:4px 20px 20px 20px}
+.chat-bubble.system{background:rgba(245,158,11,0.08);color:#f59e0b;border:1px solid rgba(245,158,11,0.15);border-radius:14px;max-width:90%;margin:0 auto;text-align:center;font-size:13px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.typing-indicator{display:flex;gap:4px;padding:8px 12px}
+.typing-indicator span{width:7px;height:7px;background:#71717a;border-radius:50%;animation:bounce 1.4s infinite ease-in-out}
+.typing-indicator span:nth-child(1){animation-delay:-0.32s}
+.typing-indicator span:nth-child(2){animation-delay:-0.16s}
+@keyframes bounce{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+
+/* ═══════════ HEADER ═══════════ */
+.header{background:#0f0f13;border-bottom:1px solid #27272a;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.header-back{color:#a1a1aa;font-size:1.1rem;padding:4px;transition:color .2s}
+.header-back:hover{color:#fafafa}
+.header-title{flex:1;min-width:0}
+.header-title h1{font-size:1rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.header-title p{font-size:0.7rem;color:#71717a}
+.expert-avatars{display:flex}
+.expert-avatars .ea{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;margin-left:-6px;border:2px solid #0f0f13;font-weight:700}
+.expert-avatars .ea:first-child{margin-left:0}
+
+/* ═══════════ STAGE BAR ═══════════ */
+.stage-bar{background:linear-gradient(90deg,#1c1c21,#222228);padding:10px 16px;display:flex;align-items:center;gap:6px;flex-shrink:0;overflow-x:auto}
+.stage-step{display:flex;align-items:center;gap:4px;font-size:0.7rem;white-space:nowrap;transition:all .3s}
+.stage-step .dot{width:8px;height:8px;border-radius:50%;background:#3f3f46}
+.stage-step.active .dot{background:#4f8de2;box-shadow:0 0 8px rgba(79,141,226,0.5);animation:pulse-dot 2s infinite}
+.stage-step.done .dot{background:#22c55e}
+.stage-arrow{color:#3f3f46;font-size:0.6rem;margin:0 4px}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 4px rgba(79,141,226,0.5)}50%{box-shadow:0 0 12px rgba(79,141,226,0.8)}}
+
+/* ═══════════ CHAT CONTAINER ═══════════ */
+.chat-container{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.chat-container::-webkit-scrollbar{width:4px}
+.chat-container::-webkit-scrollbar-track{background:transparent}
+.chat-container::-webkit-scrollbar-thumb{background:#3f3f46;border-radius:2px}
+
+/* ═══════════ INPUT ═══════════ */
+.input-area{background:#0f0f13;border-top:1px solid #27272a;padding:12px 16px;flex-shrink:0}
+.input-row{display:flex;gap:8px}
+.input-row input{flex:1;padding:12px 16px;background:#1c1c21;border:1px solid #27272a;border-radius:12px;color:#fafafa;font-size:0.9rem;outline:none;transition:border-color .2s}
+.input-row input:focus{border-color:#4f8de2}
+.input-row input::placeholder{color:#52525b}
+.btn-send{width:44px;height:44px;background:linear-gradient(135deg,#4f8de2,#3b82f6);border:none;border-radius:12px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.btn-send:active{transform:scale(0.9)}
+.input-hints{display:flex;gap:8px;margin-top:8px;overflow-x:auto;padding-bottom:4px}
+.input-hints button{white-space:nowrap;padding:6px 14px;background:rgba(79,141,226,0.08);border:1px solid rgba(79,141,226,0.15);border-radius:100px;color:#4f8de2;font-size:0.7rem;cursor:pointer;transition:all .2s;flex-shrink:0}
+.input-hints button:hover{background:rgba(79,141,226,0.15)}
+.input-hints button:active{background:rgba(79,141,226,0.25)}
+
+/* ═══════════ EXPERT PANEL ═══════════ */
+.expert-panel-toggle{position:fixed;right:16px;bottom:90px;width:40px;height:40px;background:#1c1c21;border:1px solid #27272a;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#4f8de2;font-size:1.1rem;cursor:pointer;z-index:50;transition:all .2s}
+.expert-panel-toggle:hover{background:#222228;border-color:#4f8de2}
+.expert-panel{position:fixed;right:16px;bottom:140px;background:#0f0f13;border:1px solid #27272a;border-radius:14px;padding:12px;width:220px;z-index:49;display:none;box-shadow:0 8px 30px rgba(0,0,0,0.5)}
+.expert-panel.show{display:block}
+.expert-panel h4{font-size:0.7rem;color:#71717a;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em}
+.expert-panel .ep-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;cursor:pointer;transition:background .2s;font-size:0.75rem}
+.expert-panel .ep-item:hover{background:#1c1c21}
+.expert-panel .ep-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;flex-shrink:0}
+.expert-panel .ep-status{width:6px;height:6px;border-radius:50%;background:#22c55e;margin-left:auto}
+</style>
+</head>
+<body>
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="header">
+  <a href="roundtable.html" class="header-back"><i class="fas fa-arrow-left"></i></a>
+  <div class="header-title">
+    <h1 id="rtTitle">加载中...</h1>
+    <p id="rtStatus">辩论准备中</p>
+  </div>
+  <div class="expert-avatars" id="expertAvatars"></div>
+</header>
+
+<!-- ═══════════ STAGE BAR ═══════════ -->
+<div class="stage-bar" id="stageBar">
+  <div class="stage-step active"><span class="dot"></span> 问题提出</div>
+  <span class="stage-arrow">→</span>
+  <div class="stage-step"><span class="dot"></span> 策略分析</div>
+  <span class="stage-arrow">→</span>
+  <div class="stage-step"><span class="dot"></span> 均衡求解</div>
+  <span class="stage-arrow">→</span>
+  <div class="stage-step"><span class="dot"></span> 实践应用</div>
+</div>
+
+<!-- ═══════════ CHAT ═══════════ -->
+<div class="chat-container" id="chatContainer">
+  <div style="text-align:center;color:#71717a;padding:48px 0">
+    <div style="font-size:2rem;margin-bottom:12px">&#9830;</div>
+    <p style="font-size:0.9rem;margin-bottom:4px">博弈圆桌会已就绪</p>
+    <p style="font-size:0.75rem">8位博弈论专家等待你的提问</p>
+  </div>
+</div>
+
+<!-- ═══════════ EXPERT PANEL ═══════════ -->
+<div class="expert-panel-toggle" onclick="toggleExpertPanel()" title="查看专家团"><i class="fas fa-users"></i></div>
+<div class="expert-panel" id="expertPanel">
+  <h4>博弈专家团 (8位)</h4>
+  <div id="expertList"></div>
+</div>
+
+<!-- ═══════════ INPUT ═══════════ -->
+<div class="input-area">
+  <div class="input-row">
+    <input id="msgInput" type="text" placeholder="向专家团提问或参与辩论...">
+    <button class="btn-send" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+  <div class="input-hints" id="quickHints"></div>
+</div>
+
+<script>
+// ═══════════ EXPERTS ═══════════
+const EXPERTS = {
+  'nash': { name:'约翰·纳什', title:'博弈均衡大师', avatar:'&#9822;', color:'#4f8de2', bg:'rgba(79,141,226,0.15)', desc:'纳什均衡理论创始人，1994年诺贝尔经济学奖得主' },
+  'schelling': { name:'托马斯·谢林', title:'冲突策略家', avatar:'&#9818;', color:'#f59e0b', bg:'rgba(245,158,11,0.15)', desc:'冲突与合作理论，2005年诺贝尔经济学奖得主' },
+  'axelrod': { name:'罗伯特·阿克塞尔罗德', title:'合作演化专家', avatar:'&#9819;', color:'#22c55e', bg:'rgba(34,197,94,0.15)', desc:'《合作的进化》作者，以牙还牙策略发现者' },
+  'selten': { name:'莱因哈德·泽尔腾', title:'子博弈完美大师', avatar:'&#9820;', color:'#a78bfa', bg:'rgba(167,139,250,0.15)', desc:'子博弈精炼均衡，1994年诺贝尔经济学奖得主' },
+  'ostrom': { name:'埃莉诺·奥斯特罗姆', title:'公共资源治理', avatar:'&#9824;', color:'#f472b6', bg:'rgba(244,114,182,0.15)', desc:'公地治理理论，2009年诺贝尔经济学奖得主' },
+  'vonneumann': { name:'冯·诺依曼', title:'博弈论之父', avatar:'&#9821;', color:'#2dd4bf', bg:'rgba(45,212,191,0.15)', desc:'极小极大定理，博弈论数学基础奠基人' },
+  'behavioral': { name:'丹尼尔·卡尼曼', title:'行为经济学视角', avatar:'&#9827;', color:'#fb923c', bg:'rgba(251,146,60,0.15)', desc:'前景理论，有限理性，2002年诺贝尔经济学奖得主' },
+  'mechanism': { name:'里奥尼德·赫维茨', title:'机制设计师', avatar:'&#9829;', color:'#e879f9', bg:'rgba(232,121,249,0.15)', desc:'机制设计理论开创者，2007年诺贝尔经济学奖得主' },
+  'evolutionary': { name:'约翰·梅纳德·史密斯', title:'进化博弈先驱', avatar:'&#9830;', color:'#38bdf8', bg:'rgba(56,189,248,0.15)', desc:'进化稳定策略(ESS)，将博弈论引入生物学' }
+};
+
+// Expert avatars for header
+const EXPERT_COLORS = ['#4f8de2','#f59e0b','#22c55e','#a78bfa','#f472b6','#2dd4bf','#fb923c','#e879f9'];
+const EXPERT_EMOJIS = ['♞','♛','♚','♠','♣','♟','♦','♥'];
+
+// ═══════════ ROUNDTABLE LOADING ═══════════
+let currentRT = null;
+let roundtableId = null;
+
+function getParam(name) {
+  const url = new URL(window.location.href);
+  return url.searchParams.get(name);
+}
+
+function loadRoundtable() {
+  roundtableId = getParam('id');
+  
+  // Try localStorage first
+  const cached = localStorage.getItem('gt_current_roundtable');
+  if (cached) {
+    try { currentRT = JSON.parse(cached); } catch(e) {}
+  }
+  
+  // If not found or ID mismatch, search full list
+  if (!currentRT || (roundtableId && currentRT.id != roundtableId)) {
+    const stored = localStorage.getItem('gt_roundtables');
+    if (stored) {
+      const list = JSON.parse(stored);
+      currentRT = list.find(r => r.id == roundtableId) || list[0];
+    }
+  }
+  
+  // Fallback default
+  if (!currentRT) {
+    currentRT = { id:1, phase:1, title:'囚徒困境辩论', desc:'讨论囚徒困境中的合作可能性', experts:['纳什','阿克塞尔罗德','行为经济学家'] };
+  }
+  
+  document.getElementById('rtTitle').textContent = currentRT.title;
+  
+  const msgCount = getMessageCount();
+  document.getElementById('rtStatus').textContent = msgCount > 0 ? `已展开 ${msgCount} 轮论战` : '辩论准备就绪';
+  
+  // Render expert avatars
+  const avatarsDiv = document.getElementById('expertAvatars');
+  const experts = currentRT.experts || ['纳什','冯·诺依曼'];
+  avatarsDiv.innerHTML = experts.slice(0,5).map((name,i) => 
+    `<div class="ea" style="background:${EXPERT_COLORS[i]};color:#fff">${EXPERT_EMOJIS[i]}</div>`
+  ).join('') + (experts.length > 5 ? `<div class="ea" style="background:#3f3f46;color:#71717a;font-size:0.6rem">+${experts.length-5}</div>` : '');
+  
+  // Render expert panel
+  const panelDiv = document.getElementById('expertList');
+  const allExpertKeys = Object.keys(EXPERTS);
+  panelDiv.innerHTML = allExpertKeys.map((key,i) => `
+    <div class="ep-item" onclick="tagExpert('${EXPERTS[key].name}')">
+      <div class="ep-avatar" style="background:${EXPERTS[key].bg};color:${EXPERTS[key].color}">${EXPERTS[key].avatar}</div>
+      <div><div style="font-weight:600;font-size:0.75rem">${EXPERTS[key].name}</div><div style="font-size:0.6rem;color:#71717a">${EXPERTS[key].title}</div></div>
+      <div class="ep-status"></div>
+    </div>
+  `).join('');
+  
+  // Quick hints
+  updateQuickHints();
+}
+
+function getMessageCount() {
+  const msgs = localStorage.getItem(`gt_messages_${currentRT?.id}`);
+  return msgs ? JSON.parse(msgs).length : 0;
+}
+
+// ═══════════ QUICK HINTS ═══════════
+function updateQuickHints() {
+  const phase = currentRT?.phase || 1;
+  const hintsByPhase = {
+    1: ['囚徒困境中为什么双方都选择背叛？','纳什均衡一定是最优解吗？','如何从博弈矩阵中找到均衡？'],
+    2: ['混合策略均衡有什么实际应用？','零和博弈和非零和博弈的本质区别？','谢林的"承诺"理论怎么理解？'],
+    3: ['进化稳定策略和纳什均衡的关系？','"以牙还牙"为什么能成功？','群体选择能解释利他行为吗？'],
+    4: ['人为什么在最后通牒博弈中拒绝不公平分配？','损失厌恶如何影响博弈决策？','框架效应在谈判中如何运用？'],
+    5: ['VCG拍卖为什么是激励相容的？','如何防止投标人串通？','双边市场中的机制设计有何特殊？'],
+    6: ['公地悲剧有解吗？','碳排放权交易的有效性如何？','寡头竞争中的价格战是囚徒困境吗？'],
+    7: ['核威慑的逻辑是博弈论吗？','国际条约为什么常常失效？','选举制度设计中的博弈智慧？'],
+    8: ['恋爱中谁先表白是博弈问题？','工资谈判的最佳策略？','排队插队为什么能成功？'],
+    9: ['AI多智能体系统中会出现纳什均衡吗？','强化学习能发现新的均衡策略吗？','生成式AI会改变博弈规则吗？']
+  };
+  const hints = hintsByPhase[phase] || hintsByPhase[1];
+  document.getElementById('quickHints').innerHTML = hints.map(h => 
+    `<button onclick="quickAsk('${h.replace(/'/g,"\\'")}')">${h}</button>`
+  ).join('');
+}
+
+function quickAsk(question) {
+  document.getElementById('msgInput').value = question;
+  sendMessage();
+}
+
+// ═══════════ MESSAGES ═══════════
+function getStorageKey() { return `gt_messages_${currentRT?.id || 'default'}`; }
+function loadMessages() {
+  const key = getStorageKey();
+  const msgs = JSON.parse(localStorage.getItem(key) || '[]');
+  const container = document.getElementById('chatContainer');
+  container.innerHTML = '';
+  
+  if (msgs.length === 0) {
+    // Welcome message
+    const welcomeMsg = {
+      role: 'system',
+      content: `&#9830; 博弈圆桌会已开启 — 8位博弈论专家围绕「${currentRT?.title || '当前议题'}」展开辩论。请提出你的问题或观点，专家团将依次回应。`,
+      time: new Date().toISOString()
+    };
+    renderMessage(welcomeMsg);
+    
+    // Opening statement
+    setTimeout(() => {
+      const opening = {
+        role: 'nash',
+        content: `欢迎来到博弈圆桌会。我是约翰·纳什。今天我们讨论的核心议题是：「${currentRT?.title || '博弈论核心问题'}」。我已准备好从非合作博弈和均衡分析的角度参与辩论。请提出你的问题，我们开始吧。`,
+        time: new Date().toISOString()
+      };
+      renderMessage(opening);
+      saveMessage(opening);
+    }, 800);
+  } else {
+    msgs.forEach(m => renderMessage(m));
+  }
+  scrollToBottom();
+}
+
+function saveMessage(msg) {
+  const key = getStorageKey();
+  const msgs = JSON.parse(localStorage.getItem(key) || '[]');
+  msgs.push(msg);
+  localStorage.setItem(key, JSON.stringify(msgs));
+  
+  // Update message count in header
+  document.getElementById('rtStatus').textContent = `已展开 ${msgs.length} 轮论战`;
+}
+
+function renderMessage(msg) {
+  const container = document.getElementById('chatContainer');
+  const div = document.createElement('div');
+  
+  if (msg.role === 'user') {
+    div.className = 'flex justify-end';
+    div.innerHTML = `
+      <div class="chat-bubble user px-4 py-3">
+        <div>${msg.content}</div>
+        <div class="text-right text-xs mt-1 opacity-60">${formatTime(msg.time)}</div>
+      </div>`;
+  } else if (msg.role === 'system') {
+    div.className = 'flex justify-center';
+    div.innerHTML = `
+      <div class="chat-bubble system px-4 py-2">
+        <div>${msg.content}</div>
+        <div class="text-xs mt-1 opacity-60">${formatTime(msg.time)}</div>
+      </div>`;
+  } else {
+    const expert = EXPERTS[msg.role] || { name: msg.role, avatar: '&#9830;', color: '#4f8de2', bg: 'rgba(79,141,226,0.1)' };
+    div.className = 'flex justify-start';
+    div.innerHTML = `
+      <div class="chat-bubble expert px-4 py-3">
+        <div class="flex items-center gap-2 mb-2">
+          <div style="width:26px;height:26px;border-radius:50%;background:${expert.bg};color:${expert.color};display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700">${expert.avatar}</div>
+          <div>
+            <div style="font-size:0.8rem;font-weight:700;color:${expert.color}">${expert.name}</div>
+            <div style="font-size:0.6rem;color:#71717a">${expert.title}</div>
+          </div>
+        </div>
+        <div>${msg.content.replace(/\n/g,'<br>')}</div>
+        <div class="text-right text-xs mt-1 opacity-40">${formatTime(msg.time)}</div>
+      </div>`;
+  }
+  container.appendChild(div);
+  scrollToBottom();
+}
+
+function scrollToBottom() {
+  const container = document.getElementById('chatContainer');
+  setTimeout(() => { container.scrollTop = container.scrollHeight; }, 100);
+}
+
+function formatTime(time) {
+  if (!time) return '';
+  const d = new Date(time);
+  return d.toLocaleTimeString('zh-CN', { hour:'2-digit', minute:'2-digit' });
+}
+
+// ═══════════ SEND MESSAGE ═══════════
+let isTyping = false;
+
+function sendMessage() {
+  const input = document.getElementById('msgInput');
+  const content = input.value.trim();
+  if (!content || isTyping) return;
+  
+  input.value = '';
+  
+  // User message
+  const userMsg = { role:'user', content, time: new Date().toISOString() };
+  renderMessage(userMsg);
+  saveMessage(userMsg);
+  
+  // Typing indicator
+  showTyping();
+  isTyping = true;
+  
+  // Generate expert response
+  setTimeout(() => {
+    hideTyping();
+    const expertResp = generateExpertResponse(content);
+    renderMessage(expertResp);
+    saveMessage(expertResp);
+    isTyping = false;
+    
+    // Advance stage occasionally
+    maybeAdvanceStage();
+  }, 1500 + Math.random() * 1500);
+}
+
+function showTyping() {
+  const container = document.getElementById('chatContainer');
+  const div = document.createElement('div');
+  div.id = 'typingIndicator';
+  div.className = 'flex justify-start';
+  div.innerHTML = `
+    <div class="chat-bubble expert px-4 py-3">
+      <div style="font-size:0.7rem;color:#71717a;margin-bottom:4px">专家团思考中...</div>
+      <div class="typing-indicator"><span></span><span></span><span></span></div>
+    </div>`;
+  container.appendChild(div);
+  scrollToBottom();
+}
+
+function hideTyping() {
+  const el = document.getElementById('typingIndicator');
+  if (el) el.remove();
+}
+
+function tagExpert(name) {
+  const input = document.getElementById('msgInput');
+  input.value = `@${name} ` + input.value;
+  input.focus();
+  toggleExpertPanel();
+}
+
+function toggleExpertPanel() {
+  document.getElementById('expertPanel').classList.toggle('show');
+}
+
+// ═══════════ EXPERT RESPONSE GENERATION ═══════════
+function generateExpertResponse(content) {
+  const lower = content.toLowerCase();
+  let expertKey, response;
+  
+  // Keyword matching for expert selection
+  if (lower.includes('囚徒') || lower.includes('困境') || lower.includes('均衡') || lower.includes('纳什')) {
+    expertKey = 'nash';
+    response = `关于${extractTopic(content)}，从非合作博弈的角度来看，纳什均衡的核心在于：每个参与者都在给定他人策略的情况下选择了最优反应。但囚徒困境揭示了一个深刻的矛盾——个体理性的选择会导致集体非最优的结果。\n\n关键条件是：策略必须是相互最优反应。在囚徒困境中，(背叛,背叛)是唯一的纳什均衡，尽管(合作,合作)对双方都更好。这就是"个体理性与集体理性冲突"的经典写照。`;
+  } else if (lower.includes('冲突') || lower.includes('威慑') || lower.includes('承诺') || lower.includes('核')) {
+    expertKey = 'schelling';
+    response = `谈到${extractTopic(content)}，这正是冲突策略的核心问题。我在《冲突的策略》中指出：在博弈中，有时限制自己的选择反而能增强谈判地位——这就是"承诺"的悖论。\n\n例如烧掉自己撤退的桥梁，虽然看似减少了选项，但向对方传递了"我别无选择"的强硬信号，反而迫使对方让步。核威慑也正是基于这种逻辑——"确保相互毁灭"(MAD)之所以有效，恰恰因为它是一个不可撤销的承诺。`;
+  } else if (lower.includes('合作') || lower.includes('以牙还牙') || lower.includes('进化') || lower.includes('重复')) {
+    expertKey = 'axelrod';
+    response = `关于${extractTopic(content)}中合作演化的问题，我在"重复囚徒困境计算机竞赛"中有一些发现。以牙还牙(Tit-for-Tat)之所以胜出，因为它具备四个关键特征：\n\n1. 善良性——从不首先背叛\n2. 报复性——被背叛后立即反击\n3. 宽容性——对手恢复合作后立即原谅\n4. 清晰性——策略简单易懂，对方能预测\n\n但需要注意：在噪音环境中，带有一定宽容度的"宽宏以牙还牙"表现更优。`;
+  } else if (lower.includes('完美') || lower.includes('子博弈') || lower.includes('精炼') || lower.includes('颤抖')) {
+    expertKey = 'selten';
+    response = `针对${extractTopic(content)}，我提出一个关键问题：这个均衡是否经得起"次博弈精炼"的检验？很多纳什均衡依赖于不可信的威胁——即如果博弈真的进行到那个子博弈，参与者不会真的执行那个策略。\n\n通过"逆向归纳法"，我们可以剔除包含不可信威胁的均衡。而"颤抖手精炼均衡"则进一步要求：即使参与者有极小概率犯错（手抖），均衡策略仍然是最优的。`;
+  } else if (lower.includes('公地') || lower.includes('公共') || lower.includes('资源') || lower.includes('治理') || lower.includes('社区')) {
+    expertKey = 'ostrom';
+    response = `关于${extractTopic(content)}中的公共资源治理问题，我通过全球数千个案例研究发现了与"公地悲剧"不同的结论。社区并非注定走向资源枯竭，关键在于制度设计的8项原则：\n\n明确的边界、规则与本地条件匹配、集体决策参与、有效监督、分级制裁、冲突解决机制、组织权认可、以及嵌套式治理结构。\n\n气候问题确实是终极挑战——但它不是无解的。`;
+  } else if (lower.includes('零和') || lower.includes('极小极大') || lower.includes('数学') || lower.includes('冯') || lower.includes('基础')) {
+    expertKey = 'vonneumann';
+    response = `从数学基础来看，${extractTopic(content)}可以形式化为一个策略型博弈。我在1928年证明了极小极大定理：在任何二人零和博弈中，双方都存在一个最优混合策略，使得一方的最小最大收益等于另一方的最大最小损失。\n\n这个定理奠定了博弈论的数学基础。但对于非零和博弈（如囚徒困境），极小极大定理不再直接适用，需要纳什的扩展——这就是纳什均衡的由来。`;
+  } else if (lower.includes('行为') || lower.includes('心理') || lower.includes('偏见') || lower.includes('损失') || lower.includes('非理性') || lower.includes('公平')) {
+    expertKey = 'behavioral';
+    response = `从行为经济学角度看${extractTopic(content)}，传统博弈论假设的"完全理性"在现实中很难成立。前景理论指出：人们对损失的敏感度是收益的约2倍（损失厌恶），而且在评估选项时依赖参考点而非绝对价值。\n\n最后通牒博弈实验就是最好的例证——回应者拒绝不公平的分配（比如只给20%），即使这意味着自己什么也得不到。这不仅违背了理性自利假设，更说明了"公平偏好"在人类决策中的核心地位。`;
+  } else if (lower.includes('拍卖') || lower.includes('机制') || lower.includes('激励') || lower.includes('设计') || lower.includes('vcg')) {
+    expertKey = 'mechanism';
+    response = `设计一个良好的${extractTopic(content)}机制需要满足三个核心条件：激励相容（说真话是最优策略）、个体理性（参与比不参与好）、以及预算平衡。\n\nVCG拍卖（Vickrey-Clarke-Groves）是少数同时满足这些条件的机制之一，但它对投标人的计算能力要求很高。实践中，Google、Meta等公司的广告竞价采用的是广义二价拍卖(GSP)——它不满足严格的激励相容，但在实践中表现出色。`;
+  } else {
+    // Default: pick a random expert
+    const keys = Object.keys(EXPERTS);
+    expertKey = keys[Math.floor(Math.random() * keys.length)];
+    const topics = ['策略思维','博弈均衡','合作演化','机制设计','行为经济学'];
+    const t = topics[Math.floor(Math.random() * topics.length)];
+    response = `这是一个很有深度的视角。从${t}的角度来看，${extractTopic(content)}涉及到一个根本性的博弈论问题：参与者的策略选择如何在互动中达到均衡？\n\n我的建议是：先明确博弈的要素——参与者、策略空间、收益函数和信息结构。只有清晰定义了这些要素，我们才能进一步分析均衡的存在性、唯一性和效率。`;
+  }
+  
+  return { role: expertKey, content: response, time: new Date().toISOString() };
+}
+
+function extractTopic(content) {
+  // Simple topic extraction
+  if (content.includes('囚徒')) return '囚徒困境';
+  if (content.includes('纳什')) return '纳什均衡';
+  if (content.includes('拍卖')) return '拍卖机制';
+  if (content.includes('公地')) return '公地难题';
+  if (content.includes('进化') || content.includes('演化')) return '演化博弈';
+  if (content.includes('威慑') || content.includes('核')) return '冲突与威慑';
+  if (content.includes('合作')) return '合作问题';
+  if (content.includes('博弈') || content.includes('策略')) return '策略博弈';
+  return '这个问题';
+}
+
+// ═══════════ STAGE ADVANCEMENT ═══════════
+function maybeAdvanceStage() {
+  const msgs = JSON.parse(localStorage.getItem(getStorageKey()) || '[]');
+  const steps = document.querySelectorAll('.stage-step');
+  
+  if (msgs.length >= 4) { steps[0].classList.replace('active','done'); steps[1].classList.add('active'); }
+  if (msgs.length >= 8) { steps[1].classList.replace('active','done'); steps[2].classList.add('active'); }
+  if (msgs.length >= 12) { steps[2].classList.replace('active','done'); steps[3].classList.add('active'); }
+}
+
+// ═══════════ INIT ═══════════
+document.addEventListener('DOMContentLoaded', () => {
+  loadRoundtable();
+  loadMessages();
+  
+  document.getElementById('msgInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendMessage();
+  });
+  
+  // Close expert panel on outside click
+  document.addEventListener('click', function(e) {
+    const panel = document.getElementById('expertPanel');
+    const toggle = document.querySelector('.expert-panel-toggle');
+    if (panel.classList.contains('show') && !panel.contains(e.target) && !toggle.contains(e.target)) {
+      panel.classList.remove('show');
+    }
+  });
+});
+</script>
+</body>
+</html>

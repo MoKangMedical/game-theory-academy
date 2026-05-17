@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>博弈圆桌会 — 博弈研究院</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════ RESET & VARIABLES ═══════════ */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#09090b;--bg2:#0f0f13;--bg3:#18181b;
+  --card:#1c1c21;--card2:#222228;--card3:#2a2a32;
+  --border:#27272a;--border2:#3f3f46;
+  --text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
+  --blue:#4f8de2;--blue2:#7aafe8;--blue-glow:rgba(79,141,226,0.15);
+  --green:#22c55e;--amber:#f59e0b;--purple:#a78bfa;
+  --serif:'Noto Serif SC',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --radius:16px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+/* ═══════════ NAV ═══════════ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(9,9,11,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:0.875rem;color:var(--text2);transition:color .2s;font-weight:500}
+.nav-links a:hover,.nav-links a.active{color:var(--blue)}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* ═══════════ PAGE HEADER ═══════════ */
+.page-header{padding:120px 0 60px;text-align:center}
+.page-header h1{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);margin-bottom:16px}
+.page-header h1 span{color:var(--blue)}
+.page-header p{color:var(--text2);font-size:1.1rem;max-width:600px;margin:0 auto}
+
+/* ═══════════ STATS ═══════════ */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center}
+.stat-card .num{font-size:2rem;font-weight:800;color:var(--blue);font-family:var(--serif)}
+.stat-card .label{font-size:0.8rem;color:var(--text3);margin-top:4px}
+@media(max-width:768px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+
+/* ═══════════ ROUNDTABLE CARDS ═══════════ */
+.section-title{font-size:1.3rem;font-weight:700;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.section-title i{color:var(--blue)}
+.roundtable-list{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:48px}
+.rt-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+.rt-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 30px var(--blue-glow)}
+.rt-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px}
+.rt-card.phase-1::before{background:var(--blue)}.rt-card.phase-2::before{background:var(--green)}
+.rt-card.phase-3::before{background:var(--purple)}.rt-card.phase-4::before{background:var(--amber)}
+.rt-card.phase-5::before{background:#f472b6}.rt-card.phase-6::before{background:#2dd4bf}
+.rt-card.phase-7::before{background:#fb923c}.rt-card.phase-8::before{background:#a78bfa}
+.rt-card.phase-9::before{background:#f87171}
+
+.rt-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.rt-phase{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:100px}
+.rt-phase.active{background:rgba(34,197,94,0.15);color:var(--green)}
+.rt-phase.hot{background:rgba(245,158,11,0.15);color:var(--amber)}
+.rt-phase.new{background:rgba(79,141,226,0.15);color:var(--blue)}
+
+.rt-title{font-size:1.05rem;font-weight:700;margin-bottom:8px;line-height:1.4}
+.rt-desc{font-size:0.85rem;color:var(--text2);margin-bottom:16px;line-height:1.6}
+.rt-meta{display:flex;gap:16px;font-size:0.75rem;color:var(--text3)}
+.rt-meta i{margin-right:4px}
+.rt-experts{display:flex;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.rt-experts .avatar-row{display:flex;margin-right:10px}
+.rt-experts .avatar{width:32px;height:32px;border-radius:50%;background:var(--card3);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.8rem;margin-left:-8px}
+.rt-experts .avatar:first-child{margin-left:0}
+.rt-experts .expert-names{font-size:0.75rem;color:var(--text3);flex:1}
+
+/* ═══════════ NEW ROUNDTABLE SECTION ═══════════ */
+.new-rt-section{background:var(--card);border:2px dashed var(--border2);border-radius:var(--radius);padding:40px;text-align:center;margin-bottom:60px}
+.new-rt-section h3{font-size:1.2rem;margin-bottom:8px}
+.new-rt-section p{color:var(--text2);font-size:0.9rem;margin-bottom:20px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:var(--radius-sm);font-weight:600;font-size:0.95rem;transition:all .25s;border:none;cursor:pointer}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 8px 30px var(--blue-glow)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ═══════════ CREATE MODAL ═══════════ */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);padding:32px;max-width:500px;width:100%}
+.modal h3{font-size:1.2rem;margin-bottom:20px}
+.modal label{display:block;font-size:0.8rem;color:var(--text2);margin-bottom:6px}
+.modal input,.modal textarea,.modal select{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.9rem;margin-bottom:16px;font-family:var(--sans);resize:vertical}
+.modal textarea{min-height:100px}
+.modal select{appearance:none;cursor:pointer}
+.modal-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:8px}
+
+/* ═══════════ FOOTER ═══════════ */
+.footer{padding:40px 0;text-align:center;color:var(--text3);font-size:0.8rem;border-top:1px solid var(--border)}
+.footer a{color:var(--blue)}
+
+@media(max-width:768px){
+  .roundtable-list{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">&#9830; 博弈研究院</a>
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="courses.html">课程</a>
+      <a href="knowledge-graph.html">知识图谱</a>
+      <a href="roundtable.html" class="active">博弈圆桌会</a>
+      <a href="user.html">用户中心</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════ PAGE HEADER ═══════════ -->
+<section class="page-header">
+  <h1>博弈<span>圆桌会</span></h1>
+  <p>8位博弈论AI专家齐聚圆桌，就博弈论核心议题展开深度论战。你可以提问、质疑、参与辩论。</p>
+</section>
+
+<div class="container">
+  <!-- ═══════════ STATS ═══════════ -->
+  <div class="stats-row">
+    <div class="stat-card"><div class="num" id="totalCount">9</div><div class="label">辩论议题</div></div>
+    <div class="stat-card"><div class="num" id="activeCount">5</div><div class="label">进行中</div></div>
+    <div class="stat-card"><div class="num">8</div><div class="label">专家席位</div></div>
+    <div class="stat-card"><div class="num" id="msgCount">486</div><div class="label">总论战条数</div></div>
+  </div>
+
+  <!-- ═══════════ ROUNDTABLE LIST ═══════════ -->
+  <div class="section-title"><i>&#9670;</i> 当前辩论议题</div>
+  <div class="roundtable-list" id="roundtableList"></div>
+
+  <!-- ═══════════ NEW ROUNDTABLE ═══════════ -->
+  <div class="new-rt-section">
+    <h3>发起新辩论</h3>
+    <p>从50门课程话题中选题，或自定义一个博弈论议题，8位专家将立即加入辩论。</p>
+    <button class="btn btn-primary" onclick="showCreateModal()">&#43; 发起新的圆桌辩论</button>
+  </div>
+</div>
+
+<!-- ═══════════ CREATE MODAL ═══════════ -->
+<div class="modal-overlay" id="createModal">
+  <div class="modal">
+    <h3>发起新辩论议题</h3>
+    <label>辩论主题</label>
+    <input type="text" id="topicInput" placeholder="例如：囚徒困境中合作能否自发涌现？">
+    <label>所属阶段</label>
+    <select id="phaseSelect">
+      <option value="1">Phase 1 · 博弈论基础</option>
+      <option value="2">Phase 2 · 经典博弈理论</option>
+      <option value="3">Phase 3 · 进化博弈论</option>
+      <option value="4">Phase 4 · 行为博弈论</option>
+      <option value="5">Phase 5 · 机制设计</option>
+      <option value="6">Phase 6 · 经济学博弈</option>
+      <option value="7">Phase 7 · 政治博弈</option>
+      <option value="8">Phase 8 · 日常生活博弈</option>
+      <option value="9">Phase 9 · 前沿探索</option>
+    </select>
+    <label>背景描述（可选）</label>
+    <textarea id="descInput" placeholder="简要说明这场辩论要探讨的核心问题..."></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="hideCreateModal()">取消</button>
+      <button class="btn btn-primary" onclick="createRoundtable()">发起辩论</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>&copy; 2026 博弈研究院 · Game Theory Academy · <a href="https://game.medroundtable.cn">game.medroundtable.cn</a></p>
+</div>
+
+<script>
+// ═══════════ DEFAULT ROUNDTABLES ═══════════
+const defaultRoundtables = [
+  { id:1, phase:1, title:'囚徒困境：为什么理性个体导致集体非最优？', desc:'从经典囚徒困境出发，探讨个体理性与集体理性的冲突，以及在什么条件下合作可以自发涌现。', status:'active', experts:['纳什','冯·诺依曼','行为经济学家'], messages:87, created:'2026-05-01' },
+  { id:2, phase:2, title:'纳什均衡在现实市场中真的成立吗？', desc:'拍卖市场、寡头竞争、平台定价——纳什均衡是描述现实还是理想模型？专家团将围绕真实商业案例展开交锋。', status:'active', experts:['纳什','泽尔腾','机制设计师'], messages:124, created:'2026-05-03' },
+  { id:3, phase:3, title:'"以牙还牙"是最优策略吗？Axelrod竞赛的启示', desc:'重温Axelrod的经典计算机竞赛，讨论噪音环境下的宽容策略、群体演化中的合作传播机制。', status:'active', experts:['阿克塞尔罗德','进化博弈专家','谢林'], messages:63, created:'2026-05-05' },
+  { id:4, phase:4, title:'最后通牒博弈：人类为什么不按理性出牌？', desc:'行为经济学实验反复证明人类并非纯粹理性——公平偏好、报复心理、社会规范如何塑造博弈行为？', status:'hot', experts:['行为经济学家','纳什','奥斯特罗姆'], messages:156, created:'2026-05-07' },
+  { id:5, phase:5, title:'VCG拍卖 vs 英式拍卖：哪种机制设计更优？', desc:'从频谱拍卖到广告竞价，不同拍卖机制的效率、收益、激励相容性对比分析。', status:'active', experts:['机制设计师','冯·诺依曼','泽尔腾'], messages:42, created:'2026-05-09' },
+  { id:6, phase:6, title:'公地悲剧：Ostrom的方案能解决气候问题吗？', desc:'全球气候谈判是终极公地困境。奥斯特罗姆的自主治理原则能否从社区池塘扩展到地球尺度？', status:'active', experts:['奥斯特罗姆','谢林','阿克塞尔罗德'], messages:98, created:'2026-05-10' },
+  { id:7, phase:7, title:'核威慑博弈：MAD理论还适用吗？', desc:'谢林的冲突策略理论在AI武器化时代的适用性——从承诺的可信性到升级阶梯的模糊化。', status:'hot', experts:['谢林','冯·诺依曼','纳什'], messages:211, created:'2026-05-11' },
+  { id:8, phase:8, title:'婚姻与博弈论：承诺是一种策略选择吗？', desc:'从匹配理论到信号博弈，用博弈论框架分析亲密关系中的承诺、信任与合作演化。', status:'new', experts:['行为经济学家','阿克塞尔罗德','纳什'], messages:27, created:'2026-05-13' },
+  { id:9, phase:9, title:'AI vs 人类：算法博弈论能否超越纳什均衡？', desc:'多智能体强化学习、生成式AI的策略涌现——当博弈参与者不再是人类，均衡概念需要重写吗？', status:'new', experts:['机制设计师','泽尔腾','冯·诺依曼'], messages:18, created:'2026-05-15' }
+];
+
+const phaseNames = {
+  1:'博弈论基础',2:'经典博弈理论',3:'进化博弈论',4:'行为博弈论',5:'机制设计',6:'经济学博弈',7:'政治博弈',8:'日常生活博弈',9:'前沿探索'
+};
+
+function getStatusLabel(s) {
+  const map = { active:'火热辩论中', hot:'🔥 激烈交锋', new:'新议题' };
+  return map[s] || s;
+}
+
+function getStatusClass(s) {
+  const map = { active:'active', hot:'hot', new:'new' };
+  return map[s] || 'active';
+}
+
+function getPhaseClass(p) { return 'phase-'+p; }
+
+// ═══════════ RENDER ═══════════
+function loadRoundtables() {
+  const stored = localStorage.getItem('gt_roundtables');
+  const list = stored ? JSON.parse(stored) : defaultRoundtables;
+  const container = document.getElementById('roundtableList');
+  
+  container.innerHTML = list.map(rt => `
+    <div class="rt-card ${getPhaseClass(rt.phase)}" onclick="openRoundtable(${rt.id})">
+      <div class="rt-header">
+        <span class="rt-phase ${getStatusClass(rt.status)}">${getStatusLabel(rt.status)}</span>
+        <span style="font-size:0.7rem;color:var(--text3)">Phase ${rt.phase}</span>
+      </div>
+      <div class="rt-title">${rt.title}</div>
+      <div class="rt-desc">${rt.desc}</div>
+      <div class="rt-meta">
+        <span><i>&#9993;</i> ${rt.messages} 条论战</span>
+        <span><i>&#128197;</i> ${rt.created}</span>
+      </div>
+      <div class="rt-experts">
+        <div class="avatar-row">
+          ${rt.experts.slice(0,4).map((_,i) => `<div class="avatar" style="background:rgba(79,141,226,0.${2+i});font-size:0.7rem">&#9679;</div>`).join('')}
+        </div>
+        <div class="expert-names">${rt.experts.join(' · ')} 在线</div>
+      </div>
+    </div>
+  `).join('');
+
+  // 更新统计
+  document.getElementById('totalCount').textContent = list.length;
+  document.getElementById('activeCount').textContent = list.filter(r=>r.status==='active'||r.status==='hot').length;
+  const totalMsgs = list.reduce((s,r)=>s+r.messages,0);
+  document.getElementById('msgCount').textContent = totalMsgs;
+}
+
+// ═══════════ OPEN ROUNDTABLE ═══════════
+function openRoundtable(id) {
+  const stored = localStorage.getItem('gt_roundtables');
+  const list = stored ? JSON.parse(stored) : defaultRoundtables;
+  const rt = list.find(r => r.id == id);
+  if (rt) {
+    localStorage.setItem('gt_current_roundtable', JSON.stringify(rt));
+  }
+  window.location.href = 'roundtable-detail.html?id=' + id;
+}
+
+// ═══════════ CREATE ═══════════
+function showCreateModal() { document.getElementById('createModal').classList.add('show'); }
+function hideCreateModal() { document.getElementById('createModal').classList.remove('show'); }
+
+function createRoundtable() {
+  const topic = document.getElementById('topicInput').value.trim();
+  const phase = parseInt(document.getElementById('phaseSelect').value);
+  const desc = document.getElementById('descInput').value.trim();
+  
+  if (!topic) { alert('请输入辩论主题'); return; }
+  
+  const stored = localStorage.getItem('gt_roundtables');
+  const list = stored ? JSON.parse(stored) : [...defaultRoundtables];
+  const newId = Math.max(...list.map(r=>r.id), 0) + 1;
+  
+  const expertPool = ['纳什','谢林','阿克塞尔罗德','泽尔腾','奥斯特罗姆','冯·诺依曼','行为经济学家','机制设计师'];
+  const shuffled = expertPool.sort(() => Math.random() - 0.5);
+  const selectedExperts = shuffled.slice(0, 3 + Math.floor(Math.random()*3));
+  
+  const newRt = {
+    id: newId, phase, title: topic, desc: desc || '自定义辩论议题',
+    status: 'new', experts: selectedExperts,
+    messages: 0, created: new Date().toISOString().split('T')[0]
+  };
+  
+  list.unshift(newRt);
+  localStorage.setItem('gt_roundtables', JSON.stringify(list));
+  
+  hideCreateModal();
+  document.getElementById('topicInput').value = '';
+  document.getElementById('descInput').value = '';
+  loadRoundtables();
+  
+  // 直接进入新辩论
+  setTimeout(() => openRoundtable(newId), 500);
+}
+
+// ═══════════ INIT ═══════════
+document.addEventListener('DOMContentLoaded', () => {
+  if (!localStorage.getItem('gt_roundtables')) {
+    localStorage.setItem('gt_roundtables', JSON.stringify(defaultRoundtables));
+  }
+  loadRoundtables();
+  document.getElementById('createModal').addEventListener('click', function(e) {
+    if (e.target === this) hideCreateModal();
+  });
+});
+</script>
+</body>
+</html>

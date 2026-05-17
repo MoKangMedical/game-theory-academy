@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>博弈研究院 — 掌握策略思维，赢得人生博弈</title>
+<meta name="description" content="基于纳什均衡、进化博弈论和行为博弈论，构建完整的策略决策框架。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════ RESET & VARIABLES ═══════════════ */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#09090b;--bg2:#0f0f13;--bg3:#18181b;
+  --card:#1c1c21;--card2:#222228;--card3:#2a2a32;
+  --border:#27272a;--border2:#3f3f46;
+  --text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
+  --blue:#4f8de2;--blue2:#7aafe8;
+  --green:#22c55e;--accent-blue:#3b82f6;--purple:#a78bfa;
+  --orange:#f59e0b;--red:#ef4444;
+  --serif:'Noto Serif SC',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --radius:16px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+
+/* ═══════════════ TYPOGRAPHY ═══════════════ */
+.serif{font-family:var(--serif)}
+h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:900;line-height:1.15;letter-spacing:-0.02em}
+h2{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;line-height:1.25;letter-spacing:-0.01em}
+h3{font-size:1.25rem;font-weight:600}
+.label{font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--blue)}
+.body-lg{font-size:1.125rem;color:var(--text2);line-height:1.8}
+.body-sm{font-size:0.875rem;color:var(--text3)}
+
+/* ═══════════════ LAYOUT ═══════════════ */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.container-sm{max-width:800px;margin:0 auto;padding:0 24px}
+.section{padding:100px 0}
+.section-sm{padding:60px 0}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:32px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:768px){
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+  .section{padding:60px 0}
+}
+
+/* ═══════════════ NAV ═══════════════ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(9,9,11,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .3s}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:8px}
+.nav-logo svg{width:28px;height:28px}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:0.875rem;color:var(--text2);transition:color .2s;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--blue);color:#fff;padding:8px 20px;border-radius:8px;font-weight:600;font-size:0.85rem;transition:all .2s}
+.nav-cta:hover{background:var(--blue2);transform:translateY(-1px)}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:var(--bg2);padding:20px;gap:16px;border-bottom:1px solid var(--border)}
+}
+.hamburger{display:none;cursor:pointer;padding:8px}
+@media(max-width:768px){.hamburger{display:block}}
+
+/* ═══════════════ HERO ═══════════════ */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:64px}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(79,141,226,0.08),transparent 70%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(59,130,246,0.05),transparent 60%)}
+.hero-content{position:relative;z-index:1;text-align:center;max-width:900px;margin:0 auto;padding:0 24px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(79,141,226,0.1);border:1px solid rgba(79,141,226,0.2);padding:6px 16px;border-radius:100px;font-size:0.8rem;color:var(--blue);margin-bottom:32px}
+.hero-badge .dot{width:6px;height:6px;background:var(--blue);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero h1{margin-bottom:24px}
+.hero h1 .hl{color:var(--blue)}
+.hero-sub{font-size:1.2rem;color:var(--text2);max-width:600px;margin:0 auto 40px;line-height:1.7}
+.hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:var(--radius-sm);font-weight:600;font-size:0.95rem;transition:all .25s;border:none;cursor:pointer}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(79,141,226,0.3)}
+.btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+.hero-stats{display:flex;justify-content:center;gap:48px;margin-top:64px;padding-top:40px;border-top:1px solid var(--border)}
+.hero-stat{text-align:center}
+.hero-stat .num{font-size:2rem;font-weight:800;color:var(--blue)}
+.hero-stat .desc{font-size:0.8rem;color:var(--text3);margin-top:4px}
+@media(max-width:768px){.hero-stats{gap:24px}.hero-stat .num{font-size:1.5rem}}
+
+/* ═══════════════ CARDS ═══════════════ */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:all .3s}
+.card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:20px}
+.card-icon.blue{background:rgba(79,141,226,0.1)}
+.card-icon.green{background:rgba(34,197,94,0.1)}
+.card-icon.accent{background:rgba(59,130,246,0.1)}
+.card-icon.purple{background:rgba(167,139,250,0.1)}
+.card-icon.orange{background:rgba(245,158,11,0.1)}
+.card h3{margin-bottom:10px}
+.card p{color:var(--text2);font-size:0.9rem;line-height:1.7}
+
+/* ═══════════════ SECTION HEADERS ═══════════════ */
+.section-header{text-align:center;max-width:700px;margin:0 auto 60px}
+.section-header .label{margin-bottom:12px}
+.section-header h2{margin-bottom:16px}
+.section-header p{color:var(--text2);font-size:1.05rem;line-height:1.7}
+
+/* ═══════════════ TIMELINE ═══════════════ */
+.wave-timeline{position:relative;padding:40px 0}
+.wave-line{position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--blue),var(--accent-blue),var(--purple))}
+.wave-item{display:flex;align-items:center;margin-bottom:40px;position:relative}
+.wave-item:nth-child(odd){flex-direction:row-reverse}
+.wave-item .wave-content{width:45%;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius)}
+.wave-item .wave-dot{width:16px;height:16px;background:var(--blue);border-radius:50%;position:absolute;left:50%;transform:translateX(-50%);z-index:2;box-shadow:0 0 20px rgba(79,141,226,0.4)}
+.wave-item .wave-content h3{color:var(--blue);font-size:1.1rem;margin-bottom:8px}
+.wave-item .wave-content .period{font-size:0.85rem;color:var(--text3);margin-bottom:12px}
+.wave-item .wave-content .driver{color:var(--text2);font-size:0.9rem}
+.wave-item .wave-content.current{border-color:var(--blue);box-shadow:0 0 40px rgba(79,141,226,0.1)}
+@media(max-width:768px){
+  .wave-line{left:20px}
+  .wave-item,.wave-item:nth-child(odd){flex-direction:row}
+  .wave-item .wave-content{width:calc(100% - 50px);margin-left:40px}
+  .wave-item .wave-dot{left:20px}
+}
+
+/* ═══════════════ PRICING ═══════════════ */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto}
+@media(max-width:900px){.pricing-grid{grid-template-columns:1fr}}
+.price-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:36px;position:relative;transition:all .3s}
+.price-card:hover{border-color:var(--border2);transform:translateY(-4px)}
+.price-card.featured{border-color:var(--blue);background:linear-gradient(180deg,rgba(79,141,226,0.05),transparent)}
+.price-card.featured::before{content:'最受欢迎';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;padding:4px 16px;border-radius:100px;font-size:0.75rem;font-weight:700}
+.price-name{font-size:0.9rem;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px}
+.price-amount{font-size:2.5rem;font-weight:900;margin-bottom:4px}
+.price-amount .unit{font-size:0.9rem;font-weight:400;color:var(--text3)}
+.price-desc{font-size:0.85rem;color:var(--text3);margin-bottom:24px}
+.price-features{list-style:none;margin-bottom:32px}
+.price-features li{padding:8px 0;font-size:0.9rem;color:var(--text2);display:flex;align-items:flex-start;gap:10px}
+.price-features li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.price-btn{display:block;width:100%;text-align:center;padding:14px;border-radius:var(--radius-sm);font-weight:600;font-size:0.95rem;transition:all .25s;border:none;cursor:pointer}
+.price-btn-primary{background:var(--blue);color:#fff}
+.price-btn-primary:hover{background:var(--blue2)}
+.price-btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.price-btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ═══════════════ COURSE ═══════════════ */
+.course-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .3s}
+.course-card:hover{border-color:var(--border2)}
+.course-num{width:56px;height:56px;background:linear-gradient(135deg,var(--blue),#3a6fc4);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:#fff;flex-shrink:0}
+.course-body{padding:24px}
+.course-body h3{margin-bottom:8px}
+.course-body p{color:var(--text2);font-size:0.9rem;line-height:1.7}
+.course-tags{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.course-tag{font-size:0.75rem;padding:4px 10px;border-radius:6px;background:var(--card3);color:var(--text3)}
+
+/* ═══════════════ QUOTE ═══════════════ */
+.quote-block{text-align:center;padding:80px 0;position:relative}
+.quote-block::before{content:'"';font-size:8rem;color:var(--blue);opacity:0.12;position:absolute;top:20px;left:50%;transform:translateX(-50%);font-family:var(--serif)}
+.quote-text{font-family:var(--serif);font-size:clamp(1.3rem,2.5vw,1.8rem);color:var(--text);max-width:700px;margin:0 auto;line-height:1.8;font-weight:400}
+.quote-author{margin-top:20px;font-size:0.9rem;color:var(--text3)}
+
+/* ═══════════════ CTA ═══════════════ */
+.cta-section{text-align:center;padding:100px 0;position:relative}
+.cta-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(79,141,226,0.06),transparent)}
+.cta-content{position:relative;z-index:1}
+.cta-content h2{margin-bottom:16px}
+.cta-content p{color:var(--text2);font-size:1.1rem;margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto}
+
+/* ═══════════════ FOOTER ═══════════════ */
+.footer{border-top:1px solid var(--border);padding:48px 0;text-align:center}
+.footer-links{display:flex;justify-content:center;gap:32px;margin-bottom:24px;flex-wrap:wrap}
+.footer-links a{font-size:0.85rem;color:var(--text3);transition:color .2s}
+.footer-links a:hover{color:var(--blue)}
+.footer-copy{font-size:0.8rem;color:var(--text3)}
+.footer-disclaimer{font-size:0.75rem;color:var(--text3);max-width:600px;margin:12px auto 0;line-height:1.6}
+
+/* ═══════════════ ANIMATIONS ═══════════════ */
+.fade-in{opacity:0;transform:translateY(20px);transition:all .6s ease-out}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="#4f8de2" stroke-width="1.5"/><path d="M6 14l5-5 4 4 7-7" stroke="#4f8de2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="14" cy="14" r="2.5" fill="#4f8de2"/></svg>
+      博弈研究院
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#theory">理论体系</a>
+      <a href="#courses">课程</a>
+      <a href="#tools">工具</a>
+      <a href="roundtable.html">博弈圆桌会</a>
+      <a href="#pricing">定价</a>
+      <a href="#pricing" class="nav-cta">开始学习</a>
+    </div>
+    <div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <svg width="24" height="24" fill="none" stroke="#a1a1aa" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> 全球博弈论研究前沿 · 2026年最新体系</div>
+    <h1 class="serif">掌握<span class="hl">策略思维</span><br>赢得人生博弈</h1>
+    <p class="hero-sub">基于纳什均衡 + 进化博弈论 + 行为博弈论 + 机制设计，构建从理论到实战的完整策略决策框架。</p>
+    <div class="hero-actions">
+      <a href="#courses" class="btn btn-primary">查看课程 →</a>
+      <a href="#tools" class="btn btn-secondary">免费体验工具</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">8位</div><div class="desc">诺奖得主理论</div></div>
+      <div class="hero-stat"><div class="num">50门</div><div class="desc">精编课程</div></div>
+      <div class="hero-stat"><div class="num">200+</div><div class="desc">经典案例</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ QUOTE ═══════════════ -->
+<div class="quote-block">
+  <div class="container-sm">
+    <p class="quote-text serif">"博弈论是关于相互依赖的决策的科学。你的最优选择取决于他人的选择。"</p>
+    <p class="quote-author">— 约翰·纳什，诺贝尔经济学奖得主，1994年</p>
+  </div>
+</div>
+
+<!-- ═══════════════ THEORY SECTION ═══════════════ -->
+<section id="theory" class="section" style="background:var(--bg2)">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">理论体系</div>
+      <h2>从纳什均衡到机制设计，一个完整的博弈论框架</h2>
+      <p>我们整合了博弈论四大核心分支，覆盖从经典理论到前沿应用的完整知识体系。无论你是学生、管理者还是决策者，都能找到适合你的博弈思维工具。</p>
+    </div>
+    <div class="grid-2">
+      <div class="card fade-in">
+        <div class="card-icon blue">🧠</div>
+        <h3>经典博弈论</h3>
+        <p>纳什均衡、囚徒困境、零和与非零和博弈。1950年纳什提出非合作博弈均衡概念，彻底改变了经济学和战略思维的分析方式。</p>
+      </div>
+      <div class="card fade-in">
+        <div class="card-icon green">🌱</div>
+        <h3>进化博弈论</h3>
+        <p>ESS进化稳定策略、复制动态方程、群体选择。梅纳德·史密斯将博弈论引入生物学，解释从动物行为到文化演化的策略动态。</p>
+      </div>
+      <div class="card fade-in">
+        <div class="card-icon accent">🧪</div>
+        <h3>行为博弈论</h3>
+        <p>有限理性、前景理论、最后通牒博弈实验。卡尼曼和特沃斯基揭示人类决策偏离理性的系统性偏差，重塑我们对策略行为的理解。</p>
+      </div>
+      <div class="card fade-in">
+        <div class="card-icon purple">⚙️</div>
+        <h3>机制设计</h3>
+        <p>拍卖理论、投票机制、市场设计、激励相容。赫维茨、马斯金和迈尔森开创了"反向博弈论"——如何设计规则以达到最优结果。</p>
+      </div>
+      <div class="card fade-in" style="grid-column:span 2">
+        <div class="card-icon orange">🔄</div>
+        <h3>博弈论应用</h3>
+        <p>商业谈判中的信号博弈、政治选举中的投票策略、战争冲突中的威慑均衡、AI对齐中的合作框架。博弈论是理解一切战略互动的通用语言，从董事会到战场，从拍卖行到自然选择。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TIMELINE ═══════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">发展史</div>
+      <h2>博弈论 · 一个世纪的智慧演化</h2>
+      <p>从1944年的奠基之作到21世纪的机制设计革命，博弈论持续重塑我们对策略互动的理解。</p>
+    </div>
+    <div class="wave-timeline">
+      <div class="wave-line"></div>
+      <div class="wave-item fade-in"><div class="wave-content"><h3>1944 · 经典诞生</h3><div class="period">冯·诺依曼 & 摩根斯坦</div><div class="driver">《博弈论与经济行为》出版，奠定学科基石，提出零和博弈的极小极大定理。</div></div><div class="wave-dot"></div></div>
+      <div class="wave-item fade-in"><div class="wave-content"><h3>1950 · 纳什均衡</h3><div class="period">约翰·纳什</div><div class="driver">提出非合作博弈均衡概念，证明任何有限博弈都存在混合策略纳什均衡，奠定现代博弈论核心。</div></div><div class="wave-dot"></div></div>
+      <div class="wave-item fade-in"><div class="wave-content"><h3>1970s · 进化博弈</h3><div class="period">梅纳德·史密斯</div><div class="driver">引入进化稳定策略(ESS)概念，将博弈论应用于生物学，解释动物行为与种群演化。</div></div><div class="wave-dot"></div></div>
+      <div class="wave-item fade-in"><div class="wave-content"><h3>1990s · 行为博弈</h3><div class="period">卡尼曼 & 特沃斯基</div><div class="driver">前景理论诞生，通过最后通牒博弈等实验揭示人类策略行为的系统性偏离，行为经济学兴起。</div></div><div class="wave-dot"></div></div>
+      <div class="wave-item fade-in"><div class="wave-content current"><h3>2007- · 机制设计</h3><div class="period">赫维茨 / 马斯金 / 迈尔森</div><div class="driver">"反向博弈论"获诺贝尔奖，从拍卖设计到市场匹配，博弈论从理论走向现实制度设计。</div></div><div class="wave-dot" style="background:var(--blue);box-shadow:0 0 20px rgba(79,141,226,0.5)"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ COURSE SECTION ═══════════════ -->
+<section id="courses" class="section" style="background:var(--bg2)">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">课程体系</div>
+      <h2>从新手到策略大师，六门核心课程</h2>
+      <p>系统学习博弈论核心概念 · 每课含交互练习题 + 经典案例分析</p>
+    </div>
+    <div class="grid-2" style="max-width:900px;margin:0 auto">
+      <a href="#" class="course-card fade-in" style="display:block"><div style="display:flex"><div class="course-num">1</div><div class="course-body"><h3>博弈论基础 — 什么是博弈？</h3><p>策略式与扩展式、完全信息与不完全信息、博弈的基本要素与分类</p><div class="course-tags"><span class="course-tag">入门</span><span class="course-tag">30分钟</span></div></div></div></a>
+      <a href="#" class="course-card fade-in" style="display:block"><div style="display:flex"><div class="course-num">2</div><div class="course-body"><h3>纳什均衡 — 策略稳定的奥秘</h3><p>纯策略与混合策略均衡、最优反应函数、均衡的存在性与多重性</p><div class="course-tags"><span class="course-tag">核心</span><span class="course-tag">40分钟</span></div></div></div></a>
+      <a href="#" class="course-card fade-in" style="display:block"><div style="display:flex"><div class="course-num">3</div><div class="course-body"><h3>囚徒困境 — 个体vs集体的核心矛盾</h3><p>占优策略与严格劣势、重复博弈与合作演化、现实中的囚徒困境案例</p><div class="course-tags"><span class="course-tag">经典</span><span class="course-tag">35分钟</span></div></div></div></a>
+      <a href="#" class="course-card fade-in" style="display:block"><div style="display:flex"><div class="course-num">4</div><div class="course-body"><h3>进化博弈论 — ESS与复制动态</h3><p>进化稳定策略定义、复制动态方程、鹰鸽博弈与群体选择</p><div class="course-tags"><span class="course-tag">进阶</span><span class="course-tag">45分钟</span></div></div></div></a>
+      <a href="#" class="course-card fade-in" style="display:block"><div style="display:flex"><div class="course-num">5</div><div class="course-body"><h3>行为博弈论 — 有限理性与前景理论</h3><p>认知偏差与启发式、最后通牒博弈实验、社会偏好与公平感</p><div class="course-tags"><span class="course-tag">前沿</span><span class="course-tag">40分钟</span></div></div></div></a>
+      <a href="#" class="course-card fade-in" style="display:block"><div style="display:flex"><div class="course-num">6</div><div class="course-body"><h3>机制设计 — 从拍卖到市场设计</h3><p>激励相容与显示原理、VCG拍卖机制、匹配市场与学校选择</p><div class="course-tags"><span class="course-tag">高级</span><span class="course-tag">50分钟</span></div></div></div></a>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <a href="#pricing" class="btn btn-primary" style="display:inline-block">查看全部课程 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TOOLS SECTION ═══════════════ -->
+<section id="tools" class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">策略工具</div>
+      <h2>博弈论计算与可视化工具</h2>
+      <p>输入你的博弈场景，立即获得纳什均衡分析和最优策略建议。</p>
+    </div>
+    <div class="grid-3" style="max-width:900px;margin:0 auto">
+      <a href="#" class="card fade-in" style="text-align:center">
+        <div class="card-icon blue" style="margin:0 auto 16px">🎮</div>
+        <h3>纳什均衡求解器</h3>
+        <p>输入收益矩阵，自动计算纯策略和混合策略纳什均衡。</p>
+      </a>
+      <a href="#" class="card fade-in" style="text-align:center">
+        <div class="card-icon green" style="margin:0 auto 16px">📊</div>
+        <h3>博弈矩阵查询</h3>
+        <p>浏览经典博弈矩阵：囚徒困境、猎鹿博弈、性别战等。</p>
+      </a>
+      <a href="#" class="card fade-in" style="text-align:center">
+        <div class="card-icon accent" style="margin:0 auto 16px">🧠</div>
+        <h3>策略优势度评估</h3>
+        <p>评估策略的占优性、纳什均衡稳定性与帕累托效率。</p>
+      </a>
+      <a href="#" class="card fade-in" style="text-align:center">
+        <div class="card-icon purple" style="margin:0 auto 16px">🏆</div>
+        <h3>博弈大师排行</h3>
+        <p>所有策略按收益排名，一目了然看清最优策略选择。</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PRICING ═══════════════ -->
+<section id="pricing" class="section" style="background:var(--bg2)">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">定价方案</div>
+      <h2>选择适合你的学习路径</h2>
+      <p>从入门到精通，找到最适合你的博弈论学习方式。</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- 入门课 -->
+      <div class="price-card fade-in">
+        <div class="price-name">入门课</div>
+        <div class="price-amount">99<span class="unit">元</span></div>
+        <div class="price-desc">建立博弈论思维框架</div>
+        <ul class="price-features">
+          <li>6节精编文字课程</li>
+          <li>每课配套练习题+参考答案</li>
+          <li>博弈矩阵库(PDF)</li>
+          <li>经典案例集</li>
+          <li>永久回看权限</li>
+        </ul>
+        <button class="price-btn price-btn-secondary">立即购买</button>
+      </div>
+      <!-- 进阶课 -->
+      <div class="price-card featured fade-in">
+        <div class="price-name">进阶课</div>
+        <div class="price-amount">999<span class="unit">元</span></div>
+        <div class="price-desc">从理论到实战的策略手册</div>
+        <ul class="price-features">
+          <li>入门课全部内容</li>
+          <li>12节深度直播课(含回放)</li>
+          <li>200页精装讲义</li>
+          <li>个人策略计划书(导师点评)</li>
+          <li>博弈求解器(高级版)</li>
+          <li>社群1年(月度案例更新)</li>
+          <li>3次1v1答疑</li>
+        </ul>
+        <button class="price-btn price-btn-primary">立即购买</button>
+      </div>
+      <!-- 私董会 -->
+      <div class="price-card fade-in" style="border-color:rgba(79,141,226,0.3);background:linear-gradient(135deg,rgba(79,141,226,0.05),rgba(167,139,250,0.05))">
+        <div class="price-name">私董会</div>
+        <div class="price-amount">9,999<span class="unit">元/年</span></div>
+        <div class="price-desc">高端策略圈层 + 深度研习</div>
+        <ul class="price-features">
+          <li>进阶课全部内容</li>
+          <li>每月闭门策略研讨会</li>
+          <li>每季度《博弈内参》报告</li>
+          <li>年度线下私享会</li>
+          <li>1v1策略咨询(2次/年)</li>
+          <li>全领域研究资料库</li>
+          <li>高端人脉社群</li>
+        </ul>
+        <button class="price-btn price-btn-primary">加入私董会</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA ═══════════════ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content fade-in">
+      <h2 class="serif">2026年，策略思维是最稀缺的能力</h2>
+      <p>AI时代，博弈论框架帮你做出更优决策。现在开始学习，就是最好的投资。</p>
+      <a href="#pricing" class="btn btn-primary">开始学习 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-links">
+      <a href="#theory">理论体系</a>
+      <a href="#courses">课程</a>
+      <a href="#tools">工具</a>
+      <a href="#pricing">定价</a>
+    </div>
+    <div class="footer-copy">博弈研究院 © 2026 · MoKangMedical</div>
+    <div class="footer-disclaimer">本平台内容基于博弈论理论和公开研究整理，仅供学习参考。</div>
+  </div>
+</footer>
+
+<script>
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('.nav');
+  nav.style.borderBottomColor = window.scrollY > 50 ? 'var(--border2)' : 'transparent';
+});
+</script>
+</body>
+</html>
