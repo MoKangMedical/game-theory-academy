@@ -13,7 +13,7 @@ body{font-family:'Inter','Noto Serif SC',-apple-system,sans-serif;background:#09
 
 /* ═══════════ CHAT ═══════════ */
 .chat-bubble{max-width:82%;animation:fadeIn .35s ease-out;word-wrap:break-word;font-size:15px;line-height:1.75}
-.chat-bubble.user{background:linear-gradient(135deg,#4f8de2,#3b82f6);color:#fff;border-radius:20px 20px 4px 20px}
+.chat-bubble.user{background:linear-gradient(135deg,#e2b64f,#c89a2f);color:#fff;border-radius:20px 20px 4px 20px}
 .chat-bubble.expert{background:#1c1c21;color:#fafafa;border:1px solid #27272a;border-radius:4px 20px 20px 20px}
 .chat-bubble.system{background:rgba(245,158,11,0.08);color:#f59e0b;border:1px solid rgba(245,158,11,0.15);border-radius:14px;max-width:90%;margin:0 auto;text-align:center;font-size:13px}
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -39,10 +39,10 @@ body{font-family:'Inter','Noto Serif SC',-apple-system,sans-serif;background:#09
 .stage-bar{background:linear-gradient(90deg,#1c1c21,#222228);padding:10px 16px;display:flex;align-items:center;gap:6px;flex-shrink:0;overflow-x:auto}
 .stage-step{display:flex;align-items:center;gap:4px;font-size:0.7rem;white-space:nowrap;transition:all .3s}
 .stage-step .dot{width:8px;height:8px;border-radius:50%;background:#3f3f46}
-.stage-step.active .dot{background:#4f8de2;box-shadow:0 0 8px rgba(79,141,226,0.5);animation:pulse-dot 2s infinite}
+.stage-step.active .dot{background:#e2b64f;box-shadow:0 0 8px rgba(226,182,79,0.5);animation:pulse-dot 2s infinite}
 .stage-step.done .dot{background:#22c55e}
 .stage-arrow{color:#3f3f46;font-size:0.6rem;margin:0 4px}
-@keyframes pulse-dot{0%,100%{box-shadow:0 0 4px rgba(79,141,226,0.5)}50%{box-shadow:0 0 12px rgba(79,141,226,0.8)}}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 4px rgba(226,182,79,0.5)}50%{box-shadow:0 0 12px rgba(226,182,79,0.8)}}
 
 /* ═══════════ CHAT CONTAINER ═══════════ */
 .chat-container{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
@@ -54,18 +54,18 @@ body{font-family:'Inter','Noto Serif SC',-apple-system,sans-serif;background:#09
 .input-area{background:#0f0f13;border-top:1px solid #27272a;padding:12px 16px;flex-shrink:0}
 .input-row{display:flex;gap:8px}
 .input-row input{flex:1;padding:12px 16px;background:#1c1c21;border:1px solid #27272a;border-radius:12px;color:#fafafa;font-size:0.9rem;outline:none;transition:border-color .2s}
-.input-row input:focus{border-color:#4f8de2}
+.input-row input:focus{border-color:#e2b64f}
 .input-row input::placeholder{color:#52525b}
-.btn-send{width:44px;height:44px;background:linear-gradient(135deg,#4f8de2,#3b82f6);border:none;border-radius:12px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.btn-send{width:44px;height:44px;background:linear-gradient(135deg,#e2b64f,#c89a2f);border:none;border-radius:12px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
 .btn-send:active{transform:scale(0.9)}
 .input-hints{display:flex;gap:8px;margin-top:8px;overflow-x:auto;padding-bottom:4px}
-.input-hints button{white-space:nowrap;padding:6px 14px;background:rgba(79,141,226,0.08);border:1px solid rgba(79,141,226,0.15);border-radius:100px;color:#4f8de2;font-size:0.7rem;cursor:pointer;transition:all .2s;flex-shrink:0}
-.input-hints button:hover{background:rgba(79,141,226,0.15)}
-.input-hints button:active{background:rgba(79,141,226,0.25)}
+.input-hints button{white-space:nowrap;padding:6px 14px;background:rgba(226,182,79,0.08);border:1px solid rgba(226,182,79,0.15);border-radius:100px;color:#e2b64f;font-size:0.7rem;cursor:pointer;transition:all .2s;flex-shrink:0}
+.input-hints button:hover{background:rgba(226,182,79,0.15)}
+.input-hints button:active{background:rgba(226,182,79,0.25)}
 
 /* ═══════════ EXPERT PANEL ═══════════ */
-.expert-panel-toggle{position:fixed;right:16px;bottom:90px;width:40px;height:40px;background:#1c1c21;border:1px solid #27272a;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#4f8de2;font-size:1.1rem;cursor:pointer;z-index:50;transition:all .2s}
-.expert-panel-toggle:hover{background:#222228;border-color:#4f8de2}
+.expert-panel-toggle{position:fixed;right:16px;bottom:90px;width:40px;height:40px;background:#1c1c21;border:1px solid #27272a;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#e2b64f;font-size:1.1rem;cursor:pointer;z-index:50;transition:all .2s}
+.expert-panel-toggle:hover{background:#222228;border-color:#e2b64f}
 .expert-panel{position:fixed;right:16px;bottom:140px;background:#0f0f13;border:1px solid #27272a;border-radius:14px;padding:12px;width:220px;z-index:49;display:none;box-shadow:0 8px 30px rgba(0,0,0,0.5)}
 .expert-panel.show{display:block}
 .expert-panel h4{font-size:0.7rem;color:#71717a;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em}
@@ -125,7 +125,7 @@ body{font-family:'Inter','Noto Serif SC',-apple-system,sans-serif;background:#09
 <script>
 // ═══════════ EXPERTS ═══════════
 const EXPERTS = {
-  'nash': { name:'约翰·纳什', title:'博弈均衡大师', avatar:'&#9822;', color:'#4f8de2', bg:'rgba(79,141,226,0.15)', desc:'纳什均衡理论创始人，1994年诺贝尔经济学奖得主' },
+  'nash': { name:'约翰·纳什', title:'博弈均衡大师', avatar:'&#9822;', color:'#e2b64f', bg:'rgba(226,182,79,0.15)', desc:'纳什均衡理论创始人，1994年诺贝尔经济学奖得主' },
   'schelling': { name:'托马斯·谢林', title:'冲突策略家', avatar:'&#9818;', color:'#f59e0b', bg:'rgba(245,158,11,0.15)', desc:'冲突与合作理论，2005年诺贝尔经济学奖得主' },
   'axelrod': { name:'罗伯特·阿克塞尔罗德', title:'合作演化专家', avatar:'&#9819;', color:'#22c55e', bg:'rgba(34,197,94,0.15)', desc:'《合作的进化》作者，以牙还牙策略发现者' },
   'selten': { name:'莱因哈德·泽尔腾', title:'子博弈完美大师', avatar:'&#9820;', color:'#a78bfa', bg:'rgba(167,139,250,0.15)', desc:'子博弈精炼均衡，1994年诺贝尔经济学奖得主' },
@@ -137,7 +137,7 @@ const EXPERTS = {
 };
 
 // Expert avatars for header
-const EXPERT_COLORS = ['#4f8de2','#f59e0b','#22c55e','#a78bfa','#f472b6','#2dd4bf','#fb923c','#e879f9'];
+const EXPERT_COLORS = ['#e2b64f','#f59e0b','#22c55e','#a78bfa','#f472b6','#2dd4bf','#fb923c','#e879f9'];
 const EXPERT_EMOJIS = ['♞','♛','♚','♠','♣','♟','♦','♥'];
 
 // ═══════════ ROUNDTABLE LOADING ═══════════
@@ -291,7 +291,7 @@ function renderMessage(msg) {
         <div class="text-xs mt-1 opacity-60">${formatTime(msg.time)}</div>
       </div>`;
   } else {
-    const expert = EXPERTS[msg.role] || { name: msg.role, avatar: '&#9830;', color: '#4f8de2', bg: 'rgba(79,141,226,0.1)' };
+    const expert = EXPERTS[msg.role] || { name: msg.role, avatar: '&#9830;', color: '#e2b64f', bg: 'rgba(226,182,79,0.1)' };
     div.className = 'flex justify-start';
     div.innerHTML = `
       <div class="chat-bubble expert px-4 py-3">

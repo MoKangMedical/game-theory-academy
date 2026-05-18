@@ -14,7 +14,7 @@
   --card:#1c1c21;--card2:#222228;--card3:#2a2a32;
   --border:#27272a;--border2:#3f3f46;
   --text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
-  --blue:#4f8de2;--blue2:#7aafe8;--blue-glow:rgba(79,141,226,0.15);
+  --gold:#e2b64f;--gold2:#f5d98a;--gold-glow:rgba(226,182,79,0.15);
   --green:#22c55e;--amber:#f59e0b;--purple:#a78bfa;
   --serif:'Noto Serif SC',serif;
   --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
@@ -27,33 +27,33 @@ a{color:inherit;text-decoration:none}
 /* ═══════════ NAV ═══════════ */
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(9,9,11,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 .nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:8px}
+.nav-logo{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:8px}
 .nav-links{display:flex;gap:32px;align-items:center}
 .nav-links a{font-size:0.875rem;color:var(--text2);transition:color .2s;font-weight:500}
-.nav-links a:hover,.nav-links a.active{color:var(--blue)}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
 .container{max-width:1200px;margin:0 auto;padding:0 24px}
 
 /* ═══════════ PAGE HEADER ═══════════ */
 .page-header{padding:120px 0 60px;text-align:center}
 .page-header h1{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);margin-bottom:16px}
-.page-header h1 span{color:var(--blue)}
+.page-header h1 span{color:var(--gold)}
 .page-header p{color:var(--text2);font-size:1.1rem;max-width:600px;margin:0 auto}
 
 /* ═══════════ STATS ═══════════ */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center}
-.stat-card .num{font-size:2rem;font-weight:800;color:var(--blue);font-family:var(--serif)}
+.stat-card .num{font-size:2rem;font-weight:800;color:var(--gold);font-family:var(--serif)}
 .stat-card .label{font-size:0.8rem;color:var(--text3);margin-top:4px}
 @media(max-width:768px){.stats-row{grid-template-columns:repeat(2,1fr)}}
 
 /* ═══════════ ROUNDTABLE CARDS ═══════════ */
 .section-title{font-size:1.3rem;font-weight:700;margin-bottom:24px;display:flex;align-items:center;gap:10px}
-.section-title i{color:var(--blue)}
+.section-title i{color:var(--gold)}
 .roundtable-list{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:48px}
 .rt-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
-.rt-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 30px var(--blue-glow)}
+.rt-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 30px var(--gold-glow)}
 .rt-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px}
-.rt-card.phase-1::before{background:var(--blue)}.rt-card.phase-2::before{background:var(--green)}
+.rt-card.phase-1::before{background:var(--gold)}.rt-card.phase-2::before{background:var(--green)}
 .rt-card.phase-3::before{background:var(--purple)}.rt-card.phase-4::before{background:var(--amber)}
 .rt-card.phase-5::before{background:#f472b6}.rt-card.phase-6::before{background:#2dd4bf}
 .rt-card.phase-7::before{background:#fb923c}.rt-card.phase-8::before{background:#a78bfa}
@@ -63,7 +63,7 @@ a{color:inherit;text-decoration:none}
 .rt-phase{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:100px}
 .rt-phase.active{background:rgba(34,197,94,0.15);color:var(--green)}
 .rt-phase.hot{background:rgba(245,158,11,0.15);color:var(--amber)}
-.rt-phase.new{background:rgba(79,141,226,0.15);color:var(--blue)}
+.rt-phase.new{background:rgba(226,182,79,0.15);color:var(--gold)}
 
 .rt-title{font-size:1.05rem;font-weight:700;margin-bottom:8px;line-height:1.4}
 .rt-desc{font-size:0.85rem;color:var(--text2);margin-bottom:16px;line-height:1.6}
@@ -80,10 +80,10 @@ a{color:inherit;text-decoration:none}
 .new-rt-section h3{font-size:1.2rem;margin-bottom:8px}
 .new-rt-section p{color:var(--text2);font-size:0.9rem;margin-bottom:20px}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:var(--radius-sm);font-weight:600;font-size:0.95rem;transition:all .25s;border:none;cursor:pointer}
-.btn-primary{background:var(--blue);color:#fff}
-.btn-primary:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 8px 30px var(--blue-glow)}
+.btn-primary{background:var(--gold);color:#111}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 30px var(--gold-glow)}
 .btn-outline{background:transparent;color:var(--text);border:1px solid var(--border2)}
-.btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
 
 /* ═══════════ CREATE MODAL ═══════════ */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;padding:20px}
@@ -98,7 +98,7 @@ a{color:inherit;text-decoration:none}
 
 /* ═══════════ FOOTER ═══════════ */
 .footer{padding:40px 0;text-align:center;color:var(--text3);font-size:0.8rem;border-top:1px solid var(--border)}
-.footer a{color:var(--blue)}
+.footer a{color:var(--gold)}
 
 @media(max-width:768px){
   .roundtable-list{grid-template-columns:1fr}
@@ -230,7 +230,7 @@ function loadRoundtables() {
       </div>
       <div class="rt-experts">
         <div class="avatar-row">
-          ${rt.experts.slice(0,4).map((_,i) => `<div class="avatar" style="background:rgba(79,141,226,0.${2+i});font-size:0.7rem">&#9679;</div>`).join('')}
+          ${rt.experts.slice(0,4).map((_,i) => `<div class="avatar" style="background:rgba(226,182,79,0.${2+i});font-size:0.7rem">&#9679;</div>`).join('')}
         </div>
         <div class="expert-names">${rt.experts.join(' · ')} 在线</div>
       </div>

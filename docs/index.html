@@ -15,7 +15,7 @@
   --card:#1c1c21;--card2:#222228;--card3:#2a2a32;
   --border:#27272a;--border2:#3f3f46;
   --text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
-  --blue:#4f8de2;--blue2:#7aafe8;
+  --gold:#e2b64f;--gold2:#f5d98a;
   --green:#22c55e;--accent-blue:#3b82f6;--purple:#a78bfa;
   --orange:#f59e0b;--red:#ef4444;
   --serif:'Noto Serif SC',serif;
@@ -32,7 +32,7 @@ img{max-width:100%}
 h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:900;line-height:1.15;letter-spacing:-0.02em}
 h2{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;line-height:1.25;letter-spacing:-0.01em}
 h3{font-size:1.25rem;font-weight:600}
-.label{font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--blue)}
+.label{font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold)}
 .body-lg{font-size:1.125rem;color:var(--text2);line-height:1.8}
 .body-sm{font-size:0.875rem;color:var(--text3)}
 
@@ -52,13 +52,13 @@ h3{font-size:1.25rem;font-weight:600}
 /* ═══════════════ NAV ═══════════════ */
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(9,9,11,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .3s}
 .nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:8px}
+.nav-logo{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:8px}
 .nav-logo svg{width:28px;height:28px}
 .nav-links{display:flex;gap:32px;align-items:center}
 .nav-links a{font-size:0.875rem;color:var(--text2);transition:color .2s;font-weight:500}
 .nav-links a:hover{color:var(--text)}
-.nav-cta{background:var(--blue);color:#fff;padding:8px 20px;border-radius:8px;font-weight:600;font-size:0.85rem;transition:all .2s}
-.nav-cta:hover{background:var(--blue2);transform:translateY(-1px)}
+.nav-cta{background:var(--gold);color:#111;padding:8px 20px;border-radius:8px;font-weight:600;font-size:0.85rem;transition:all .2s}
+.nav-cta:hover{background:var(--gold2);transform:translateY(-1px)}
 @media(max-width:768px){
   .nav-links{display:none}
   .nav-links.open{display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:var(--bg2);padding:20px;gap:16px;border-bottom:1px solid var(--border)}
@@ -68,23 +68,23 @@ h3{font-size:1.25rem;font-weight:600}
 
 /* ═══════════════ HERO ═══════════════ */
 .hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:64px}
-.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(79,141,226,0.08),transparent 70%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(59,130,246,0.05),transparent 60%)}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(226,182,79,0.08),transparent 70%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(59,130,246,0.05),transparent 60%)}
 .hero-content{position:relative;z-index:1;text-align:center;max-width:900px;margin:0 auto;padding:0 24px}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(79,141,226,0.1);border:1px solid rgba(79,141,226,0.2);padding:6px 16px;border-radius:100px;font-size:0.8rem;color:var(--blue);margin-bottom:32px}
-.hero-badge .dot{width:6px;height:6px;background:var(--blue);border-radius:50%;animation:pulse 2s infinite}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(226,182,79,0.1);border:1px solid rgba(226,182,79,0.2);padding:6px 16px;border-radius:100px;font-size:0.8rem;color:var(--gold);margin-bottom:32px}
+.hero-badge .dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 .hero h1{margin-bottom:24px}
-.hero h1 .hl{color:var(--blue)}
+.hero h1 .hl{color:var(--gold)}
 .hero-sub{font-size:1.2rem;color:var(--text2);max-width:600px;margin:0 auto 40px;line-height:1.7}
 .hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:var(--radius-sm);font-weight:600;font-size:0.95rem;transition:all .25s;border:none;cursor:pointer}
-.btn-primary{background:var(--blue);color:#fff}
-.btn-primary:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(79,141,226,0.3)}
+.btn-primary{background:var(--gold);color:#111}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(226,182,79,0.3)}
 .btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border2)}
-.btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
 .hero-stats{display:flex;justify-content:center;gap:48px;margin-top:64px;padding-top:40px;border-top:1px solid var(--border)}
 .hero-stat{text-align:center}
-.hero-stat .num{font-size:2rem;font-weight:800;color:var(--blue)}
+.hero-stat .num{font-size:2rem;font-weight:800;color:var(--gold)}
 .hero-stat .desc{font-size:0.8rem;color:var(--text3);margin-top:4px}
 @media(max-width:768px){.hero-stats{gap:24px}.hero-stat .num{font-size:1.5rem}}
 
@@ -92,7 +92,7 @@ h3{font-size:1.25rem;font-weight:600}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:all .3s}
 .card:hover{border-color:var(--border2);transform:translateY(-2px)}
 .card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:20px}
-.card-icon.blue{background:rgba(79,141,226,0.1)}
+.card-icon.blue{background:rgba(226,182,79,0.1)}
 .card-icon.green{background:rgba(34,197,94,0.1)}
 .card-icon.accent{background:rgba(59,130,246,0.1)}
 .card-icon.purple{background:rgba(167,139,250,0.1)}
@@ -108,15 +108,15 @@ h3{font-size:1.25rem;font-weight:600}
 
 /* ═══════════════ TIMELINE ═══════════════ */
 .wave-timeline{position:relative;padding:40px 0}
-.wave-line{position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--blue),var(--accent-blue),var(--purple))}
+.wave-line{position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold),var(--accent-blue),var(--purple))}
 .wave-item{display:flex;align-items:center;margin-bottom:40px;position:relative}
 .wave-item:nth-child(odd){flex-direction:row-reverse}
 .wave-item .wave-content{width:45%;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius)}
-.wave-item .wave-dot{width:16px;height:16px;background:var(--blue);border-radius:50%;position:absolute;left:50%;transform:translateX(-50%);z-index:2;box-shadow:0 0 20px rgba(79,141,226,0.4)}
-.wave-item .wave-content h3{color:var(--blue);font-size:1.1rem;margin-bottom:8px}
+.wave-item .wave-dot{width:16px;height:16px;background:var(--gold);border-radius:50%;position:absolute;left:50%;transform:translateX(-50%);z-index:2;box-shadow:0 0 20px rgba(226,182,79,0.4)}
+.wave-item .wave-content h3{color:var(--gold);font-size:1.1rem;margin-bottom:8px}
 .wave-item .wave-content .period{font-size:0.85rem;color:var(--text3);margin-bottom:12px}
 .wave-item .wave-content .driver{color:var(--text2);font-size:0.9rem}
-.wave-item .wave-content.current{border-color:var(--blue);box-shadow:0 0 40px rgba(79,141,226,0.1)}
+.wave-item .wave-content.current{border-color:var(--gold);box-shadow:0 0 40px rgba(226,182,79,0.1)}
 @media(max-width:768px){
   .wave-line{left:20px}
   .wave-item,.wave-item:nth-child(odd){flex-direction:row}
@@ -129,8 +129,8 @@ h3{font-size:1.25rem;font-weight:600}
 @media(max-width:900px){.pricing-grid{grid-template-columns:1fr}}
 .price-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:36px;position:relative;transition:all .3s}
 .price-card:hover{border-color:var(--border2);transform:translateY(-4px)}
-.price-card.featured{border-color:var(--blue);background:linear-gradient(180deg,rgba(79,141,226,0.05),transparent)}
-.price-card.featured::before{content:'最受欢迎';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;padding:4px 16px;border-radius:100px;font-size:0.75rem;font-weight:700}
+.price-card.featured{border-color:var(--gold);background:linear-gradient(180deg,rgba(226,182,79,0.05),transparent)}
+.price-card.featured::before{content:'最受欢迎';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;padding:4px 16px;border-radius:100px;font-size:0.75rem;font-weight:700}
 .price-name{font-size:0.9rem;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px}
 .price-amount{font-size:2.5rem;font-weight:900;margin-bottom:4px}
 .price-amount .unit{font-size:0.9rem;font-weight:400;color:var(--text3)}
@@ -139,15 +139,15 @@ h3{font-size:1.25rem;font-weight:600}
 .price-features li{padding:8px 0;font-size:0.9rem;color:var(--text2);display:flex;align-items:flex-start;gap:10px}
 .price-features li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
 .price-btn{display:block;width:100%;text-align:center;padding:14px;border-radius:var(--radius-sm);font-weight:600;font-size:0.95rem;transition:all .25s;border:none;cursor:pointer}
-.price-btn-primary{background:var(--blue);color:#fff}
-.price-btn-primary:hover{background:var(--blue2)}
+.price-btn-primary{background:var(--gold);color:#fff}
+.price-btn-primary:hover{background:var(--gold2)}
 .price-btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border2)}
-.price-btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+.price-btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
 
 /* ═══════════════ COURSE ═══════════════ */
 .course-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .3s}
 .course-card:hover{border-color:var(--border2)}
-.course-num{width:56px;height:56px;background:linear-gradient(135deg,var(--blue),#3a6fc4);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:#fff;flex-shrink:0}
+.course-num{width:56px;height:56px;background:linear-gradient(135deg,var(--gold),#3a6fc4);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:#fff;flex-shrink:0}
 .course-body{padding:24px}
 .course-body h3{margin-bottom:8px}
 .course-body p{color:var(--text2);font-size:0.9rem;line-height:1.7}
@@ -156,13 +156,13 @@ h3{font-size:1.25rem;font-weight:600}
 
 /* ═══════════════ QUOTE ═══════════════ */
 .quote-block{text-align:center;padding:80px 0;position:relative}
-.quote-block::before{content:'"';font-size:8rem;color:var(--blue);opacity:0.12;position:absolute;top:20px;left:50%;transform:translateX(-50%);font-family:var(--serif)}
+.quote-block::before{content:'"';font-size:8rem;color:var(--gold);opacity:0.12;position:absolute;top:20px;left:50%;transform:translateX(-50%);font-family:var(--serif)}
 .quote-text{font-family:var(--serif);font-size:clamp(1.3rem,2.5vw,1.8rem);color:var(--text);max-width:700px;margin:0 auto;line-height:1.8;font-weight:400}
 .quote-author{margin-top:20px;font-size:0.9rem;color:var(--text3)}
 
 /* ═══════════════ CTA ═══════════════ */
 .cta-section{text-align:center;padding:100px 0;position:relative}
-.cta-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(79,141,226,0.06),transparent)}
+.cta-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(226,182,79,0.06),transparent)}
 .cta-content{position:relative;z-index:1}
 .cta-content h2{margin-bottom:16px}
 .cta-content p{color:var(--text2);font-size:1.1rem;margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto}
@@ -171,7 +171,7 @@ h3{font-size:1.25rem;font-weight:600}
 .footer{border-top:1px solid var(--border);padding:48px 0;text-align:center}
 .footer-links{display:flex;justify-content:center;gap:32px;margin-bottom:24px;flex-wrap:wrap}
 .footer-links a{font-size:0.85rem;color:var(--text3);transition:color .2s}
-.footer-links a:hover{color:var(--blue)}
+.footer-links a:hover{color:var(--gold)}
 .footer-copy{font-size:0.8rem;color:var(--text3)}
 .footer-disclaimer{font-size:0.75rem;color:var(--text3);max-width:600px;margin:12px auto 0;line-height:1.6}
 
@@ -186,7 +186,7 @@ h3{font-size:1.25rem;font-weight:600}
 <nav class="nav">
   <div class="nav-inner">
     <a href="#" class="nav-logo">
-      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="#4f8de2" stroke-width="1.5"/><path d="M6 14l5-5 4 4 7-7" stroke="#4f8de2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="14" cy="14" r="2.5" fill="#4f8de2"/></svg>
+      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="#e2b64f" stroke-width="1.5"/><path d="M6 14l5-5 4 4 7-7" stroke="#e2b64f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="14" cy="14" r="2.5" fill="#e2b64f"/></svg>
       博弈研究院
     </a>
     <div class="nav-links" id="navLinks">
@@ -281,7 +281,7 @@ h3{font-size:1.25rem;font-weight:600}
       <div class="wave-item fade-in"><div class="wave-content"><h3>1950 · 纳什均衡</h3><div class="period">约翰·纳什</div><div class="driver">提出非合作博弈均衡概念，证明任何有限博弈都存在混合策略纳什均衡，奠定现代博弈论核心。</div></div><div class="wave-dot"></div></div>
       <div class="wave-item fade-in"><div class="wave-content"><h3>1970s · 进化博弈</h3><div class="period">梅纳德·史密斯</div><div class="driver">引入进化稳定策略(ESS)概念，将博弈论应用于生物学，解释动物行为与种群演化。</div></div><div class="wave-dot"></div></div>
       <div class="wave-item fade-in"><div class="wave-content"><h3>1990s · 行为博弈</h3><div class="period">卡尼曼 & 特沃斯基</div><div class="driver">前景理论诞生，通过最后通牒博弈等实验揭示人类策略行为的系统性偏离，行为经济学兴起。</div></div><div class="wave-dot"></div></div>
-      <div class="wave-item fade-in"><div class="wave-content current"><h3>2007- · 机制设计</h3><div class="period">赫维茨 / 马斯金 / 迈尔森</div><div class="driver">"反向博弈论"获诺贝尔奖，从拍卖设计到市场匹配，博弈论从理论走向现实制度设计。</div></div><div class="wave-dot" style="background:var(--blue);box-shadow:0 0 20px rgba(79,141,226,0.5)"></div></div>
+      <div class="wave-item fade-in"><div class="wave-content current"><h3>2007- · 机制设计</h3><div class="period">赫维茨 / 马斯金 / 迈尔森</div><div class="driver">"反向博弈论"获诺贝尔奖，从拍卖设计到市场匹配，博弈论从理论走向现实制度设计。</div></div><div class="wave-dot" style="background:var(--gold);box-shadow:0 0 20px rgba(226,182,79,0.5)"></div></div>
     </div>
   </div>
 </section>
@@ -381,7 +381,7 @@ h3{font-size:1.25rem;font-weight:600}
         <button class="price-btn price-btn-primary">立即购买</button>
       </div>
       <!-- 私董会 -->
-      <div class="price-card fade-in" style="border-color:rgba(79,141,226,0.3);background:linear-gradient(135deg,rgba(79,141,226,0.05),rgba(167,139,250,0.05))">
+      <div class="price-card fade-in" style="border-color:rgba(226,182,79,0.3);background:linear-gradient(135deg,rgba(226,182,79,0.05),rgba(167,139,250,0.05))">
         <div class="price-name">私董会</div>
         <div class="price-amount">9,999<span class="unit">元/年</span></div>
         <div class="price-desc">高端策略圈层 + 深度研习</div>
