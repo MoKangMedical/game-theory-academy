@@ -88,6 +88,46 @@ h3{font-size:1.25rem;font-weight:600}
 .hero-stat .desc{font-size:0.8rem;color:var(--text3);margin-top:4px}
 @media(max-width:768px){.hero-stats{gap:24px}.hero-stat .num{font-size:1.5rem}}
 
+/* ═══════════════ AUDIO PLAYER ═══════════════ */
+.audio-section{padding:76px 0 92px;background:var(--bg);border-top:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04)}
+.audio-layout{display:grid;grid-template-columns:minmax(0,0.9fr) minmax(420px,1.1fr);gap:28px;align-items:stretch}
+.audio-copy{padding:8px 0}
+.audio-copy h2{margin:14px 0}
+.audio-copy p{color:var(--text2);font-size:1.02rem;line-height:1.85;max-width:520px}
+.audio-metrics{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.audio-metric{min-width:104px;border:1px solid var(--border);background:var(--card);border-radius:12px;padding:14px 16px}
+.audio-metric strong{display:block;color:var(--gold);font-size:1.35rem;line-height:1}
+.audio-metric span{display:block;color:var(--text3);font-size:0.76rem;margin-top:6px}
+.audio-console{background:linear-gradient(180deg,rgba(226,182,79,0.06),rgba(28,28,33,0.98));border:1px solid rgba(226,182,79,0.18);border-radius:14px;overflow:hidden;box-shadow:0 18px 52px rgba(0,0,0,0.28)}
+.audio-now{padding:24px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.audio-kicker{font-size:0.72rem;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.audio-title{font-family:var(--serif);font-size:1.22rem;font-weight:700;line-height:1.45}
+.audio-meta{color:var(--text3);font-size:0.82rem;margin-top:6px}
+.audio-progress{display:flex;align-items:center;gap:10px;margin-top:20px;color:var(--text3);font-size:0.72rem}
+.audio-progress input{flex:1;accent-color:var(--gold)}
+.audio-controls{display:flex;gap:10px;align-items:center;margin-top:18px}
+.audio-control{height:38px;min-width:42px;border:1px solid var(--border2);background:rgba(255,255,255,0.04);color:var(--text);border-radius:10px;cursor:pointer;font-weight:700;transition:all .2s}
+.audio-control:hover{border-color:var(--gold);color:var(--gold)}
+.audio-play{min-width:92px;background:var(--gold);color:#111;border-color:var(--gold)}
+.audio-play:hover{background:var(--gold2);color:#111}
+.audio-filters{display:flex;gap:8px;flex-wrap:wrap;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.audio-filter{border:1px solid rgba(255,255,255,0.08);background:var(--card2);color:var(--text2);padding:7px 12px;border-radius:999px;font-size:0.74rem;cursor:pointer;transition:all .2s}
+.audio-filter:hover,.audio-filter.active{border-color:rgba(226,182,79,0.45);background:rgba(226,182,79,0.12);color:var(--gold)}
+.audio-list{max-height:312px;overflow:auto;padding:8px}
+.audio-list::-webkit-scrollbar{width:6px}
+.audio-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
+.audio-track{width:100%;display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center;text-align:left;border:0;background:transparent;color:var(--text);padding:12px;border-radius:10px;cursor:pointer;transition:all .18s}
+.audio-track:hover{background:rgba(255,255,255,0.04)}
+.audio-track.active{background:rgba(226,182,79,0.1);box-shadow:inset 0 0 0 1px rgba(226,182,79,0.18)}
+.audio-track-num{width:34px;height:34px;border-radius:9px;background:var(--card3);display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:800;font-family:var(--serif)}
+.audio-track-title{font-size:0.88rem;font-weight:600;line-height:1.35}
+.audio-track-phase{display:block;font-size:0.72rem;color:var(--text3);margin-top:2px}
+.audio-track-time{font-size:0.72rem;color:var(--text3);white-space:nowrap}
+@media(max-width:900px){
+  .audio-layout{grid-template-columns:1fr}
+  .audio-list{max-height:360px}
+}
+
 /* ═══════════════ CARDS ═══════════════ */
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:36px;transition:all .3s}
 .card:hover{border-color:rgba(226,182,79,0.24);transform:translateY(-3px);box-shadow:0 16px 42px rgba(226,182,79,0.08)}
@@ -191,6 +231,7 @@ h3{font-size:1.25rem;font-weight:600}
     </a>
     <div class="nav-links" id="navLinks">
       <a href="#theory">理论体系</a>
+      <a href="#audio">连续听课</a>
       <a href="#courses">课程</a>
       <a href="#tools">工具</a>
       <a href="roundtable.html">博弈圆桌会</a>
@@ -217,6 +258,50 @@ h3{font-size:1.25rem;font-weight:600}
       <div class="hero-stat"><div class="num">9位</div><div class="desc">专家席位</div></div>
       <div class="hero-stat"><div class="num">51份</div><div class="desc">课程内容</div></div>
       <div class="hero-stat"><div class="num">200+</div><div class="desc">经典案例</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ AUDIO PLAYER ═══════════════ -->
+<section id="audio" class="audio-section">
+  <div class="container">
+    <div class="audio-layout">
+      <div class="audio-copy fade-in">
+        <div class="label">连续听课</div>
+        <h2>主干课程音频，一键自动连播</h2>
+        <p>汇总 1 份课程总览与 50 门核心课程音频，适合通勤、复盘和沉浸式学习。按阶段筛选后，播放器会从当前课程继续顺序播放。</p>
+        <div class="audio-metrics">
+          <div class="audio-metric"><strong>51</strong><span>课程音频</span></div>
+          <div class="audio-metric"><strong>9</strong><span>学习阶段</span></div>
+          <div class="audio-metric"><strong>301MB+</strong><span>语音内容</span></div>
+        </div>
+      </div>
+      <div class="audio-console fade-in">
+        <div class="audio-now">
+          <div class="audio-kicker">正在播放</div>
+          <div class="audio-title" id="audioTitle">课程总览 — 学习路径与知识地图</div>
+          <div class="audio-meta" id="audioMeta">总览 · 20分钟</div>
+          <div class="audio-progress">
+            <span id="audioCurrent">00:00</span>
+            <input id="audioSeek" type="range" min="0" max="100" value="0" aria-label="音频进度">
+            <span id="audioDuration">--:--</span>
+          </div>
+          <div class="audio-controls">
+            <button class="audio-control" id="audioPrev" type="button" aria-label="上一课">‹</button>
+            <button class="audio-control audio-play" id="audioPlay" type="button">播放</button>
+            <button class="audio-control" id="audioNext" type="button" aria-label="下一课">›</button>
+          </div>
+          <audio id="courseAudio" preload="metadata"></audio>
+        </div>
+        <div class="audio-filters" id="audioFilters">
+          <button class="audio-filter active" type="button" data-group="all">全部</button>
+          <button class="audio-filter" type="button" data-group="foundation">基础</button>
+          <button class="audio-filter" type="button" data-group="theory">理论</button>
+          <button class="audio-filter" type="button" data-group="application">应用</button>
+          <button class="audio-filter" type="button" data-group="frontier">前沿</button>
+        </div>
+        <div class="audio-list" id="audioList"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -426,6 +511,167 @@ h3{font-size:1.25rem;font-weight:600}
 </footer>
 
 <script>
+const AUDIO_BASE = 'https://raw.githubusercontent.com/MoKangMedical/game-theory-academy/main/audio/';
+const AUDIO_TRACKS = [
+  {n:0,title:'课程总览 — 学习路径与知识地图',phase:'总览',group:'foundation',time:'20分钟',file:'00-课程总览.mp3'},
+  {n:1,title:'博弈论基础 — 什么是博弈？',phase:'Phase 1 · 博弈论基础',group:'foundation',time:'30分钟',file:'01-博弈论基础.mp3'},
+  {n:2,title:'纳什均衡 — 纯策略与混合策略',phase:'Phase 1 · 博弈论基础',group:'foundation',time:'35分钟',file:'02-纳什均衡.mp3'},
+  {n:3,title:'囚徒困境 — 个体理性 vs 集体理性',phase:'Phase 1 · 博弈论基础',group:'foundation',time:'30分钟',file:'03-囚徒困境.mp3'},
+  {n:4,title:'协调博弈 — 猎鹿博弈、性别战',phase:'Phase 1 · 博弈论基础',group:'foundation',time:'30分钟',file:'04-协调博弈.mp3'},
+  {n:5,title:'零和博弈 — 最小最大定理',phase:'Phase 1 · 博弈论基础',group:'foundation',time:'35分钟',file:'05-零和博弈.mp3'},
+  {n:6,title:'重复博弈 — 触发策略与民间定理',phase:'Phase 1 · 博弈论基础',group:'foundation',time:'40分钟',file:'06-重复博弈.mp3'},
+  {n:7,title:'谢林点与焦点均衡',phase:'Phase 2 · 经典理论与模型',group:'theory',time:'30分钟',file:'07-谢林点与焦点均衡.mp3'},
+  {n:8,title:'子博弈精炼均衡',phase:'Phase 2 · 经典理论与模型',group:'theory',time:'40分钟',file:'08-子博弈精炼均衡.mp3'},
+  {n:9,title:'贝叶斯博弈 — 不完全信息',phase:'Phase 2 · 经典理论与模型',group:'theory',time:'45分钟',file:'09-贝叶斯博弈.mp3'},
+  {n:10,title:'完美贝叶斯均衡',phase:'Phase 2 · 经典理论与模型',group:'theory',time:'45分钟',file:'10-完美贝叶斯均衡.mp3'},
+  {n:11,title:'序贯均衡 — 克雷普斯-威尔逊',phase:'Phase 2 · 经典理论与模型',group:'theory',time:'45分钟',file:'11-序贯均衡.mp3'},
+  {n:12,title:'颤抖手均衡 — 泽尔腾精炼',phase:'Phase 2 · 经典理论与模型',group:'theory',time:'40分钟',file:'12-颤抖手均衡.mp3'},
+  {n:13,title:'进化稳定策略 ESS',phase:'Phase 3 · 进化博弈论',group:'theory',time:'35分钟',file:'13-进化稳定策略ESS.mp3'},
+  {n:14,title:'复制动态方程',phase:'Phase 3 · 进化博弈论',group:'theory',time:'40分钟',file:'14-复制动态方程.mp3'},
+  {n:15,title:'鹰鸽博弈 — 经典进化博弈',phase:'Phase 3 · 进化博弈论',group:'theory',time:'30分钟',file:'15-鹰鸽博弈.mp3'},
+  {n:16,title:'信号进化博弈',phase:'Phase 3 · 进化博弈论',group:'theory',time:'40分钟',file:'16-信号进化博弈.mp3'},
+  {n:17,title:'空间演化博弈',phase:'Phase 3 · 进化博弈论',group:'theory',time:'45分钟',file:'17-空间演化博弈.mp3'},
+  {n:18,title:'文化演化与博弈',phase:'Phase 3 · 进化博弈论',group:'theory',time:'40分钟',file:'18-文化演化与博弈.mp3'},
+  {n:19,title:'有限理性 — 西蒙的洞见',phase:'Phase 4 · 行为博弈论',group:'theory',time:'35分钟',file:'19-有限理性.mp3'},
+  {n:20,title:'前景理论 — 卡尼曼与特沃斯基',phase:'Phase 4 · 行为博弈论',group:'theory',time:'40分钟',file:'20-前景理论.mp3'},
+  {n:21,title:'最后通牒博弈 — 公平偏好',phase:'Phase 4 · 行为博弈论',group:'theory',time:'30分钟',file:'21-最后通牒博弈.mp3'},
+  {n:22,title:'信任博弈 — 互惠与社会偏好',phase:'Phase 4 · 行为博弈论',group:'theory',time:'30分钟',file:'22-信任博弈.mp3'},
+  {n:23,title:'认知偏差与博弈',phase:'Phase 4 · 行为博弈论',group:'theory',time:'35分钟',file:'23-认知偏差与博弈.mp3'},
+  {n:24,title:'神经博弈论',phase:'Phase 4 · 行为博弈论',group:'frontier',time:'40分钟',file:'24-神经博弈论.mp3'},
+  {n:25,title:'机制设计导论 — 赫维茨定理',phase:'Phase 5 · 机制设计',group:'theory',time:'40分钟',file:'25-机制设计导论.mp3'},
+  {n:26,title:'拍卖理论 — 四种基本拍卖',phase:'Phase 5 · 机制设计',group:'theory',time:'40分钟',file:'26-拍卖理论.mp3'},
+  {n:27,title:'VCG机制 — 克拉克-格罗夫斯',phase:'Phase 5 · 机制设计',group:'theory',time:'45分钟',file:'27-VCG机制.mp3'},
+  {n:28,title:'匹配市场 — 盖尔-沙普利算法',phase:'Phase 5 · 机制设计',group:'theory',time:'35分钟',file:'28-匹配市场.mp3'},
+  {n:29,title:'投票机制 — 阿罗不可能定理',phase:'Phase 5 · 机制设计',group:'theory',time:'40分钟',file:'29-投票机制.mp3'},
+  {n:30,title:'合同理论 — 委托代理问题',phase:'Phase 5 · 机制设计',group:'theory',time:'45分钟',file:'30-合同理论.mp3'},
+  {n:31,title:'寡头竞争 — 古诺、伯川德、斯塔克尔伯格',phase:'Phase 6 · 博弈论与经济学',group:'application',time:'40分钟',file:'31-寡头竞争.mp3'},
+  {n:32,title:'博弈论与产业组织',phase:'Phase 6 · 博弈论与经济学',group:'application',time:'45分钟',file:'32-博弈论与产业组织.mp3'},
+  {n:33,title:'信息经济学 — 逆向选择与信号',phase:'Phase 6 · 博弈论与经济学',group:'application',time:'45分钟',file:'33-信息经济学.mp3'},
+  {n:34,title:'博弈论与金融 — 银行挤兑',phase:'Phase 6 · 博弈论与经济学',group:'application',time:'40分钟',file:'34-博弈论与金融.mp3'},
+  {n:35,title:'博弈论与国际贸易 — 关税博弈',phase:'Phase 6 · 博弈论与经济学',group:'application',time:'40分钟',file:'35-博弈论与国际贸易.mp3'},
+  {n:36,title:'公共经济学 — 公共品博弈',phase:'Phase 6 · 博弈论与经济学',group:'application',time:'35分钟',file:'36-公共经济学.mp3'},
+  {n:37,title:'选举博弈 — 中间选民定理',phase:'Phase 7 · 博弈论与政治',group:'application',time:'35分钟',file:'37-选举博弈.mp3'},
+  {n:38,title:'立法博弈 — 联盟与议程',phase:'Phase 7 · 博弈论与政治',group:'application',time:'40分钟',file:'38-立法博弈.mp3'},
+  {n:39,title:'国际关系 — 核威慑博弈',phase:'Phase 7 · 博弈论与政治',group:'application',time:'40分钟',file:'39-国际关系.mp3'},
+  {n:40,title:'恐怖主义与反恐 — 博弈视角',phase:'Phase 7 · 博弈论与政治',group:'application',time:'40分钟',file:'40-恐怖主义与反恐.mp3'},
+  {n:41,title:'谈判与冲突 — 谢林冲突理论',phase:'Phase 7 · 博弈论与政治',group:'application',time:'35分钟',file:'41-谈判与冲突.mp3'},
+  {n:42,title:'政治制度设计 — 宪法博弈',phase:'Phase 7 · 博弈论与政治',group:'application',time:'40分钟',file:'42-政治制度设计.mp3'},
+  {n:43,title:'谈判策略 — BATNA与泽莫尔模型',phase:'Phase 8 · 博弈论与生活',group:'application',time:'35分钟',file:'43-谈判策略.mp3'},
+  {n:44,title:'博弈论与婚姻 — 配偶选择',phase:'Phase 8 · 博弈论与生活',group:'application',time:'30分钟',file:'44-博弈论与婚姻.mp3'},
+  {n:45,title:'博弈论与育儿 — 亲子互动',phase:'Phase 8 · 博弈论与生活',group:'application',time:'30分钟',file:'45-博弈论与育儿.mp3'},
+  {n:46,title:'职场博弈 — 晋升与团队',phase:'Phase 8 · 博弈论与生活',group:'application',time:'35分钟',file:'46-职场博弈.mp3'},
+  {n:47,title:'社交网络博弈 — 影响力',phase:'Phase 8 · 博弈论与生活',group:'application',time:'35分钟',file:'47-社交网络博弈.mp3'},
+  {n:48,title:'日常决策博弈 — 排队与交通',phase:'Phase 8 · 博弈论与生活',group:'application',time:'30分钟',file:'48-日常决策博弈.mp3'},
+  {n:49,title:'AI与博弈论 — 多智能体系统',phase:'Phase 9 · 前沿与未来',group:'frontier',time:'45分钟',file:'49-AI与博弈论.mp3'},
+  {n:50,title:'终极整合 — 构建策略思维体系',phase:'Phase 9 · 前沿与未来',group:'frontier',time:'60分钟',file:'50-终极整合.mp3'}
+];
+
+const audioEl = document.getElementById('courseAudio');
+const audioList = document.getElementById('audioList');
+const audioTitle = document.getElementById('audioTitle');
+const audioMeta = document.getElementById('audioMeta');
+const audioPlay = document.getElementById('audioPlay');
+const audioSeek = document.getElementById('audioSeek');
+const audioCurrent = document.getElementById('audioCurrent');
+const audioDuration = document.getElementById('audioDuration');
+let currentTrackIndex = 0;
+let activeAudioGroup = 'all';
+
+function formatTrackNum(num) {
+  return String(num).padStart(2, '0');
+}
+
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds)) return '--:--';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+}
+
+function getAudioSrc(file) {
+  return AUDIO_BASE + encodeURIComponent(file);
+}
+
+function getVisibleTracks() {
+  return AUDIO_TRACKS.filter(track => activeAudioGroup === 'all' || track.group === activeAudioGroup);
+}
+
+function renderAudioList() {
+  const visible = getVisibleTracks();
+  audioList.innerHTML = visible.map(track => `
+    <button class="audio-track ${track.n === AUDIO_TRACKS[currentTrackIndex].n ? 'active' : ''}" type="button" data-track="${track.n}">
+      <span class="audio-track-num">${formatTrackNum(track.n)}</span>
+      <span>
+        <span class="audio-track-title">${track.title}</span>
+        <span class="audio-track-phase">${track.phase}</span>
+      </span>
+      <span class="audio-track-time">${track.time}</span>
+    </button>
+  `).join('');
+}
+
+function loadTrack(index, shouldPlay = false) {
+  currentTrackIndex = (index + AUDIO_TRACKS.length) % AUDIO_TRACKS.length;
+  const track = AUDIO_TRACKS[currentTrackIndex];
+  audioTitle.textContent = track.title;
+  audioMeta.textContent = `${track.phase} · ${track.time}`;
+  audioEl.src = getAudioSrc(track.file);
+  audioSeek.value = 0;
+  audioCurrent.textContent = '00:00';
+  audioDuration.textContent = '--:--';
+  renderAudioList();
+  if (shouldPlay) audioEl.play().catch(() => {});
+}
+
+function playAdjacent(direction) {
+  const visible = getVisibleTracks();
+  const currentNum = AUDIO_TRACKS[currentTrackIndex].n;
+  const visibleIndex = visible.findIndex(track => track.n === currentNum);
+  const nextVisible = visible[(visibleIndex + direction + visible.length) % visible.length] || AUDIO_TRACKS[currentTrackIndex];
+  loadTrack(AUDIO_TRACKS.findIndex(track => track.n === nextVisible.n), true);
+}
+
+audioList.addEventListener('click', event => {
+  const item = event.target.closest('.audio-track');
+  if (!item) return;
+  const trackNum = Number(item.dataset.track);
+  const index = AUDIO_TRACKS.findIndex(track => track.n === trackNum);
+  if (index >= 0) loadTrack(index, true);
+});
+
+document.getElementById('audioFilters').addEventListener('click', event => {
+  const btn = event.target.closest('.audio-filter');
+  if (!btn) return;
+  document.querySelectorAll('.audio-filter').forEach(item => item.classList.remove('active'));
+  btn.classList.add('active');
+  activeAudioGroup = btn.dataset.group;
+  renderAudioList();
+});
+
+audioPlay.addEventListener('click', () => {
+  if (audioEl.paused) audioEl.play().catch(() => {});
+  else audioEl.pause();
+});
+document.getElementById('audioPrev').addEventListener('click', () => playAdjacent(-1));
+document.getElementById('audioNext').addEventListener('click', () => playAdjacent(1));
+
+audioEl.addEventListener('play', () => { audioPlay.textContent = '暂停'; });
+audioEl.addEventListener('pause', () => { audioPlay.textContent = '播放'; });
+audioEl.addEventListener('loadedmetadata', () => { audioDuration.textContent = formatTime(audioEl.duration); });
+audioEl.addEventListener('timeupdate', () => {
+  audioCurrent.textContent = formatTime(audioEl.currentTime);
+  if (Number.isFinite(audioEl.duration) && audioEl.duration > 0) {
+    audioSeek.value = String((audioEl.currentTime / audioEl.duration) * 100);
+  }
+});
+audioEl.addEventListener('ended', () => playAdjacent(1));
+audioSeek.addEventListener('input', () => {
+  if (Number.isFinite(audioEl.duration) && audioEl.duration > 0) {
+    audioEl.currentTime = (Number(audioSeek.value) / 100) * audioEl.duration;
+  }
+});
+loadTrack(0);
+
 // Scroll animations
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });

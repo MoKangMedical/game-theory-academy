@@ -83,7 +83,7 @@ a{color:inherit;text-decoration:none}
 .course-grid{display:grid;grid-template-columns:1fr;gap:10px;padding:0 24px;max-width:900px;margin:0 auto}
 
 .course-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);position:relative}
-.course-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;border-radius:var(--radius);background:radial-gradient(600px circle at var(--mouse-x,50%) var(--mouse-y,50%),rgba(226,182,79,0.03),transparent 50%)}
+.course-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;border-radius:var(--radius);background:radial-gradient(600px circle at var(--mouse-x,50%) var(--mouse-y,50%),rgba(226,182,79,0.03),transparent 50%);pointer-events:none}
 .course-card:hover::before{opacity:1}
 .course-card:hover{border-color:rgba(226,182,79,0.22);transform:translateY(-2px);box-shadow:0 14px 34px rgba(226,182,79,0.08)}
 .course-card.open{border-color:rgba(226,182,79,0.28);box-shadow:0 16px 40px rgba(226,182,79,0.1)}
@@ -363,7 +363,7 @@ function getSourceUrl(file) {
 }
 
 function getAudioUrl(file) {
-  if (!file || file.startsWith('courses/00-')) return null;
+  if (!file) return null;
   const audioName = file.replace(/^courses\//, '').replace(/\.md$/, '.mp3');
   return `${RAW_BASE}/audio/${encodeURIComponent(audioName)}`;
 }
@@ -411,7 +411,7 @@ PHASES.forEach((phase, phaseIdx) => {
             <a href="${sourceUrl}" class="btn-start" target="_blank" rel="noreferrer">📖 查看原稿</a>
             ${audioUrl
               ? `<a href="${audioUrl}" class="btn-audio" target="_blank" rel="noreferrer">🎧 收听音频</a>`
-              : `<span class="btn-audio" style="opacity:.55;cursor:not-allowed" title="课程总览暂未提供单独音频">🎧 暂无音频</span>`}
+              : `<span class="btn-audio" style="opacity:.55;cursor:not-allowed">🎧 暂无音频</span>`}
           </div>
         </div>
       </div>`;

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""批量生成博弈论50门课程TTS音频"""
+"""批量生成博弈论51份课程内容TTS音频"""
 import os, re, sys, subprocess, asyncio, time
 from pathlib import Path
 
@@ -182,7 +182,7 @@ async def main():
     
     # 获取所有课程文件，按编号排序
     md_files = sorted(
-        [f for f in os.listdir(COURSES_DIR) if f.endswith('.md') and f != '00-课程总览.md'],
+        [f for f in os.listdir(COURSES_DIR) if f.endswith('.md')],
         key=lambda x: int(re.match(r'(\d+)', x).group(1)) if re.match(r'(\d+)', x) else 999
     )
     
